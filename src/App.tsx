@@ -400,7 +400,7 @@ function OverviewTab() {
           icon={<IconArchive/>}
         />
         <KPICard
-          label="高危人群占比"
+          label="高危占比"
           value={`${t.高危占比.toFixed(2)}`} unit="%"
           change1="环比 ↑ 0.68 个百分点"
           valueColor="#fb923c"
@@ -408,7 +408,7 @@ function OverviewTab() {
           icon={<IconShield/>}
         />
         <KPICard
-          label="两/三慢确诊占比"
+          label="确诊占比"
           value={`${t.确诊占比.toFixed(2)}`} unit="%"
           change1="环比 ↑ 0.92 个百分点"
           valueColor="#f87171"
@@ -434,7 +434,6 @@ function OverviewTab() {
             <div className="flex items-center gap-2">
               <span className="w-1 h-4 rounded-full bg-blue-500 inline-block"/>
               <span className="text-sm font-semibold text-slate-200">人群占比热力地图</span>
-              <span className="text-xs" style={{ color: "rgba(100,116,139,0.6)" }}>（默认高危占比，可切换确诊占比）</span>
             </div>
             <div className="flex gap-1 rounded-lg p-1" style={{ background: "rgba(11,30,61,0.8)", border: "1px solid rgba(30,80,180,0.25)" }}>
               {(["高危占比", "确诊占比"] as OverviewMetric[]).map(m => (
