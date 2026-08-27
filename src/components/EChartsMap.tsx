@@ -11,18 +11,22 @@ interface NavItem {
   level: MapLevel
 }
 
-// ─── DataV fetch with cache ───────────────────────────────────────────────────
+// ─── Local GeoJSON fetch with cache ───────────────────────────────────────────
 
-const DATAV = "https://geo.datav.aliyun.com/areas_v3/bound"
+const LOCAL_GEO: Record<string, string> = {
+  "330000": "/datav-maps/zhejiang.geojson",
+  "330100": "/datav-maps/hangzhou.geojson",
+}
 const geoCache: Record<string, unknown> = {
   streets: yuhangGeo,
 }
 
-async function fetchGeo(adcode: string, full = false): Promise<unknown> {
-  const url = `${DATAV}/${adcode}${full ? "_full" : ""}.json`
+async function fetchGeo(adcode: string): Promise<unknown> {
+  const url = LOCAL_GEO[adcode]
+  if (!url) throw new Error(`未配置本地地图数据：${adcode}`)
   if (geoCache[url]) return geoCache[url]
   const res = await fetch(url)
-  if (!res.ok) throw new Error(`DataV HTTP ${res.status} (${url})`)
+  if (!res.ok) throw new Error(`地图数据加载失败 HTTP ${res.status} (${url})`)
   const data = await res.json()
   geoCache[url] = data
   return data
@@ -186,9 +190,9 @@ export default function EChartsMap({
       if (node.level === "streets") {
         geojson = yuhangGeo as typeof geojson
       } else if (node.level === "province") {
-        geojson = (await fetchGeo("330000", true)) as typeof geojson
+        geojson = (await fetchGeo("330000")) as typeof geojson
       } else {
-        geojson = (await fetchGeo("330100", true)) as typeof geojson
+        geojson = (await fetchGeo("330100")) as typeof geojson
       }
 
       // Abort if a newer call superseded this one, or chart was disposed during fetch
