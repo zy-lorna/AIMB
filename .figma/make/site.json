@@ -1,0 +1,10 @@
+{
+  "description": "This application provides provincial and municipal leaders with real-time health data insights, enabling quick decision-making on chronic disease management and risk assessment.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

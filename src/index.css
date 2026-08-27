@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --bg: #050e1f;
+  --card: #0b1e3d;
+  --border: rgba(30, 80, 180, 0.3);
+  --font-num: 'DIN Alternate', din-alternate, 'DIN Pro', 'Barlow', 'Arial Narrow', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'PingFang SC', 'PingFang TC', 苹方, 'Helvetica Neue', 'Microsoft YaHei', system-ui, sans-serif;
+  background: var(--bg);
+  margin: 0;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); border-radius: 2px; }
