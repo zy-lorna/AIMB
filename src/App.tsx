@@ -601,10 +601,10 @@ function PathTab() {
         </div>
 
         {/* Right panel */}
-        <div className="flex-1 flex flex-col gap-3 min-h-0 min-w-0">
+        <div className="flex-1 grid gap-3 min-h-0 min-w-0" style={{ gridTemplateRows: "1fr 0.62fr 0.72fr" }}>
 
           {/* 三项核心检测率 */}
-          <div className="rounded-xl border px-5 py-4 shrink-0" style={{ background: "rgba(8,20,52,0.95)", borderColor: "rgba(30,80,180,0.3)" }}>
+          <div className="rounded-xl border px-5 py-4 min-h-0" style={{ background: "rgba(8,20,52,0.95)", borderColor: "rgba(30,80,180,0.3)" }}>
             <div className="flex items-center gap-2 mb-4">
               <span className="w-1 h-4 rounded-full bg-blue-500 inline-block"/>
               <span className="text-sm font-semibold text-slate-200">三项核心检测率</span>
@@ -624,7 +624,7 @@ function PathTab() {
           </div>
 
           {/* 面对面随访人次数 + 健康处方打印人次数 */}
-          <div className="rounded-xl border shrink-0 flex overflow-hidden" style={{ background: "rgba(8,20,52,0.95)", borderColor: "rgba(30,80,180,0.3)" }}>
+          <div className="rounded-xl border flex overflow-hidden min-h-0" style={{ background: "rgba(8,20,52,0.95)", borderColor: "rgba(30,80,180,0.3)" }}>
             {/* 面对面随访 */}
             <div className="flex items-center gap-4 px-5 py-4 flex-1 min-w-0">
               <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)" }}>
@@ -660,7 +660,7 @@ function PathTab() {
           </div>
 
           {/* 转诊情况 */}
-          <div className="flex-1 rounded-xl border px-5 py-4 flex flex-col min-h-0" style={{ background: "rgba(8,20,52,0.95)", borderColor: "rgba(30,80,180,0.3)" }}>
+          <div className="rounded-xl border px-5 py-4 flex flex-col min-h-0" style={{ background: "rgba(8,20,52,0.95)", borderColor: "rgba(30,80,180,0.3)" }}>
             <div className="flex items-center gap-2 mb-4 shrink-0">
               <span className="w-1 h-4 rounded-full bg-blue-500 inline-block"/>
               <span className="text-sm font-semibold text-slate-200">转诊情况</span>
