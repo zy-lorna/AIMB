@@ -506,17 +506,23 @@ const EXAM_ADVICE={
   低密度脂蛋白胆固醇:{reason:'边缘值：3.4~4.1mmol/L(130~160mg/dl)；高LDL-C血症：≥4.1mmol/L(≥160mg/dl)\n年龄、性别、饮食、运动不足、精神状态等均可能导致LDL-C升高；此外，家族性高胆固醇血症、肾病综合征、甲状腺功能减退等疾病也可能导致LDL-C升高。',advice:'应建议患者注意饮食、运动等生活习惯，必要时建议心内科或内分泌科就诊并使用调脂药物。'}
 };
 function reportDisplayItems(record){
-  const items=record.items.map(item=>({...item,group:({血糖:'生化',血脂:'生化',影像检查:'B超',一般检查:'一般检查',体检项目:'一般检查'})[item.group]||item.group,reference:EXAM_REFERENCES[item.name]||item.reference,reason:EXAM_ADVICE[item.name]?.reason,advice:EXAM_ADVICE[item.name]?.advice}));
+  const items=record.items.map(item=>{const reference=EXAM_REFERENCES[item.name];return {...item,group:({血糖:'生化',血脂:'生化',影像检查:'B超',一般检查:'一般检查',体检项目:'一般检查'})[item.group]||item.group,reference:typeof reference==='string'?reference:reference?.[record.sex]||item.reference,reason:EXAM_ADVICE[item.name]?.reason,advice:EXAM_ADVICE[item.name]?.advice};});
   if(record.historical)return items;
-  return [...items,{id:'cbc-red',group:'血常规',name:'红细胞计数',value:'4.60',unit:'×10¹²/L',category:'',reference:EXAM_REFERENCES.红细胞计数[record.sex],history:['4.50','4.40']},{id:'cbc-white',group:'血常规',name:'白细胞计数',value:'5.80',unit:'×10⁹/L',category:'',reference:EXAM_REFERENCES.白细胞计数,history:['5.60','5.50']},{id:'cbc-hb',group:'血常规',name:'血红蛋白',value:'138',unit:'g/L',category:'',reference:EXAM_REFERENCES.血红蛋白[record.sex],history:['136','137']},{id:'cbc-platelet',group:'血常规',name:'血小板计数',value:'225',unit:'×10⁹/L',category:'',reference:EXAM_REFERENCES.血小板计数,history:['210','216']},...['尿潜血','尿酮体','尿蛋白','尿白细胞','尿红细胞','尿液细菌'].map((name,index)=>({id:'urine-'+index,group:'尿常规',name,value:'阴性',unit:'',category:'',reference:EXAM_REFERENCES[name],history:['阴性','阴性']})),{id:'ecg',group:'心电图',name:'心电图',value:'窦性心律，未见明显异常',unit:'',category:'',reference:'—',history:['窦性心律，未见明显异常','窦性心律，未见明显异常']},{id:'general-pressure',group:'一般检查',name:'血压',value:'125 / 78',unit:'mmHg',category:'',reference:EXAM_REFERENCES.血压,history:['123 / 77','124 / 76']}];
+  const normalExamples=[{id:'cbc-red',group:'血常规',name:'红细胞计数',value:'4.60',unit:'×10¹²/L',category:'',reference:EXAM_REFERENCES.红细胞计数[record.sex],history:['4.50','4.40']},{id:'cbc-white',group:'血常规',name:'白细胞计数',value:'5.80',unit:'×10⁹/L',category:'',reference:EXAM_REFERENCES.白细胞计数,history:['5.60','5.50']},{id:'cbc-hb',group:'血常规',name:'血红蛋白',value:'138',unit:'g/L',category:'',reference:EXAM_REFERENCES.血红蛋白[record.sex],history:['136','137']},{id:'cbc-platelet',group:'血常规',name:'血小板计数',value:'225',unit:'×10⁹/L',category:'',reference:EXAM_REFERENCES.血小板计数,history:['210','216']},...['尿潜血','尿酮体','尿蛋白','尿白细胞','尿红细胞','尿液细菌'].map((name,index)=>({id:'urine-'+index,group:'尿常规',name,value:'阴性',unit:'',category:'',reference:EXAM_REFERENCES[name],history:['阴性','阴性']})),{id:'ecg',group:'心电图',name:'心电图',value:'窦性心律，未见明显异常',unit:'',category:'',reference:'—',history:['窦性心律，未见明显异常','窦性心律，未见明显异常']},{id:'general-pressure',group:'一般检查',name:'血压',value:'125 / 78',unit:'mmHg',category:'',reference:EXAM_REFERENCES.血压,history:['123 / 77','124 / 76']}];
+  const present=new Set(items.map(item=>`${item.group}|${item.name}`));
+  return [...items,...normalExamples.filter(item=>!present.has(`${item.group}|${item.name}`))];
 }
-function groupCounts(items){return `<span class="group-counts"><span>共 ${items.length} 个</span>${['A','B','C'].map(category=>`<span class="${category}">${category}类 ${items.filter(item=>item.category===category).length} 个</span>`).join('')}<span>未见异常 ${items.filter(item=>!item.category).length} 个</span></span>`;}
+function groupCounts(items){return `<span class="group-counts"><span>异常 ${items.length} 个</span>${['A','B','C'].map(category=>`<span class="${category}">${category}类 ${items.filter(item=>item.category===category).length} 个</span>`).join('')}</span>`;}
 function groupedReport(record){
-  const items=reportDisplayItems(record);
-  const groups=[['检验','file',['血常规','尿常规','生化']],['检查','heart',['一般检查','心电图','B超']]];
+  const items=reportDisplayItems(record).filter(item=>['A','B','C'].includes(item.category));
+  const labGroups=['血常规','尿常规','生化','大便OB','乙肝表面抗原'];
+  const abnormalGroups=[...new Set(items.filter(item=>['A','B','C'].includes(item.category)).map(item=>item.group))];
+  if(!abnormalGroups.length)return '<div class="empty">本份体检报告无A/B/C类异常指标</div>';
+  const groups=[['检验','file',abnormalGroups.filter(group=>labGroups.includes(group))],['检查','heart',abnormalGroups.filter(group=>!labGroups.includes(group))]];
   let firstGroup=true;
-  const sortedGroups=groupNames=>[...groupNames].sort((first,second)=>{for(const category of ['A','B','C']){const difference=items.filter(item=>item.group===second&&item.category===category).length-items.filter(item=>item.group===first&&item.category===category).length;if(difference)return difference;}return groupNames.indexOf(first)-groupNames.indexOf(second);});
-  return groups.map(([title,symbol,groupNames])=>`<div class="section-group-title">${icon(symbol)}${title}<span class="round-count">${items.filter(item=>groupNames.includes(item.group)&&item.category).length}</span></div>${sortedGroups(groupNames).map(group=>{const subset=items.filter(item=>item.group===group).sort((first,second)=>{const rank={A:0,B:1,C:2};return (rank[first.category]??3)-(rank[second.category]??3);});if(!subset.length)return '';const open=firstGroup&&subset.some(item=>item.category);if(open)firstGroup=false;return `<details class="legacy-group" ${open?'open':''}><summary><span class="group-chevron">›</span><strong>${group}</strong>${groupCounts(subset)}<button class="preview-button" data-action="report-preview" data-id="${record.id}" data-group="${group}">原报告预览</button></summary>${subset.map(item=>`<div class="indicator-line ${item.category}"><span>${escapeHTML(item.name)}：</span><span class="${item.category?'indicator-result':''}">${escapeHTML(item.value)} ${escapeHTML(item.unit)}</span><span class="indicator-reference">（${escapeHTML(item.reference)}）</span>${item.category?`<button class="suggestion-button" data-action="suggestion" data-id="${record.id}" data-item="${item.id}">建议</button>`:'<span class="no-normal-mark">未见异常</span>'}</div>`).join('')}</details>`;}).join('')}`).join('');
+  const groupStats=group=>{const rows=items.filter(item=>item.group===group);return ['A','B','C'].map(category=>rows.filter(item=>item.category===category).length);};
+  const sortedGroups=groupNames=>[...groupNames].sort((first,second)=>{const a=groupStats(first),b=groupStats(second);return b.reduce((sum,count)=>sum+count,0)-a.reduce((sum,count)=>sum+count,0)||b[0]-a[0]||b[1]-a[1]||b[2]-a[2]||first.localeCompare(second,'zh-CN-u-co-pinyin');});
+  return groups.filter(([, ,groupNames])=>groupNames.length).map(([title,symbol,groupNames])=>`<div class="section-group-title">${icon(symbol)}${title}<span class="round-count">${items.filter(item=>groupNames.includes(item.group)).length}</span></div>${sortedGroups(groupNames).map(group=>{const subset=items.filter(item=>item.group===group).sort((first,second)=>{const rank={A:0,B:1,C:2};return rank[first.category]-rank[second.category];});const open=firstGroup;if(open)firstGroup=false;return `<details class="legacy-group" ${open?'open':''}><summary><span class="group-chevron">›</span><strong>${escapeHTML(group)}</strong>${groupCounts(subset)}<button class="preview-button" data-action="report-preview" data-id="${record.id}" data-group="${escapeHTML(group)}">原报告预览</button></summary>${subset.map(item=>`<div class="indicator-line ${item.category}"><span>${escapeHTML(item.name)}：</span><span class="indicator-result">${escapeHTML(item.value)} ${escapeHTML(item.unit)}</span><span class="indicator-reference">（${escapeHTML(item.reference)}）</span><button class="suggestion-button" data-action="suggestion" data-id="${record.id}" data-item="${item.id}">建议</button></div>`).join('')}</details>`;}).join('')}`).join('');
 }
 function followDescription(record){
   const plans=activeReviewGroups(record);
@@ -1148,12 +1154,20 @@ function followDescription(record){
 
 function upgradeV31(){db.assistants??=['陈医助','林医助'];const sample=db.records.find(record=>record.status==='following'&&record.groups.length&&record.items.filter(item=>item.category).length>1);if(sample&&!sample.v31MultiPlan){const used=new Set(sample.groups.flatMap(group=>group.items));const extra=sample.items.find(item=>item.category&&!used.has(item.id));if(extra){sample.groups.push({id:'V31-'+sample.id,items:[extra.id],date:addDays(TODAY,18),datePreset:'custom',needsAssistant:false,assistant:'',lead:1,source:'持续跟踪时设置',createdAt:(sample.followDate||TODAY)+' 15:20'});}sample.v31MultiPlan=true;}db.records.filter(record=>record.status==='referred').forEach((record,index)=>{record.referral={status:'已转诊',source:'主动转诊',type:'上转',currentDiagnosis:record.referral.currentDiagnosis||'',appointmentDate:record.referral.appointmentDate||addDays(record.referral.date,5),...record.referral,reason:'体检异常',note:record.referral.note?.startsWith('演示')?'':record.referral.note};record.referralVisits??=index===0?[{id:'RV-'+record.id,date:addDays(record.referral.date,1)+' 08:37:59',institution:'某某区人民医院',doctor:'徐医生',bloodPressure:'118/70 mmHg',complaint:'口渴、多尿数年',presentHistory:'多饮、多尿，近期乏力，无胸闷胸痛。',pastHistory:'既往糖尿病、高脂血症病史。',physicalExam:'心肺听诊未见明显异常。',diagnosis:'糖尿病、高脂血症',medications:[{name:'阿托伐他汀钙片',frequency:'每晚一次',dose:'1',doseUnit:'片',dispensed:'2',dispensedUnit:'盒'},{name:'阿卡波糖片',frequency:'每日三次',dose:'1',doseUnit:'片',dispensed:'3',dispensedUnit:'盒'}],exams:[{name:'生化',abnormalCount:2},{name:'尿常规',abnormalCount:0}]}]:[];});}
 function upgradeV32(){const sample=db.records.find(record=>record.name==='朱某琴'&&record.notify)||db.records.find(record=>record.status==='tracking'&&record.notify&&record.items.filter(item=>item.category).length>1);if(!sample||sample.v32ReviewShowcase)return;const abnormal=sample.items.filter(item=>item.category);if(!abnormal.length)return;const first=abnormal[0];const second=abnormal[1]||first;sample.groups=[{id:'V32-UPCOMING-'+sample.id,items:[first.id],date:'2026-09-30',datePreset:'custom',needsAssistant:true,assistant:'陈医助',lead:1,source:'告知时设置',createdAt:'2026-09-20 10:30'},{id:'V32-COMPLETE-'+sample.id,items:[second.id],date:'2026-09-24',datePreset:'custom',needsAssistant:false,assistant:'',lead:1,source:'持续跟踪时设置',createdAt:'2026-09-22 14:20'},{id:'V32-CANCELLED-'+sample.id,items:[first.id],date:'2026-10-15',datePreset:'custom',needsAssistant:true,assistant:'林医助',lead:3,source:'持续跟踪时设置',createdAt:'2026-09-25 09:45',cancelled:true}];second.reviewed=true;sample.reviewVisits=[{id:'V32-VISIT-1-'+sample.id,date:'2026-09-24 18:56:10',diagnosis:'血脂异常，建议继续生活方式干预并按计划复查。',items:[{itemId:second.id,name:second.name,group:({血糖:'生化',血脂:'生化',影像检查:'B超'})[second.group]||second.group,value:second.value,unit:second.unit,reference:second.reference||'原报告参考范围',abnormal:true}]},{id:'V32-VISIT-2-'+sample.id,date:'2026-09-22 18:54:26',diagnosis:'体检异常复诊，暂未新增检验检查。',items:[]}];sample.activeGroupIds=sample.groups.filter(group=>!group.cancelled).map(group=>group.id);sample.v32ReviewShowcase=true;}
+const V33_MEDICAL_EXAMPLES=[
+  ['v33-rbc','血常规','白细胞计数','20','×10⁹/L','B','3.5~9.5'],
+  ['v33-hgb','血常规','血红蛋白','85','g/L','B','男：131~172；女：113~151'],
+  ['v33-hct','血常规','血小板计数','600','×10⁹/L','B','125~350'],
+  ['v33-mcv','尿常规','尿蛋白','++','','B','阴性'],
+  ['v33-mch','生化','甘油三酯','2.51','mmol/L','C','0.3~1.7'],
+  ['v33-alt','生化','谷丙转氨酶','100','U/L','B','15~40'],
+  ['v33-ast','生化','谷草转氨酶','90','U/L','B','15~40'],
+  ['v33-ecg','心电图','心电图','异常Q波','','C','窦性心律']
+];
 function upgradeV33(){
   const showcase=db.records.find(record=>record.v32ReviewShowcase)||db.records.find(record=>record.status==='tracking'&&record.notify);
   if(showcase&&!showcase.v33DenseReview){
-    const additions=[
-      ['v33-rbc','血常规','红细胞计数','3.6','10^12/L','C','3.8~5.1'],['v33-hgb','血常规','血红蛋白','97','g/L','B','115~150'],['v33-hct','血常规','血细胞比容','29.50','%','C','35~45'],['v33-mcv','血常规','平均红细胞体积','81.7','fL','C','82~100'],['v33-mch','血常规','平均红细胞血红蛋白量','26.9','pg','C','27~34'],['v33-alt','生化','丙氨酸氨基转移酶','58','U/L','B','7~40'],['v33-ast','生化','天门冬氨酸氨基转移酶','46','U/L','C','13~35'],['v33-ecg','心电图','窦性心动过速','提示异常','','B','窦性心律']
-    ].map(([suffix,group,name,value,unit,category,reference])=>({id:`${showcase.id}-${suffix}`,group,name,value,unit,category,reference,reviewed:true}));
+    const additions=V33_MEDICAL_EXAMPLES.map(([suffix,group,name,value,unit,category,reference])=>({id:`${showcase.id}-${suffix}`,group,name,value,unit,category,reference,reviewed:true}));
     additions.forEach(item=>{if(!showcase.items.some(entry=>entry.id===item.id))showcase.items.push(item);});
     const byId=id=>showcase.items.find(item=>item.id===id);const original=showcase.items.filter(item=>!item.id.includes('-v33-'));
     const completeIds=additions.slice(0,7).map(item=>item.id);const upcomingIds=[original[0]?.id,additions[7].id].filter(Boolean);const cancelledIds=[original[1]?.id,original[2]?.id].filter(Boolean);
@@ -1492,10 +1506,55 @@ function upgradeV44ReviewHistoryFixtures(){
     record.v44ReviewHistory=true;
   });
 }
+function upgradeV45AbnormalReportFixtures(){
+  db.records.filter(record=>record.v33DenseReview&&!record.v46DenseMedicalFixtures).forEach(record=>{
+    V33_MEDICAL_EXAMPLES.forEach(([suffix,group,name,value,unit,category,reference])=>{
+      const id=`${record.id}-${suffix}`;
+      const item=record.items.find(entry=>entry.id===id);
+      if(!item)return;
+      Object.assign(item,{group,name,value,unit,category,reference});
+      (record.reviewVisits||[]).forEach(visit=>visit.items.filter(result=>result.itemId===id).forEach(result=>Object.assign(result,{group,name,value,unit,reference})));
+    });
+    record.v46DenseMedicalFixtures=true;
+  });
+  const examples=[
+    ['血常规','中性粒细胞计数','0.4','×10⁹/L','1.80~7.20','A'],
+    ['血常规','白细胞计数','20','×10⁹/L','3.5~9.5','B'],
+    ['血常规','血红蛋白','85','g/L','男：131~172；女：113~151','B'],
+    ['血常规','血小板计数','600','×10⁹/L','125~350','B'],
+    ['尿常规','尿蛋白','++','','阴性','B'],
+    ['尿常规','尿红细胞','++','','阴性','B'],
+    ['尿常规','尿潜血','+','','阴性','C'],
+    ['尿常规','尿液细菌','阳性','','阴性','B'],
+    ['生化','空腹血糖','17','mmol/L','3.9~6.11','A'],
+    ['生化','谷丙转氨酶','100','U/L','15~40','B'],
+    ['生化','谷草转氨酶','90','U/L','15~40','B'],
+    ['生化','总胆固醇','7.2','mmol/L','3.0~5.18','B'],
+    ['生化','甘油三酯','2.51','mmol/L','0.3~1.7','C'],
+    ['生化','低密度脂蛋白胆固醇','3.9','mmol/L','0.3~3.40','C'],
+    ['B超','甲状腺囊性结节','囊性结节','','未见明显异常','C'],
+    ['一般检查','血压','155/96','mmHg','收缩压90~139；舒张压60~89','C']
+  ];
+  const stages=['pending','tracking','following','referred','closed'];
+  stages.forEach(stage=>db.records.filter(record=>record.status===stage&&!record.normal&&!record.v43Fixture).slice(0,2).forEach((record,index)=>{
+    if(record.v46MedicalFixtures)return;
+    record.items=record.items.filter(item=>!item.id?.startsWith(`V45-${record.id}-`));
+    const limit=index===0?examples.length:11;
+    const rank={A:0,B:1,C:2};
+    examples.slice(0,limit).forEach(([group,name,value,unit,reference,category],itemIndex)=>{
+      if(rank[category]<rank[record.category])return;
+      if(record.items.some(item=>item.name===name))return;
+      record.items.push({id:`V45-${record.id}-${itemIndex}`,group,name,value,unit,category,reference,reviewed:false});
+    });
+    record.v45AbnormalReport=true;
+    record.v46MedicalFixtures=true;
+  }));
+}
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV41RecallFixture();persist();render();}});
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV42RecallSelectionFixtures();persist();render();}});
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV43TrackingStatusFixtures();persist();render();}});
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV44ReviewHistoryFixtures();persist();render();}});
+document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV45AbnormalReportFixtures();persist();render();}});
 document.addEventListener('submit',event=>{
   if(event.target.id==='stats-filters'){event.preventDefault();const data=new FormData(event.target);state.statsFilters={year:data.get('year'),institution:data.get('institution'),doctor:data.get('doctor')};render();}
   if(event.target.id==='patient-label-form'){event.preventDefault();const label=document.getElementById('patient-label-input').value.trim();const record=getReferenceRecord(state.tagEditor);const labels=record.patientLabels||['责任患者','体检标签（演示）'];if(!label||label.length>20){toast('请输入1–20字的标签');return;}if(labels.includes(label)){toast('该标签已存在');return;}savePatientLabels(record.id,[...labels,label]);state.tagEditor=null;render();}
@@ -1516,6 +1575,7 @@ upgradeV41RecallFixture();
 upgradeV42RecallSelectionFixtures();
 upgradeV43TrackingStatusFixtures();
 upgradeV44ReviewHistoryFixtures();
+upgradeV45AbnormalReportFixtures();
 persist();
 
 render();
