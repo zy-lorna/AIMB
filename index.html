@@ -87,6 +87,7 @@ body[data-page="population"] .page-head{display:none}.category-panel{padding:18p
 .review-progress.is-urgent{background:#ffe8e8;color:#bd252e;border-color:#ffc6ca;font-weight:600}
 .review-progress.is-attention{background:#fff1d0;color:#915b00;border-color:#f5d98d;font-weight:600}
 .review-progress.is-upcoming{background:#edf5ff;color:#3776b6;border-color:#d8e9ff}
+.plan-card-actions .review-progress.is-upcoming{background:#edf5ff;color:#3776b6;border-color:#edf5ff;box-shadow:none}
 .review-progress.is-done{background:#eef5f1;color:#4e8069;border-color:#dcebe2}
 .review-progress.is-cancelled{background:#f2f4f6;color:#748091;border-color:#e5e9ee}
 .report-progress-list{display:flex;gap:5px 10px;flex-wrap:wrap;min-width:220px}.report-progress-list>span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-size:11px;color:#63748b}
@@ -116,7 +117,34 @@ body[data-page="population"] .page-head{display:none}.category-panel{padding:18p
 .review-result-modal{width:min(960px,94vw)}.review-result-history .result-order{background:#f4f6f9;border:0;padding:9px 11px}.result-order-head{display:flex;align-items:center;gap:10px;min-width:0}.result-order-toggle{display:inline-flex;align-items:center;gap:7px;min-width:0;flex:0 1 auto;border:0;background:none;padding:6px 0;color:#34465e;text-align:left;cursor:pointer}.review-result-history .result-order .result-order-toggle strong{display:inline;margin:0;white-space:nowrap}.result-order-toggle .group-chevron{flex:none}.result-order-toggle[aria-expanded="true"] .group-chevron{transform:rotate(90deg)}.result-order .order-decision{flex:1;min-width:190px;margin:0;padding:0;border:0;justify-content:flex-end}.result-order .order-field-label{width:auto;white-space:nowrap;flex:none;font-size:12px}.result-order .order-targets{width:min(280px,100%);margin:0}.result-order .order-targets summary{min-height:32px;padding:6px 9px}.result-order .order-target-options{position:absolute;z-index:10;left:0;right:0;top:100%;box-shadow:0 6px 16px #273d5921}.result-order-details{padding-top:2px}.result-order-details[hidden]{display:none}.result-order .review-result-outcome{margin-left:auto;margin-top:0;max-width:62%;text-align:right;overflow-wrap:anywhere}@media(max-width:600px){.result-order-head{flex-wrap:wrap}.result-order .order-decision{flex-basis:100%;justify-content:flex-start}.result-order .order-targets{flex:1;width:auto}.result-order .review-result-outcome{max-width:100%;margin-left:0;text-align:left}}
 .recall-reschedule label[for="recall-new-date"]{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:12px}.recall-reschedule label[for="recall-new-date"] span{white-space:nowrap;margin:0}.recall-reschedule label[for="recall-new-date"] input{min-width:0}@media(max-width:480px){.recall-reschedule label[for="recall-new-date"]{grid-template-columns:1fr;gap:5px}}
 .order-targets summary{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.order-targets summary:after{margin-left:auto;float:none}.order-target-placeholder{color:#718198}.order-target-placeholder[hidden]{display:none}.order-target-chip{display:inline-flex;align-items:center;gap:4px;background:#edf6ff;color:#176cc5;border-radius:3px;padding:2px 5px;max-width:100%}.order-target-chip button{border:0;background:none;color:inherit;cursor:pointer;padding:0 2px;font-size:15px;line-height:1}.order-target-options label:has(input:disabled){color:#aab5c2;cursor:not-allowed;background:#f5f7f9}.result-order-details{padding:10px 0 2px}.result-order-details .result-detail-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;color:#718198;font-size:12px}.result-order-details .result-detail-head .preview-button{margin-left:auto}.review-result-history .result-order .result-indicator{display:block;background:#fff;border-radius:3px;padding:8px 10px;margin-bottom:6px;color:#34465e}.review-result-history .result-order .result-indicator.is-abnormal{color:#c93640}.review-result-history .result-order .result-indicator em{color:#8090a2;margin-left:8px}.review-result-history .result-order .result-indicator.is-abnormal em{color:#8090a2}
+.order-target-options .order-target-unavailable{display:block;margin-left:auto;color:#8795a5;font-size:11px;white-space:nowrap}
 .plan-items .plan-item.indicator-line.is-reviewed .plan-item-name{display:grid!important;grid-template-columns:minmax(145px,1fr) minmax(125px,.8fr) minmax(175px,1fr);column-gap:12px;align-items:center}.plan-item-label{display:inline-flex;align-items:center;gap:8px;min-width:0}.plan-items .plan-item.indicator-line.is-reviewed .plan-item-detail{margin-left:0;white-space:nowrap}@media(max-width:900px){.plan-items .plan-item.indicator-line.is-reviewed .plan-item-name{grid-template-columns:minmax(130px,1fr) minmax(110px,.8fr) minmax(150px,1fr);column-gap:8px}.plan-items .plan-item.indicator-line.is-reviewed .plan-item-detail{white-space:normal}}
+.plan-card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.plan-card-actions .primary{height:24px;min-height:24px;padding:0 10px;line-height:22px}.review-comparison{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:10px}.review-compare-side{background:#fff;border:1px solid #e1e8f0;border-radius:4px;padding:10px;min-width:0}.review-compare-side h4{font-size:12px;color:#34465e;margin:0 0 8px}.review-compare-group{padding:8px 0;border-top:1px solid #edf1f5}.review-compare-group:first-of-type{border-top:0}.review-compare-group-title{display:block;font-size:12px;color:#53677f;margin-bottom:6px}.review-compare-row{font-size:12px;line-height:1.5;padding:6px 7px;margin:4px 0;background:#f7f9fc;color:#42536a;overflow-wrap:anywhere}.review-compare-row.is-abnormal{color:#c93640}.review-compare-row small{display:block;color:#8290a3}.review-indicator-match{display:block;width:100%;min-height:30px;margin-top:6px;font-size:12px}.review-normal-details{margin-top:6px;font-size:12px;color:#718198}.review-normal-details summary{cursor:pointer}.review-normal-details[hidden]{display:none}@media(max-width:650px){.review-comparison{grid-template-columns:1fr}.plan-card-actions{justify-content:flex-start}}
+.review-result-history .result-order .result-indicator[hidden]{display:none}
+.review-result-modal{width:min(1100px,96vw)}.review-result-modal .drawer-body{max-height:min(72vh,730px)}.review-result-modal .review-comparison{display:block}
+.review-compare-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 10px;color:#63748b;font-size:12px}.review-compare-toolbar button{flex:none}
+.review-compare-group{border-top:1px solid #dfe7f0;margin-top:12px;padding-top:12px}.review-compare-group:first-child{border-top:0;margin-top:0;padding-top:0}
+.review-compare-group-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;font-weight:600}
+.review-compare-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.review-compare-column{min-width:0;background:#fff;border:1px solid #e1e8f0;border-radius:4px;padding:10px}.review-compare-column h4{font-size:12px;color:#34465e;margin:0 0 8px}
+.review-compare-select{display:block;width:100%;border:1px solid #e5ebf2;border-radius:3px;background:#f8fafc;text-align:left;padding:8px;margin:5px 0;color:#34465e;cursor:pointer;line-height:1.45}.review-compare-select:hover,.review-compare-select:focus-visible{border-color:#1687ff;background:#f1f7ff}.review-compare-select.is-picked{border-color:#1687ff;box-shadow:inset 3px 0 #1687ff}.review-compare-select.is-matched{border-color:#98c8b6;background:#f4fbf7}.review-compare-select.is-abnormal .compare-value{color:#c93640}.review-compare-select small{display:block;color:#79899b}.review-compare-select .compare-state{display:inline-block;margin-left:6px;color:#16804e;font-size:11px}.review-compare-select .compare-suggestion{color:#176cc5}
+.review-result-history .result-order .review-compare-select strong,.review-result-history .result-order .review-compare-select span{display:inline}.review-result-history .result-order .review-compare-select small{display:block}
+.review-compare-column .review-normal-details{margin:7px 0}.review-compare-column .review-normal-details summary{padding:6px 0}.result-normal-details{margin-top:6px;color:#718198;font-size:12px}.result-normal-details summary{cursor:pointer;padding:6px 0}.plan-confirmed-indicators{border-top:1px solid #edf1f5;margin-top:10px;padding-top:9px}.plan-confirmed-indicators strong{font-size:12px;color:#34465e}.plan-confirmed-indicators .plan-indicator-pair{display:grid;grid-template-columns:minmax(110px,1fr) minmax(100px,1fr) minmax(100px,1fr) minmax(110px,1fr);gap:12px;align-items:start;padding:7px 0;border-bottom:1px solid #edf1f5;font-size:12px;color:#53677f}.plan-confirmed-indicators .plan-indicator-pair:last-child{border-bottom:0}.plan-confirmed-indicators .plan-indicator-pair span{min-width:0;overflow-wrap:anywhere}.plan-confirmed-indicators small{display:block;color:#8290a3}
+@media(max-width:700px){.review-compare-pair{grid-template-columns:1fr}.review-compare-toolbar{align-items:flex-start;flex-direction:column}.plan-confirmed-indicators .plan-indicator-pair{grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 8px}}
+.plan-timeline .plan-card-head{border-bottom:0;padding-bottom:0}
+.plan-timeline .plan-card:has(.plan-confirmed-indicators) .plan-card-head{border-bottom:1px solid #edf1f5;padding-bottom:10px}
+.plan-timeline .plan-confirmed-indicators{border-top:0;margin-top:0;padding-top:10px}
+.plan-card-actions .review-cancel-button{margin-left:0;height:24px}
+.plan-confirmed-indicators .plan-indicator-pair .is-abnormal{color:#c93640;font-weight:600}
+.review-result-history .result-order-head>.preview-button{flex:none;white-space:nowrap}
+.review-compare-column{height:clamp(170px,32vh,250px);overflow-y:auto;overscroll-behavior:contain}
+.review-compare-column h4{position:sticky;top:-10px;z-index:1;background:#fff;padding:10px 0 8px;margin:-10px 0 5px}
+.review-compare-select:disabled{opacity:1;cursor:default}
+.plan-timeline .plan-card-head{display:block;position:relative}
+.plan-timeline .plan-card-title{padding-right:230px}
+.plan-timeline .plan-card-meta{width:100%;gap:5px 10px}
+.plan-timeline .plan-card-actions{position:absolute;right:0;top:0}
+@media(max-width:700px){.plan-timeline .plan-card-title{padding-right:0}.plan-timeline .plan-card-actions{position:static;margin-top:8px;justify-content:flex-start}}
+@media(max-width:900px){.review-result-modal .result-order-head{flex-wrap:wrap}.review-result-modal .result-order .order-decision{order:2;flex-basis:100%;justify-content:flex-start}.review-result-modal .result-order .review-result-outcome{order:3;flex-basis:100%;max-width:100%;margin:0;text-align:left}}
 </style>
 </head>
 <body>
@@ -149,7 +177,7 @@ function log(record,text,actor='金医生',date=TODAY+' '+new Date().toTimeStrin
 function toast(message){document.getElementById('toast-root').innerHTML=`<div class="toast" role="status">${icon('check')}${escapeHTML(message)}</div>`;clearTimeout(toast.timer);toast.timer=setTimeout(()=>document.getElementById('toast-root').replaceChildren(),3200);}
 function renderNav(){document.getElementById('brandmark').innerHTML=icon('heart');document.getElementById('header-help').innerHTML=icon('info');document.getElementById('sidebar').innerHTML=`<div class="navitem">${icon('home')}首页</div><div class="navitem">${icon('chart')}数据统计</div><div class="navitem">${icon('file')}诊前采集</div><div class="navgroup">${icon('file')}诊后管理<span class="chevron">⌃</span></div><div class="navitem sub">接诊回顾</div><div class="navitem sub">诊后任务</div><div class="navgroup">${icon('user')}患者管理<span class="chevron">⌃</span></div><div class="navitem sub">待管人群</div><div class="navitem sub">注册人群</div><div class="navitem sub">失管人群</div><div class="navitem">${icon('heart')}随访管理</div><div class="navitem">${icon('clock')}异常监测</div><div class="navgroup">${icon('file')}体检管理<span class="chevron">⌃</span></div>${navs.map(([page,label])=>`<button class="navitem sub ${state.page===page?'active':''}" data-action="nav" data-page="${page}">${label}</button>`).join('')}<div class="navitem">${icon('phone')}协同管理</div><div class="navitem">${icon('settings')}设备管理</div><div class="navfooter">V3.0 工作副本 · 虚构演示数据<br>历史五色数据不在本 Demo 改动<br><br><button data-action="about">原型说明</button> <button data-action="reset-confirm">重置演示</button></div>`;}
 function taskDates(record){if(state.tab==='following')return activeReviewGroups(record).map(group=>group.date);if(state.tab==='referred')return [record.referral?.date||''];if(state.tab==='closed')return [record.closedDate||''];if(state.tab==='tracking')return [record.followDue||''];return [record.due];}
-function taskDateLabel(){return {pending:'告知期限',tracking:'跟踪期限',following:'应复查日期',referred:'转诊日期',closed:'末次跟踪日期'}[state.tab];}
+function taskDateLabel(){return {pending:'告知期限',tracking:'跟踪期限',following:'应复查日期',referred:'跟踪日期',closed:'末次跟踪日期'}[state.tab];}
 function filteredRecords(filters=state.filters){return db.records.filter(record=>(!filters.category||record.category===filters.category)&&(!filters.keyword||[record.name,record.identity,record.phone,record.id].some(value=>value.includes(filters.keyword)))&&(!filters.start||record.exam>=filters.start)&&(!filters.end||record.exam<=filters.end)&&((!filters.dueStart&&!filters.dueEnd)||taskDates(record).some(date=>(!filters.dueStart||date>=filters.dueStart)&&(!filters.dueEnd||date<=filters.dueEnd)))&&(!filters.reportStart||record.report>=filters.reportStart)&&(!filters.reportEnd||record.report<=filters.reportEnd));}
 function reviewStatus(record){const groups=record.groups.filter(group=>group.items?.length);if(!groups.length)return '未设置复查计划';return `<div class="report-progress-list">${groups.map(group=>`<span>${escapeHTML(reviewOrderName(record,group))} ${reviewProgressBadge(reviewPlanProgress(record,group))}</span>`).join('')}</div>`;}
 function recallGroups(status=state.recallTab){
@@ -243,6 +271,15 @@ function closeOverlay(){
   if(returnTo){state.drawer=returnTo;restoreDrawer();return;}
   document.getElementById('overlay-root').replaceChildren();state.drawer=null;document.body.style.overflow='';if(state.originFocus?.isConnected)state.originFocus.focus();else document.querySelector('.navitem.active')?.focus();
 }
+document.addEventListener('click',event=>{
+  if(event.target.id==='preview-layer'){document.getElementById('preview-layer')?.remove();return;}
+  if(!['overlay','modal-layer'].includes(event.target.id))return;
+  if(event.target.dataset.dirty==='true'||state.drawer?.type==='inform'&&state.drawer.step>1)return;
+  closeOverlay();
+});
+document.addEventListener('input',event=>{const layer=event.target.closest?.('#overlay,#modal-layer');if(layer&&event.target.matches('input,select,textarea'))layer.dataset.dirty='true';});
+document.addEventListener('change',event=>{const layer=event.target.closest?.('#overlay,#modal-layer');if(layer&&event.target.matches('input,select,textarea'))layer.dataset.dirty='true';});
+document.addEventListener('click',event=>{const layer=event.target.closest?.('#overlay,#modal-layer');if(layer&&event.target.closest?.('[data-action="inform-preset"],[data-action="correction-preset"],[data-action="notification-preset"],[data-action="add-group"],[data-action="delete-group"]'))layer.dataset.dirty='true';});
 function modal(title,body,footer,floating=false){const content=`<div class="drawer-head"><h2 id="modal-title">${title}</h2><button class="icon-button" aria-label="关闭弹窗" data-action="close">×</button></div><div class="drawer-body">${body}<div id="form-error"></div></div><div class="drawer-footer"><span></span><div class="actions">${footer||'<button class="primary" data-action="close">知道了</button>'}</div></div>`;if(floating&&['inform','detail','follow','recall'].includes(state.drawer?.returnTo?.type||state.drawer?.type)){document.getElementById('modal-layer')?.remove();state.panel={title,origin:document.activeElement};document.getElementById('overlay-root').insertAdjacentHTML('beforeend',`<div class="overlay modal-overlay layered-modal" id="modal-layer"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">${content}</section></div>`);document.querySelector('#modal-layer button')?.focus();return;}if(state.drawer?.returnTo?.type==='inform'&&document.querySelector('.inform-drawer')){document.getElementById('modal-layer')?.remove();state.panel=null;document.querySelector('.inform-drawer').setAttribute('aria-hidden','true');document.getElementById('overlay-root').insertAdjacentHTML('beforeend',`<div class="overlay modal-overlay layered-modal" id="modal-layer"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">${content}</section></div>`);document.querySelector('#modal-layer button')?.focus();return;}showOverlay(content.replace('id="modal-title"','id="dialog-title"'),'modal');}
 function formError(message){const element=document.getElementById('form-error');if(element){element.innerHTML=`<div class="error" role="alert">${escapeHTML(message)}</div>`;element.scrollIntoView({block:'nearest'});}return false;}
 function about(){modal('V3.0 原型说明',`<div class="notice">这是产品交互演示，不是已上线功能，也不是临床判断工具。</div><h3 class="section-title">本次演示范围</h3><p>一次体检生成一条待告知任务。告知成功后，无异常报告进入跟踪结束；有异常报告进入已告知待跟踪。告知或持续跟踪每选中一张异常检验检查单，就生成一条独立计算进度的异常复查任务；只有选择需要医助通知才额外生成关联召回通知。</p><p>医生从告知日期至总检日期后365天的检验检查结果中手动关联异常复查任务；一条组合开单记录可关联多个任务，同一任务只能关联一条结果。仅有就诊记录不代表已复查。持续跟踪新增计划会保留既有计划。</p><p>所有人员、报告、分类、期限和复查结果均为虚构示例。操作只保存在当前浏览器，不调用外部接口；拨号、转诊、就诊结果均不产生实际业务。</p><h3 class="section-title">演示边界</h3><ul><li>期限使用示例日期，不实现节假日算法，不宣称时限已核定。</li><li>复查关联与确认仅用于本地虚构数据，不代表已接入真实检验检查结果。</li><li>统计按当前筛选报告做示意，不替代正式考核指标。</li></ul><p>演示日期固定为 ${TODAY}。刷新保留操作；左下角“重置演示”可恢复初始数据。</p>`);}
@@ -369,10 +406,8 @@ function recallModal(id){
   const current=state.drawer?.type==='recall'&&state.drawer.id===id&&tabs.includes(state.drawer.detailTab)?state.drawer.detailTab:tabs[0];
   state.drawer={type:'recall',id,detailTab:current};
   const orders=tasks.map(recall=>{const group=record.groups.find(item=>item.id===recall.groupId);const title=reviewOrderName(record,group);const selected=recall.reviewDate>=addDays(TODAY,-7)&&recall.reviewDate<=addDays(TODAY,7);return `<label class="recall-order ${selected&&canNotify?'is-recommended':''}">${canNotify?`<input type="checkbox" name="recall-selected" value="${escapeHTML(recall.id)}" ${selected?'checked':''}>`:''}<span><strong>${escapeHTML(title)} ${textBadge(recall.status,recall.status==='已通知'?'closed':'pending')}</strong><small>应复查日期：${escapeHTML(recall.reviewDate)} · 应提醒日期：${escapeHTML(recall.date)}</small>${recall.notifiedDate?`<small>通知时间：${escapeHTML(recall.notifiedDate)}</small>`:''}</span></label>`;}).join('');
-  const recallHistory=tasks.flatMap(recall=>recall.history?.length?recall.history.map(entry=>({date:entry.date,result:entry.result,message:entry.message,notifier:entry.notifier,callId:entry.callId})):recall.result?[{date:recall.notifiedDate||recall.date,result:recall.result,message:recall.note,notifier:recall.assistant}]:[]);
-  const recallCalls=(record.calls||[]).filter(call=>tasks.some(recall=>recall.id===call.recallId));
-  tasks.filter(recall=>recall.status==='已通知'&&!recall.history?.length&&!recallCalls.some(call=>call.recallId===recall.id)).forEach(recall=>recallCalls.push({id:'SAMPLE-'+recall.id,recallId:recall.id,date:(recall.notifiedDate||recall.date)+' 10:36:26',duration:90,result:recall.result,note:recall.note,notifier:recall.assistant}));
-  const leftBody=current==='calls'?callHistoryMarkup({id:'RECALL-'+record.id,doctor:record.doctor,calls:recallCalls,notifyHistory:recallHistory}):detailBodyMarkup(record,current);
+  const recallCalls=(record.calls||[]).filter(call=>!call.recallId||db.recalls.some(recall=>recall.id===call.recallId&&recall.recordId===id));
+  const leftBody=current==='calls'?callHistoryMarkup({id:record.id,doctor:record.doctor,calls:recallCalls}):detailBodyMarkup(record,current);
   const settings=canNotify?`<div class="recall-right-content"><section class="recall-settings"><h3 class="section-title">通知设置</h3><p class="muted">已自动勾选应复查日期在 ${addDays(TODAY,-7)} 至 ${addDays(TODAY,7)} 的待通知项目。</p>${orders}</section><section><h3 class="section-title">输入通知结果</h3><fieldset class="recall-result-field"><legend><span class="recall-required">*</span>通知结果</legend><div class="recall-result-options">${['已通知待复查','患者拒绝','联系失败','改期'].map(result=>`<label><input type="radio" name="recall-result" value="${result}">${result}</label>`).join('')}</div></fieldset><label class="recall-form-label" for="recall-note">结果备注</label><textarea id="recall-note" maxlength="100" placeholder="请输入通知结果备注"></textarea><div class="recall-reschedule" id="recall-reschedule" hidden><label for="recall-new-date"><span><span class="recall-required">*</span>计划复查日期</span><input id="recall-new-date" type="date" min="${TODAY}"></label><label for="recall-change-reason"><span>改期原因</span><input id="recall-change-reason" maxlength="100" placeholder="请输入改期原因"></label></div><div id="form-error"></div></section></div><div class="recall-actionbar"><button data-action="close">取消</button><button class="primary" data-action="recall-save">保存</button></div>`:`<div class="recall-right-content"><h3 class="section-title">已通知复查单</h3>${orders}</div>`;
   showOverlay(`<div class="drawer-head"><h2 id="dialog-title">患者通知详情</h2><button class="icon-button" data-action="close" aria-label="关闭通知详情">×</button></div><div class="recall-layout"><section class="recall-left">${patientCard(record)}${detailSummaryMarkup(record)}<div class="detailtabs" role="tablist" aria-label="通知详情">${tabs.map(tab=>`<button role="tab" aria-selected="${current===tab}" class="${current===tab?'active':''}" data-action="recall-detail-tab" data-tab="${tab}">${labels[tab]}</button>`).join('')}</div>${leftBody}</section><section class="recall-right">${settings}</section></div>`,'drawer recall-drawer');
 }
@@ -759,7 +794,7 @@ function referralMarkup(record){
 function trackingColumns(){
   const common=['序号','姓名','性别','年龄','类别','体检日期','总检日期'];
   const reviewFields=['复查项目','复查进度','复查状态'];
-  const fields={pending:['告知期限','告知状态'],tracking:['告知方式','告知日期','跟踪期限','跟踪状态',...reviewFields],following:['首次跟踪日期','最近跟踪日期','跟踪状态',...reviewFields],referred:['转诊日期','转入医院','跟踪状态',...reviewFields],closed:['末次跟踪日期','末次跟踪方式','跟踪结束原因','操作人','跟踪状态']};
+  const fields={pending:['告知期限'],tracking:['告知方式','告知日期','跟踪期限',...reviewFields],following:['首次跟踪日期','最近跟踪日期',...reviewFields],referred:['跟踪日期','转入医院',...reviewFields],closed:['末次跟踪日期','末次跟踪方式','跟踪结束原因','操作人']};
   return [...common,...fields[state.tab],'体检机构','A类数量','B类数量','C类数量','身份证号','联系方式','操作'];
 }
 
@@ -799,7 +834,7 @@ function trackingValues(record,index){
   const common=[index,record.name,record.sex,record.age,categoryBadge(record),record.exam,record.report];
   const review=reportReviewCells(record);
   const lastActor=[...(record.history||[])].reverse().find(entry=>entry.text?.includes('跟踪结束'))?.actor||((record.normal&&record.end)?'系统':'金医生');
-  const fields={pending:[deadlineCell(record.due),statusBadge('pending')],tracking:[record.notify?.method||'—',record.notify?.date||'—',deadlineCell(record.followDue||record.due),'待跟踪',...review],following:[record.firstFollowDate||record.followDate||'—',record.followDate||'—','持续跟踪',...review],referred:[record.referral?.date||'—',escapeHTML(record.referral?.hospital||'—'),'已转诊',...review],closed:[record.closedDate||'—',record.end?.method||'—',escapeHTML(record.end?.reason||'—'),escapeHTML(lastActor),'跟踪结束']};
+  const fields={pending:[deadlineCell(record.due)],tracking:[record.notify?.method||'—',record.notify?.date||'—',deadlineCell(record.followDue||record.due),...review],following:[record.firstFollowDate||record.followDate||'—',record.followDate||'—',...review],referred:[record.referral?.date||'—',escapeHTML(record.referral?.hospital||'—'),...review],closed:[record.closedDate||'—',record.end?.method||'—',escapeHTML(record.end?.reason||'—'),escapeHTML(lastActor)]};
   const action=state.tab==='pending'?`<button class="link" data-action="inform" data-id="${record.id}">告知</button><button class="link" data-action="call" data-id="${record.id}">一键拨号</button>`:`<button class="link" data-action="detail" data-id="${record.id}">${state.tab==='tracking'?'去跟踪':'查看'}</button>`;
   return [...common,...fields[state.tab],record.institution,...['A','B','C'].map(category=>record.items.filter(item=>item.category===category).length),record.identity,record.phone,action];
 }
@@ -815,8 +850,8 @@ function reviewTaskRows(){
 }
 function reviewNotificationStatus(record,group){if(group.needsAssistant===false)return '无需通知';return db.recalls.find(recall=>recall.recordId===record.id&&recall.groupId===group.id)?.status||'未通知';}
 function reviewTaskColumns(){return ['序号','姓名','性别','年龄','类别','体检日期','总检日期','复查项目','应复查日期','复查状态','实际复查日期','通知状态','设置环节','身份证号','联系方式','操作'];}
-function reviewProgressBadge(progress){const label=reviewStatusFilterValue(progress.label);const tone=progress.label.includes('逾期')?'is-urgent':label==='已复查'?'is-done':label==='已取消'?'is-cancelled':'is-upcoming';return `<span class="badge review-progress ${tone}">${escapeHTML(label)}</span>`;}
-function actualReviewDates(record,group){return [...new Set(reviewCandidates(record,group).filter(candidate=>group.reviewDecisions?.[candidate.key]?.decision==='accepted').map(candidate=>candidate.visit.date.slice(0,10)))].sort();}
+function reviewProgressBadge(progress){const label=reviewStatusFilterValue(progress.label);const tone=label==='已复查'?'is-done':label==='已取消'?'is-cancelled':label==='部分已复查'?'is-attention':'is-upcoming';return `<span class="badge review-progress ${tone}">${escapeHTML(label)}</span>`;}
+function actualReviewDates(record,group){const dates=[...new Set(reviewCandidates(record,group).filter(candidate=>group.reviewDecisions?.[candidate.key]?.decision==='accepted').map(candidate=>candidate.visit.date.slice(0,10)))];const linked=linkedReviewOrder(record,group);if(linked&&!dates.length)dates.push(linked.date.slice(0,10));return dates.sort();}
 function reviewOrderCategory(record,group){const categories=group.items.map(id=>record.items.find(item=>item.id===id)?.category).filter(Boolean).sort((a,b)=>'ABC'.indexOf(a)-'ABC'.indexOf(b));return categories[0]||record.originalCategory||record.category;}
 function reviewTaskValues(task,index){
   const {record,group,progress}=task;
@@ -914,7 +949,7 @@ function reviewCandidates(record,group){
   matches.sort((a,b)=>Math.abs(daysBetween(a.visit.date.slice(0,10),group.date))-Math.abs(daysBetween(b.visit.date.slice(0,10),group.date))||b.visit.date.localeCompare(a.visit.date));
   return matches;
 }
-function confirmedReviewItems(record,group){const candidates=reviewCandidates(record,group);return new Set(candidates.filter(candidate=>group.reviewDecisions?.[candidate.key]?.decision==='accepted').map(candidate=>candidate.itemId));}
+function confirmedReviewItems(record,group){const linked=linkedReviewOrder(record,group);if(linked)return new Set(group.items);const candidates=reviewCandidates(record,group);return new Set(candidates.filter(candidate=>group.reviewDecisions?.[candidate.key]?.decision==='accepted').map(candidate=>candidate.itemId));}
 function suggestedReviewCandidates(){return [];}
 function itemHasReview(record,id){
   return record.groups.some(group=>group.items.includes(id)&&confirmedReviewItems(record,group).has(id));
@@ -1088,29 +1123,66 @@ function reviewPlansMarkupV38(record){
   if(!groups.length)return '<div class="empty">未设置异常复查计划</div>';
   const byDate=new Map();groups.forEach(group=>{const date=group.date||'日期未设置';if(!byDate.has(date))byDate.set(date,[]);byDate.get(date).push(group);});
   return `<div class="review-timeline drawer-timeline plan-timeline">${[...byDate].map(([date,dateGroups])=>`<article class="plan-event drawer-timeline-item"><time>${escapeHTML(date)} 应复查</time>${dateGroups.map(group=>{
-    const progress=reviewPlanProgress(record,group),candidates=reviewCandidates(record,group),confirmed=confirmedReviewItems(record,group);
+    const progress=reviewPlanProgress(record,group),confirmed=confirmedReviewItems(record,group);
     const orderCategory=reviewOrderCategory(record,group),actualDates=actualReviewDates(record,group);
-    return `<div class="plan-card ${group.cancelled?'is-cancelled':confirmed.size===group.items.length?'is-complete':''}" data-confirm-group="${escapeHTML(group.id)}"><div class="plan-card-head"><div><div class="plan-card-title"><strong>${escapeHTML(reviewOrderName(record,group))}</strong><span class="plan-source">${escapeHTML(group.source||'告知时设置')}</span></div><div class="plan-card-meta"><span>原始类别：${textBadge(orderCategory+'类',orderCategory)}</span><span>创建时间：${escapeHTML(group.createdAt||'—')}</span><span>应复查日期：${escapeHTML(group.date||'未设置')}</span><span>实际复查日期：${escapeHTML(actualDates.join('、')||'—')}</span><span>通知状态：${escapeHTML(reviewNotificationStatus(record,group))}</span></div></div><span class="plan-card-progress">${group.cancelled?reviewProgressBadge(progress):`<button type="button" class="plan-progress-link" data-action="review-item-detail" data-id="${record.id}" data-group="${escapeHTML(group.id)}" data-item="${escapeHTML(group.items[0])}" title="查看复查结果">${reviewProgressBadge(progress)}</button>`}${!group.cancelled&&progress.label!=='已复查'?`<button type="button" class="review-cancel-button" data-action="review-cancel" data-id="${record.id}" data-group="${escapeHTML(group.id)}">取消任务</button>`:''}</span></div><div class="plan-items">${group.items.map(id=>{
-      const item=record.items.find(entry=>entry.id===id);if(!item)return '';
-      const label=group.cancelled?'已取消':confirmed.has(id)?'已复查':'待复查';
-      const badge=textBadge(label,label==='已复查'?'closed':label==='已取消'?'neutral':'tracking');
-      const status=`<span class="plan-item-status">${badge}</span>`;
-      const accepted=candidates.find(entry=>entry.itemId===id&&group.reviewDecisions?.[entry.key]?.decision==='accepted');
-      const latest=accepted?.row;
-      return `<div class="plan-item indicator-line ${escapeHTML(item.category||'')} ${label==='已复查'?'is-reviewed':''}"><span class="plan-item-name"><span class="plan-item-label">${escapeHTML(item.name)} ${textBadge(item.category+'类',item.category)}</span>${label==='已复查'?`<small class="plan-item-detail">正常范围：${escapeHTML(item.reference||'—')}</small><small class="plan-item-detail ${latest?.abnormal?'is-abnormal':''}">复查结果：${latest?`${escapeHTML(latest.value)} ${escapeHTML(latest.unit||'')}`:'—'}</small>`:''}</span>${status}</div>`;
-    }).join('')}</div>${group.cancelled?`<div class="plan-cancel-meta">取消时间：${escapeHTML(group.cancelledAt||'历史记录未载明')}　操作人：${escapeHTML(group.cancelledBy||'历史记录未载明')}${group.cancelReason?`　取消原因：${escapeHTML(group.cancelReason)}`:''}</div>`:''}</div>`;
+    return `<div class="plan-card ${group.cancelled?'is-cancelled':confirmed.size===group.items.length?'is-complete':''}" data-confirm-group="${escapeHTML(group.id)}"><div class="plan-card-head"><div><div class="plan-card-title"><strong>${escapeHTML(reviewOrderName(record,group))}</strong></div><div class="plan-card-meta"><span>设置环节：${escapeHTML(group.source||'告知时设置')}</span><span>原始类别：${textBadge(orderCategory+'类',orderCategory)}</span><span>创建时间：${escapeHTML(group.createdAt||'—')}</span><span>应复查日期：${escapeHTML(group.date||'未设置')}</span>${progress.label==='已复查'?`<span>实际复查日期：${escapeHTML(actualDates.join('、')||'—')}</span>`:''}<span>通知状态：${escapeHTML(reviewNotificationStatus(record,group))}</span></div></div><div class="plan-card-actions">${reviewProgressBadge(progress)}${!group.cancelled?`<button type="button" class="primary" data-action="review-item-detail" data-id="${record.id}" data-group="${escapeHTML(group.id)}" data-item="${escapeHTML(group.items[0])}">${progress.label==='已复查'?'指标匹配':'匹配项目'}</button>`:''}${!group.cancelled&&progress.label!=='已复查'?`<button type="button" class="review-cancel-button" data-action="review-cancel" data-id="${record.id}" data-group="${escapeHTML(group.id)}">取消任务</button>`:''}</div></div>${confirmedIndicatorMarkup(record,group)}${group.cancelled?`<div class="plan-cancel-meta">取消时间：${escapeHTML(group.cancelledAt||'历史记录未载明')}　操作人：${escapeHTML(group.cancelledBy||'历史记录未载明')}${group.cancelReason?`　取消原因：${escapeHTML(group.cancelReason)}`:''}</div>`:''}</div>`;
   }).join('')}</article>`).join('')}</div>`;
+}
+function confirmedIndicatorMarkup(record,group){
+  const pairs=Object.entries(group.reviewIndicatorMatches||{}).flatMap(([key,matches])=>{
+    if(group.reviewOrderDecisions?.[key]?.decision!=='accepted')return [];
+    const [visitId,...orderParts]=key.split('|'),visit=record.reviewVisits?.find(entry=>entry.id===visitId),order=orderParts.join('|');
+    const current=visit?.items.filter(item=>item.group===order)||[];
+    const original=reportDisplayItems(record);
+    return Object.entries(matches||{}).map(([id,index])=>({left:original.find(item=>item.id===id),right:current[Number(index)],date:visit?.date.slice(0,10)})).filter(pair=>pair.left&&pair.right);
+  });
+  if(!pairs.length)return '';
+  return `<div class="plan-confirmed-indicators"><strong>已确认指标对照（${pairs.length}）</strong>${pairs.map(pair=>`<div class="plan-indicator-pair"><span>${escapeHTML(pair.left.name)}</span><span>体检：${escapeHTML(pair.left.value)} ${escapeHTML(pair.left.unit||'')}</span><span class="${pair.right.abnormal?'is-abnormal':''}">复查：${escapeHTML(pair.right.value)} ${escapeHTML(pair.right.unit||'')}</span><span>正常范围：${escapeHTML(pair.left.reference||pair.right.reference||'—')}</span></div>`).join('')}</div>`;
+}
+function linkedReviewOrder(record,group){
+  if(!group)return null;
+  const accepted=Object.entries(group.reviewOrderDecisions||{}).find(([,value])=>value.decision==='accepted');
+  const candidate=reviewCandidates(record,group).find(entry=>group.reviewDecisions?.[entry.key]?.decision==='accepted');
+  const key=accepted?.[0]||(candidate?candidate.visit.id+'|'+candidate.row.group:null);
+  if(!key)return null;
+  const visit=record.reviewVisits?.find(entry=>key===entry.id||key.startsWith(entry.id+'|'));
+  return visit?{key,date:visit.date}:null;
+}
+function reviewComparisonMarkup(record,orderKey,orderRows,groupIds,editable){
+  const normalized=value=>({血糖:'生化',血脂:'生化',影像检查:'B超'})[value]||value;
+  const active=groupIds.map(id=>record.groups.find(group=>group.id===id)).filter(Boolean);
+  if(!active.length)return '';
+  return `<div class="review-comparison">${active.map(group=>{
+    const names=new Set(group.items.map(id=>record.items.find(item=>item.id===id)).filter(Boolean).map(item=>normalized(item.group)));
+    const otherPlanItems=new Set(record.groups.filter(entry=>entry.id!==group.id&&entry.items?.length).flatMap(entry=>entry.items));
+    const linkedElsewhere=new Set(record.groups.flatMap(entry=>Object.entries(entry.reviewIndicatorMatches||{}).filter(([key])=>key!==orderKey&&entry.reviewOrderDecisions?.[key]?.decision==='accepted').flatMap(([,pairs])=>Object.keys(pairs))));
+    Object.entries(state.reviewMatchDraft||{}).filter(([key])=>key!==orderKey).forEach(([key,byGroup])=>Object.entries(byGroup).forEach(([id,pairs])=>{if([...document.querySelectorAll('#modal-layer [data-order-key]')].some(element=>element.dataset.orderKey===key&&[...element.querySelectorAll('.order-targets input:checked')].some(input=>input.value===id)))Object.keys(pairs).forEach(itemId=>linkedElsewhere.add(itemId));}));
+    const rows=reportDisplayItems(record).filter(item=>names.has(normalized(item.group))&&!linkedElsewhere.has(item.id)&&(group.items.includes(item.id)||!item.category&&!otherPlanItems.has(item.id))),abnormal=rows.filter(item=>item.category),normal=rows.filter(item=>!item.category);
+    const matches=state.reviewMatchDraft?.[orderKey]?.[group.id]||group.reviewIndicatorMatches?.[orderKey]||{};
+    const canPair=editable;
+    const selected=state.reviewPairSource?.key===orderKey&&state.reviewPairSource.group===group.id?state.reviewPairSource.id:'';
+    const renderOriginal=row=>{const index=matches[row.id],paired=index!==undefined;return `<button type="button" class="review-compare-select ${row.category?'is-abnormal':''} ${selected===row.id?'is-picked':''} ${paired?'is-matched':''}" data-action="review-pair-source" data-key="${escapeHTML(orderKey)}" data-group="${escapeHTML(group.id)}" data-item="${escapeHTML(row.id)}" ${canPair?'':'disabled'}><strong>${escapeHTML(row.name)}</strong><span class="compare-value">：${escapeHTML(row.value)} ${escapeHTML(row.unit||'')}</span>${paired?`<span class="compare-state">已对应 ${escapeHTML(orderRows[Number(index)]?.name||'')}</span>`:''}<small>正常范围：${escapeHTML(row.reference||'—')}</small></button>`;};
+    const renderCurrent=(row,index)=>{const pairedId=Object.keys(matches).find(id=>Number(matches[id])===index),paired=rows.find(item=>item.id===pairedId);return `<button type="button" class="review-compare-select ${row.abnormal?'is-abnormal':''} ${paired?'is-matched':''}" data-action="review-pair-target" data-key="${escapeHTML(orderKey)}" data-group="${escapeHTML(group.id)}" data-index="${index}" ${canPair?'':'disabled'}><strong>${escapeHTML(row.name)}</strong><span class="compare-value">：${escapeHTML(row.value)} ${escapeHTML(row.unit||'')}</span>${paired?`<span class="compare-state">对应 ${escapeHTML(paired.name)}</span>`:''}<small>正常范围：${escapeHTML(row.reference||'—')}</small></button>`;};
+    const project=reviewOrderName(record,group),orderName=orderKey.split('|').slice(1).join('|');
+    return `<div class="review-compare-group" data-compare-group="${escapeHTML(group.id)}"><div class="review-compare-pair"><div class="review-compare-column"><h4>体检报告原结果 · ${escapeHTML(project)} · ${escapeHTML(record.report)}</h4>${abnormal.map(renderOriginal).join('')}${normal.length?`<details class="review-normal-details"><summary>原始无异常 ${normal.length} 项</summary>${normal.map(renderOriginal).join('')}</details>`:''}</div><div class="review-compare-column"><h4>本次检验检查结果 · ${escapeHTML(orderName)} · 全部 ${orderRows.length} 项</h4>${orderRows.map((row,index)=>({row,index})).sort((a,b)=>Number(b.row.abnormal)-Number(a.row.abnormal)||a.index-b.index).map(({row,index})=>renderCurrent(row,index)).join('')}</div></div></div>`;
+  }).join('')}</div>`;
 }
 function openReviewItemModal(recordId,groupId,itemId){
   const record=findRecord(recordId),group=record?.groups.find(entry=>entry.id===groupId),item=record?.items.find(entry=>entry.id===itemId);
   if(!group||!item)return;
+  state.reviewMatchDraft={};state.reviewPairSource=null;
   const editable=!group.cancelled&&record.status!=='closed';
   const resultEnd=addDays(record.report,365);
   const resultVisits=(record.reviewVisits||[]).filter(visit=>record.notify&&visit.date.slice(0,10)>=record.notify.date&&visit.date.slice(0,10)<=resultEnd&&!visit.medicationOnly&&visit.items?.length).sort((a,b)=>b.date.localeCompare(a.date));
-  const hasPending=editable&&record.groups.some(entry=>entry.items?.length&&!entry.cancelled&&reviewPlanProgress(record,entry).label!=='已复查')&&resultVisits.length>0;
-  const footer=hasPending?`<button data-action="close">取消</button><button class="primary" data-action="review-orders-save" data-id="${recordId}" data-group="${escapeHTML(groupId)}" data-item="${escapeHTML(itemId)}">提交确认</button>`:'<button class="primary" data-action="close">关闭</button>';
-  const activeGroups=record.groups.filter(entry=>entry.items?.length&&!entry.cancelled&&reviewPlanProgress(record,entry).label!=='已复查');
-  const resultHistory=`<section class="review-result-history">${resultVisits.length?`<div class="review-timeline drawer-timeline result-history-timeline">${resultVisits.map(visit=>`<article class="review-event drawer-timeline-item" data-visit-date="${escapeHTML(visit.date.slice(0,10))}"><time>${escapeHTML(visit.date)}</time>${[['检验',['血常规','尿常规','生化','大便OB','乙肝表面抗原']],['检查',EXAM_PROJECTS.filter(name=>!['血常规','尿常规','生化','大便OB','乙肝表面抗原'].includes(name))]].map(([kind,names])=>{
+  const linked=linkedReviewOrder(record,group);
+  const targetDate=group.date;
+  const targetVisit=linked?resultVisits.find(visit=>visit.id===linked.key.split('|')[0]):[...resultVisits].sort((a,b)=>Math.abs(daysBetween(a.date.slice(0,10),targetDate))-Math.abs(daysBetween(b.date.slice(0,10),targetDate))||b.date.localeCompare(a.date))[0];
+  const targetOrder=linked?.key.split('|').slice(1).join('|')||targetVisit?.items[0]?.group;
+  const targetKey=targetVisit&&targetOrder?targetVisit.id+'|'+targetOrder:'';
+  const canMatch=editable&&resultVisits.length>0;
+  const footer=canMatch?`<button data-action="close">取消</button><button class="primary" data-action="review-orders-save" data-id="${recordId}" data-group="${escapeHTML(groupId)}" data-item="${escapeHTML(itemId)}">提交确认</button>`:'<button class="primary" data-action="close">关闭</button>';
+  const activeGroups=record.groups.filter(entry=>entry.items?.length&&!entry.cancelled);
+  const resultHistory=`<section class="review-result-history">${resultVisits.length?`<div class="review-timeline drawer-timeline result-history-timeline">${resultVisits.map(visit=>`<article class="review-event drawer-timeline-item" data-visit-date="${escapeHTML(visit.date.slice(0,10))}" data-visit-id="${escapeHTML(visit.id)}"><time>${escapeHTML(visit.date)}</time>${[['检验',['血常规','尿常规','生化','大便OB','乙肝表面抗原']],['检查',EXAM_PROJECTS.filter(name=>!['血常规','尿常规','生化','大便OB','乙肝表面抗原'].includes(name))]].map(([kind,names])=>{
     const orders=[...new Set((visit.items||[]).filter(row=>reviewResultKind(row.group)===kind).map(row=>row.group))];
     return orders.length?`<div class="review-event-kind">${icon(kind==='检验'?'file':'heart')}<strong>${kind}</strong></div><div class="review-event-panel">${orders.map(order=>{
     const key=visit.id+'|'+order;
@@ -1120,16 +1192,40 @@ function openReviewItemModal(recordId,groupId,itemId){
     const decisions=savedGroups.map(entry=>({group:entry,value:entry.reviewOrderDecisions[key]}));
     if(!decisions.length&&confirmed)decisions.push({group:confirmed.group,value:confirmed.group.reviewDecisions[confirmed.candidate.key]});
     const confirmedOrder=decisions.some(entry=>entry.value.decision==='accepted');
-    const orderRows=visit.items.filter(row=>row.group===order),abnormalCount=orderRows.filter(row=>row.abnormal).length;
-    return `<div class="result-order" data-order-key="${escapeHTML(key)}"><div class="result-order-head"><button type="button" class="result-order-toggle" data-action="review-order-toggle" aria-expanded="${visit===resultVisits[0]}"><span class="group-chevron">›</span><strong>${escapeHTML(order)}</strong></button>${editable&&!confirmedOrder&&activeGroups.length?`<div class="order-decision"><span class="order-field-label">关联异常复查项目</span><details class="order-targets"><summary><span class="order-target-placeholder">请选择异常复查项目</span></summary><div class="order-target-options">${activeGroups.map(entry=>`<label><input type="checkbox" value="${escapeHTML(entry.id)}" data-label="${escapeHTML(reviewOrderName(record,entry))}" data-date="${escapeHTML(entry.date||'日期未设置')}">${escapeHTML(reviewOrderName(record,entry))} · ${escapeHTML(entry.date||'日期未设置')}</label>`).join('')}</div></details></div>`:''}${decisions.length?`<div class="review-result-outcome">${decisions.map(({group:linked,value})=>`${value.decision==='accepted'?'已关联：'+escapeHTML(reviewOrderName(record,linked)):'历史记录：不匹配'} · ${escapeHTML(value.doctor)} · ${escapeHTML(value.at)}`).join('；')}</div>`:''}</div><div class="result-order-details" ${visit===resultVisits[0]?'':'hidden'}><div class="result-detail-head"><span>异常 ${abnormalCount} 项</span><button type="button" class="preview-button" data-action="review-preview" data-id="${record.id}" data-visit="${escapeHTML(visit.id)}" data-group="${escapeHTML(order)}">原报告预览</button></div>${orderRows.map(row=>`<span class="result-indicator ${row.abnormal?'is-abnormal':''}">${escapeHTML(row.name)}：${escapeHTML(row.value)} ${escapeHTML(row.unit||'')} <em>（${escapeHTML(row.reference||'—')}）</em></span>`).join('')}</div></div>`;
+    const orderRows=visit.items.filter(row=>row.group===order);
+    const preview=`<button type="button" class="preview-button" data-action="review-preview" data-id="${record.id}" data-visit="${escapeHTML(visit.id)}" data-group="${escapeHTML(order)}">原报告预览</button>`;
+    return `<div class="result-order" data-order-key="${escapeHTML(key)}"><div class="result-order-head"><button type="button" class="result-order-toggle" data-action="review-order-toggle" aria-expanded="${key===targetKey}"><span class="group-chevron">›</span><strong>${escapeHTML(order)}</strong></button>${preview}${editable&&activeGroups.length?`<div class="order-decision"><span class="order-field-label">关联异常复查项目</span><details class="order-targets"><summary><span class="order-target-placeholder">请选择异常复查项目</span></summary><div class="order-target-options">${activeGroups.map(entry=>{const linked=linkedReviewOrder(record,entry),name=reviewOrderName(record,entry),sameOrder=linked?.key===key,unavailable=linked&&!sameOrder?`已关联 ${linked.date}`:'';return `<label><input type="checkbox" value="${escapeHTML(entry.id)}" aria-label="${escapeHTML(name)} · ${escapeHTML(entry.date||'日期未设置')}${unavailable?' · '+escapeHTML(unavailable):''}" data-label="${escapeHTML(name)}" data-date="${escapeHTML(entry.date||'日期未设置')}" data-linked="${unavailable?'true':''}" data-saved="${sameOrder?'true':''}" ${sameOrder?'checked':''} ${unavailable?'disabled':''}>${escapeHTML(name)} · ${escapeHTML(entry.date||'日期未设置')}<small class="order-target-unavailable">${escapeHTML(unavailable)}</small></label>`;}).join('')}</div></details></div>`:''}${decisions.length?`<div class="review-result-outcome">${decisions.map(({group:linked,value})=>`${value.decision==='accepted'?'已关联：'+escapeHTML(reviewOrderName(record,linked)):'历史记录：不匹配'} · ${escapeHTML(value.doctor)} · ${escapeHTML(value.at)}`).join('；')}</div>`:''}</div><div class="result-order-details" ${key===targetKey?'':'hidden'}>${orderRows.map(row=>`<span class="result-indicator ${row.abnormal?'is-abnormal':''}">${escapeHTML(row.name)}：${escapeHTML(row.value)} ${escapeHTML(row.unit||'')} <em>（${escapeHTML(row.reference||'—')}）</em></span>`).join('')}</div></div>`;
   }).join('')}</div>`:'';}).join('')}</article>`).join('')}</div>`:'<div class="empty">该时间范围内暂无检验检查结果</div>'}</section>`;
   modal('复查结果确认',resultHistory,footer,true);
   document.querySelector('#modal-layer #modal-title')?.insertAdjacentHTML('beforeend',`<small>数据时间范围：${escapeHTML(record.notify?.date||'—')} 至 ${escapeHTML(resultEnd)}</small>`);
   document.querySelector('#modal-layer .modal')?.classList.add('review-result-modal');
-  const confirmedVisit=reviewCandidates(record,group).find(entry=>entry.itemId===itemId&&group.reviewDecisions?.[entry.key]?.decision==='accepted');
-  const targetDate=confirmedVisit?.visit.date.slice(0,10)||group.date;
-  const target=[...document.querySelectorAll('#modal-layer [data-visit-date]')].sort((a,b)=>Math.abs(daysBetween(a.dataset.visitDate,targetDate))-Math.abs(daysBetween(b.dataset.visitDate,targetDate)))[0];
-  if(target)document.querySelector('#modal-layer .drawer-body').scrollTop=target.offsetTop-document.querySelector('#modal-layer .drawer-body').offsetTop;
+  syncReviewOrderTargets();
+  renderReviewComparisons(record);
+  if(targetVisit){const target=document.querySelector(`#modal-layer [data-visit-id="${CSS.escape(targetVisit.id)}"]`),body=document.querySelector('#modal-layer .drawer-body');if(target&&body)body.scrollTop=Math.max(0,target.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop-12);}
+}
+function renderReviewComparisons(record){
+  document.querySelectorAll('#modal-layer [data-order-key]').forEach(element=>{
+    const key=element.dataset.orderKey,[visitId,...orderParts]=key.split('|'),order=orderParts.join('|');
+    const visit=record.reviewVisits?.find(entry=>entry.id===visitId),rows=visit?.items.filter(row=>row.group===order)||[];
+    const saved=record.groups.filter(group=>group.reviewOrderDecisions?.[key]?.decision==='accepted'||reviewCandidates(record,group).some(candidate=>candidate.visit.id===visitId&&candidate.row.group===order&&group.reviewDecisions?.[candidate.key]?.decision==='accepted')).map(group=>group.id);
+    const selected=[...element.querySelectorAll('.order-targets input:checked')].map(input=>input.value);
+    const details=element.querySelector('.result-order-details');if(!details)return;
+    if(!details.querySelector('.result-only-indicators')){
+      const result=document.createElement('div');result.className='result-only-indicators';
+      const normal=document.createElement('details');normal.className='result-normal-details';
+      const summary=document.createElement('summary');normal.append(summary);
+      const indicatorRows=[...details.querySelectorAll('.result-indicator')];
+      indicatorRows.forEach(row=>(row.classList.contains('is-abnormal')?result:normal).append(row));
+      if(normal.querySelectorAll('.result-indicator').length){summary.textContent=`无异常 ${normal.querySelectorAll('.result-indicator').length} 项`;result.append(normal);}
+      details.append(result);
+    }
+    const openNormal=[...details.querySelectorAll('.review-compare-group')].filter(group=>group.querySelector('.review-normal-details[open]')).map(group=>group.dataset.compareGroup);
+    details.querySelector('.review-comparison')?.remove();
+    const hasLinked=[...new Set([...saved,...selected])].length>0;
+    details.querySelector('.result-only-indicators')?.toggleAttribute('hidden',hasLinked);
+    if(hasLinked)details.insertAdjacentHTML('beforeend',reviewComparisonMarkup(record,key,rows,[...new Set([...saved,...selected])],Boolean(element.querySelector('.order-targets'))));
+    details.querySelectorAll('.review-compare-group').forEach(group=>{if(openNormal.includes(group.dataset.compareGroup)){const normal=group.querySelector('.review-normal-details');if(normal)normal.open=true;}});
+  });
 }
 function reviewTimelineWithCancellations(record){
   const shell=document.createElement('div');
@@ -1432,11 +1528,12 @@ document.addEventListener('click',event=>{
   if(!selected.length)return formError('请选择至少一张检验检查记录的关联异常复查项目。');
   const selectedGroupIds=selected.flatMap(item=>item.groupIds);
   if(new Set(selectedGroupIds).size!==selectedGroupIds.length)return formError('同一异常复查任务只能关联一条检验检查记录。');
-  if(selected.some(item=>record.groups.some(entry=>entry.reviewOrderDecisions?.[item.key]?.decision==='accepted')))return formError('已确认的检验检查记录不能重复关联。');
+  if(selected.some(item=>item.groupIds.some(id=>{const linked=linkedReviewOrder(record,record.groups.find(group=>group.id===id));return linked&&linked.key!==item.key;})))return formError('所选异常复查任务已关联其他检验检查记录。');
+  if(selected.some(item=>item.groupIds.some(id=>{const matches=state.reviewMatchDraft?.[item.key]?.[id]||{};const values=Object.values(matches);return new Set(values).size!==values.length;})))return formError('同一复查项目的指标不能重复匹配同一检验检查指标。');
   const at=TODAY+' '+new Date().toTimeString().slice(0,5);
-  selected.forEach(item=>{const [visitId,order]=item.key.split('|');item.groupIds.forEach(groupId=>{const target=record.groups.find(entry=>entry.id===groupId);if(!target||target.cancelled||reviewPlanProgress(record,target).label==='已复查')return;const candidates=reviewCandidates(record,target).filter(candidate=>candidate.visit.id===visitId&&candidate.row.group===order);const value={decision:'accepted',reason:'',doctor:record.doctor||'金医生',at,manual:true};target.reviewDecisions??={};target.reviewOrderDecisions??={};target.reviewOrderDecisions[item.key]=value;candidates.forEach(candidate=>{target.reviewDecisions[candidate.key]=value;});target.items.forEach(id=>{if(!candidates.some(candidate=>candidate.itemId===id))target.reviewDecisions[visitId+'|manual|'+id]=value;});});});
+  selected.forEach(item=>{const [visitId,...orderParts]=item.key.split('|'),order=orderParts.join('|');item.groupIds.forEach(groupId=>{const target=record.groups.find(entry=>entry.id===groupId);if(!target||target.cancelled)return;const existing=target.reviewOrderDecisions?.[item.key];const candidates=reviewCandidates(record,target).filter(candidate=>candidate.visit.id===visitId&&candidate.row.group===order);const value=existing||{decision:'accepted',reason:'',doctor:record.doctor||'金医生',at,manual:true};target.reviewDecisions??={};target.reviewOrderDecisions??={};target.reviewIndicatorMatches??={};target.reviewOrderDecisions[item.key]=value;if(state.reviewMatchDraft?.[item.key]?.[groupId])target.reviewIndicatorMatches[item.key]={...state.reviewMatchDraft[item.key][groupId]};else target.reviewIndicatorMatches[item.key]??={};if(!existing){candidates.forEach(candidate=>{target.reviewDecisions[candidate.key]=value;});target.items.forEach(id=>{if(!candidates.some(candidate=>candidate.itemId===id))target.reviewDecisions[visitId+'|manual|'+id]=value;});}});});
   log(record,`确认复查检验检查记录：${selected.length}条，关联${selected.reduce((sum,item)=>sum+item.groupIds.length,0)}项异常复查任务`);
-  persist();document.getElementById('modal-layer')?.remove();state.panel=null;if(state.drawer?.type==='recall')recallModal(record.id);else detailDrawer();openReviewItemModal(button.dataset.id,button.dataset.group,button.dataset.item);toast('检验检查单确认结果已保存');
+  persist();document.getElementById('modal-layer')?.remove();state.panel=null;state.reviewMatchDraft=null;state.reviewPairSource=null;if(state.drawer?.type==='recall')recallModal(record.id);else detailDrawer();toast('检验检查单确认结果已保存');
 },true);
 function syncReviewOrderTargets(){
   const pickers=[...document.querySelectorAll('#modal-layer .order-targets')];
@@ -1450,13 +1547,46 @@ function syncReviewOrderTargets(){
       const chip=document.createElement('span');chip.className='order-target-chip';
       chip.append(document.createTextNode(input.dataset.label+' · '+input.dataset.date));
       const remove=document.createElement('button');remove.type='button';remove.dataset.action='remove-review-target';remove.dataset.group=input.value;remove.setAttribute('aria-label','移除'+input.dataset.label+' · '+input.dataset.date);remove.textContent='×';
-      chip.append(remove);summary.append(chip);
+      if(input.dataset.saved!=='true')chip.append(remove);summary.append(chip);
     });
-    picker.querySelectorAll('input').forEach(input=>{input.disabled=Boolean(selected.has(input.value)&&selected.get(input.value)!==picker);});
+    picker.querySelectorAll('input').forEach(input=>{
+      const locked=Boolean(input.dataset.linked),other=selected.get(input.value);
+      input.disabled=locked||Boolean(other&&other!==picker);
+      const note=input.closest('label')?.querySelector('.order-target-unavailable');
+      if(note&&!locked)note.textContent=other&&other!==picker?'本次已选 '+(other.closest('[data-visit-date]')?.dataset.visitDate||'其他记录'):'';
+    });
   });
 }
-document.addEventListener('change',event=>{if(event.target.matches('.order-targets input[type="checkbox"]'))syncReviewOrderTargets();});
-document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="remove-review-target"]');if(!button)return;event.preventDefault();event.stopPropagation();const picker=button.closest('.order-targets'),input=[...picker.querySelectorAll('input')].find(option=>option.value===button.dataset.group);if(!input)return;input.checked=false;syncReviewOrderTargets();});
+document.addEventListener('change',event=>{if(event.target.matches('.order-targets input[type="checkbox"]')){const record=findRecord(state.drawer?.id),orderElement=event.target.closest('[data-order-key]'),key=orderElement.dataset.orderKey;if(event.target.dataset.saved==='true'){event.target.checked=true;return;}if(record&&event.target.checked){autoReviewIndicatorMatches(record,key,event.target.value);orderElement.querySelector('.result-order-details').hidden=false;orderElement.querySelector('.result-order-toggle').setAttribute('aria-expanded','true');}syncReviewOrderTargets();if(record)renderReviewComparisons(record);}});
+function reviewDraftMatches(key,groupId){state.reviewMatchDraft??={};state.reviewMatchDraft[key]??={};if(!state.reviewMatchDraft[key][groupId]){const record=findRecord(state.drawer?.id),group=record?.groups.find(entry=>entry.id===groupId);state.reviewMatchDraft[key][groupId]={...(group?.reviewIndicatorMatches?.[key]||{})};}return state.reviewMatchDraft[key][groupId];}
+function autoReviewIndicatorMatches(record,key,groupId){
+  if(state.reviewMatchDraft?.[key]?.[groupId])return;
+  const [visitId,...parts]=key.split('|'),order=parts.join('|'),group=record.groups.find(entry=>entry.id===groupId);
+  if(!group)return;
+  const current=record.reviewVisits?.find(visit=>visit.id===visitId)?.items.filter(row=>row.group===order)||[];
+  const names=new Set(group.items.map(id=>record.items.find(item=>item.id===id)?.group).map(name=>({血糖:'生化',血脂:'生化',影像检查:'B超'})[name]||name));
+  const linkedElsewhere=new Set(record.groups.flatMap(entry=>Object.entries(entry.reviewIndicatorMatches||{}).filter(([orderKey])=>orderKey!==key&&entry.reviewOrderDecisions?.[orderKey]?.decision==='accepted').flatMap(([,pairs])=>Object.keys(pairs))));
+  Object.entries(state.reviewMatchDraft||{}).filter(([orderKey])=>orderKey!==key).forEach(([orderKey,byGroup])=>Object.entries(byGroup).forEach(([id,pairs])=>{if([...document.querySelectorAll('#modal-layer [data-order-key]')].some(element=>element.dataset.orderKey===orderKey&&[...element.querySelectorAll('.order-targets input:checked')].some(input=>input.value===id)))Object.keys(pairs).forEach(itemId=>linkedElsewhere.add(itemId));}));
+  const original=reportDisplayItems(record).filter(row=>names.has(row.group)&&group.items.includes(row.id)&&!linkedElsewhere.has(row.id));
+  const matches=reviewDraftMatches(key,groupId);
+  original.filter(row=>row.category).forEach(row=>{if(original.filter(item=>item.name.trim()===row.name.trim()).length!==1)return;const index=current.findIndex(item=>item.name.trim()===row.name.trim()&&(!row.unit||!item.unit||row.unit===item.unit));if(index>=0&&current.filter(item=>item.name.trim()===row.name.trim()).length===1&&!Object.values(matches).includes(index))matches[row.id]=index;});
+}
+document.addEventListener('click',event=>{
+  const button=event.target.closest?.('[data-action^="review-pair-"]');if(!button)return;
+  event.preventDefault();event.stopPropagation();
+  const record=findRecord(state.drawer?.id),key=button.dataset.key,groupId=button.dataset.group;
+  if(!record||!key||!groupId)return;
+  const matches=reviewDraftMatches(key,groupId);
+  if(button.dataset.action==='review-pair-source'){
+    const id=button.dataset.item;if(matches[id]!==undefined){delete matches[id];state.reviewPairSource=null;}else state.reviewPairSource={key,group:groupId,id};
+  }else if(button.dataset.action==='review-pair-target'){
+    const source=state.reviewPairSource;if(!source||source.key!==key||source.group!==groupId){toast('请先选择左侧体检指标');return;}
+    const index=Number(button.dataset.index);Object.keys(matches).forEach(id=>{if(matches[id]===index)delete matches[id];});matches[source.id]=index;state.reviewPairSource=null;
+  }
+  document.getElementById('modal-layer').dataset.dirty='true';
+  renderReviewComparisons(record);
+});
+document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="remove-review-target"]');if(!button)return;event.preventDefault();event.stopPropagation();const picker=button.closest('.order-targets'),input=[...picker.querySelectorAll('input')].find(option=>option.value===button.dataset.group);if(!input)return;input.checked=false;syncReviewOrderTargets();const record=findRecord(state.drawer?.id);if(record)renderReviewComparisons(record);});
 document.addEventListener('mouseout',event=>{const picker=event.target.closest?.('details.order-targets');if(picker?.open&&!picker.contains(event.relatedTarget))picker.open=false;});
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="review-order-toggle"]');if(!button)return;const details=button.closest('.result-order')?.querySelector('.result-order-details');if(!details)return;details.hidden=!details.hidden;button.setAttribute('aria-expanded',String(!details.hidden));});
 document.addEventListener('change',event=>{if(event.target.name==='recall-result'){const fields=document.getElementById('recall-reschedule');if(fields)fields.hidden=event.target.value!=='改期';}});
@@ -1476,7 +1606,7 @@ function upgradeV42RecallSelectionFixtures(){
   [[16,'2026-10-14',null],[17,'2026-10-02',null],[18,'2026-10-12','B超']].forEach(([index,date,order])=>{
     const record=db.records[index],id='V42-'+record?.id;
     if(!record||record.groups.some(group=>group.id===id))return;
-    const item=record.items.find(entry=>entry.category&&(!order||reviewOrderName(record,{items:[entry.id]})===order));
+    const item=record.items.find(entry=>entry.category&&(!order||reviewOrderName(record,{items:[entry.id]})===order)&&!record.groups.some(group=>!group.cancelled&&group.items.includes(entry.id)));
     if(!item)return;
     const group={id,items:[item.id],date,datePreset:'custom',needsAssistant:true,assistant:'林医助',lead:1,source:'持续跟踪时设置',createdAt:'2026-09-27 10:30',reviewDecisions:{}};
     record.groups.push(group);
@@ -1495,7 +1625,7 @@ function upgradeV43TrackingStatusFixtures(){
       const record=structuredClone(base),category=['A','B','C'][(stageIndex+statusIndex)%3];
       record.id=id;record.name=names[stageIndex*statuses.length+statusIndex];record.identity=`3301**********${7000+stageIndex*statuses.length+statusIndex}`;
       record.category=category;record.originalCategory=category;record.normal=false;record.exam='2026-09-16';record.report='2026-09-18';record.notify={date:'2026-09-19',method:'电话告知',target:'本人',result:'已告知',note:'已说明体检异常及后续复查安排'};
-      record.due='2026-10-03';record.followDue='2026-10-19';record.followDate=stage==='tracking'?null:'2026-09-22';record.firstFollowDate=record.followDate;
+      record.due=addDays(record.report,category==='A'?1:15);record.followDue=addDays(record.notify.date,category==='A'?10:category==='B'?30:90);record.followDate=stage==='tracking'?null:'2026-09-22';record.firstFollowDate=record.followDate;
       record.followNote=record.followDate?'已根据本次体检异常设置复查项目':'';
       record.items=abnormalItems('B',false,1).slice(0,2).map((item,index)=>({...item,id:`${id}-${item.id}`,category:category==='C'?'C':index===0?category:'C',reviewed:false}));
       record.groups=[];record.activeGroupIds=[];record.reviewVisits=[];record.calls=[];record.correctionReason='';record.closedDate=null;record.end=null;
@@ -1554,6 +1684,161 @@ function upgradeV48CombinedOrderFixture(){
   record.groups.push(blood);record.activeGroupIds=[original.id,blood.id];
   record.reviewVisits.push({id:`V48-COMBINED-${record.id}`,date:'2026-09-26 09:20:00',diagnosis:'组合开单复查',items:[{name:first.name,group:'生化+血常规',value:'6.8',unit:first.unit,reference:first.reference,abnormal:true},{name:second.name,group:'生化+血常规',value:'125',unit:second.unit,reference:second.reference,abnormal:false}]});
   record.v48CombinedOrderFixture=true;
+}
+function upgradeV49IndicatorComparisonFixtures(){
+  const combined=findRecord('V43-tracking-0');
+  if(combined&&!combined.v49IndicatorComparison){
+    const biochemical=combined.groups.find(group=>reviewOrderName(combined,group)==='生化');
+    const blood=combined.groups.find(group=>reviewOrderName(combined,group)==='血常规');
+    const visit=combined.reviewVisits.find(entry=>entry.id===`V48-COMBINED-${combined.id}`);
+    if(biochemical&&blood&&visit){
+      biochemical.date='2026-09-27';blood.date='2026-09-27';
+      const extras=[
+        {id:`${combined.id}-ALT`,group:'生化',name:'谷丙转氨酶',value:'100',unit:'U/L',category:'B',reference:'15~40'},
+        {id:`${combined.id}-LDL`,group:'生化',name:'低密度脂蛋白胆固醇',value:'3.9',unit:'mmol/L',category:'C',reference:'0.3~3.40'},
+        {id:`${combined.id}-CRE`,group:'生化',name:'肌酐',value:'72',unit:'μmol/L',category:'',reference:'44~97'}
+      ];
+      extras.forEach(item=>{if(!combined.items.some(entry=>entry.id===item.id))combined.items.push(item);});
+      biochemical.items.push(extras[0].id,extras[1].id);
+      const order='生化+血常规';
+      visit.items=[
+        {name:'空腹血糖',group:order,value:'6.8',unit:'mmol/L',reference:'3.9~6.11',abnormal:true},
+        {name:'丙氨酸氨基转移酶',group:order,value:'58',unit:'U/L',reference:'15~40',abnormal:true},
+        {name:'低密度脂蛋白胆固醇',group:order,value:'3.2',unit:'mmol/L',reference:'0.3~3.40',abnormal:false},
+        {name:'血红蛋白',group:order,value:'125',unit:'g/L',reference:'115~150',abnormal:false},
+        {name:'肌酐',group:order,value:'75',unit:'μmol/L',reference:'44~97',abnormal:false},
+        {name:'白细胞计数',group:order,value:'6.1',unit:'×10⁹/L',reference:'3.5~9.5',abnormal:false}
+      ];
+      combined.v49IndicatorComparison=true;
+    }
+  }
+  const confirmed=findRecord('V43-tracking-3');
+  if(confirmed&&!confirmed.v49IndicatorComparison){
+    const group=confirmed.groups[0],visit=confirmed.reviewVisits?.find(entry=>entry.items?.length);
+    if(group&&visit){
+      const key=visit.id+'|'+visit.items[0].group;
+      group.reviewOrderDecisions??={};group.reviewOrderDecisions[key]={decision:'accepted',doctor:'金医生',at:'2026-09-26 11:30',manual:true};
+      group.reviewIndicatorMatches??={};group.reviewIndicatorMatches[key]=Object.fromEntries(confirmed.items.slice(0,2).map((item,index)=>[item.id,index]));
+      confirmed.v49IndicatorComparison=true;
+    }
+  }
+}
+function upgradeV50SingleReviewResultFixture(){
+  const record=findRecord('V43-tracking-0');
+  if(!record)return;
+  const first=record.reviewVisits?.find(visit=>visit.id===`V48-COMBINED-${record.id}`);
+  if(!first)return;
+  if(!record.v50SingleReviewResultFixture){
+    record.reviewVisits.push({id:`V50-COMBINED-${record.id}`,date:'2026-09-28 10:15:00',diagnosis:'再次就诊并检验',items:first.items.map(row=>({...row,value:row.name==='空腹血糖'?'6.4':row.name==='血红蛋白'?'128':row.value}))});
+    record.v50SingleReviewResultFixture=true;
+  }
+  if(findRecord('V50-tracking-single-result'))return;
+  const sample=structuredClone(record);
+  sample.id='V50-tracking-single-result';sample.name='蒋某岚';sample.identity='3301**********7050';
+  sample.groups.forEach((group,index)=>{group.id=`V50-SINGLE-${index}`;group.reviewDecisions={};group.reviewOrderDecisions={};group.reviewIndicatorMatches={};});
+  sample.activeGroupIds=sample.groups.map(group=>group.id);
+  sample.reviewVisits=sample.reviewVisits.filter(visit=>visit.id.startsWith('V48-COMBINED-')||visit.id.startsWith('V50-COMBINED-')).map((visit,index)=>({...visit,id:`V50-SINGLE-VISIT-${index}`}));
+  sample.items.forEach(item=>{item.reviewed=false;});
+  sample.history=[{date:'2026-09-19 10:30',text:'完成体检报告告知',actor:'金医生'}];
+  db.records.push(sample);
+}
+function upgradeV51CallHistoryFixtures(){
+  ['V43-tracking-0','V50-tracking-single-result'].forEach(id=>{
+    const record=findRecord(id);
+    if(!record?.notify||record.v51CallHistoryFixture)return;
+    record.calls??=[];
+    const noticeDate=record.notify.date+' 10:18:00';
+    record.calls.push({id:`V51-NOTICE-${id}`,date:noticeDate,phone:record.phone,duration:186,result:'已通知',note:'已告知体检异常结果和复查安排',notifier:'金医生',source:'告知'});
+    const group=record.groups.find(entry=>entry.needsAssistant&&!entry.cancelled);
+    if(group?.date){
+      const reminderDate=addDays(group.date,-(group.lead||1))+' 09:35:00';
+      let recall=db.recalls.find(entry=>entry.recordId===id&&entry.groupId===group.id);
+      if(!recall){recall={id:`V51-RECALL-${id}`,recordId:id,groupId:group.id,assistant:group.assistant||'陈医助'};db.recalls.push(recall);}
+      if(recall.status==='未通知'||!recall.status){Object.assign(recall,{date:reminderDate.slice(0,10),reviewDate:group.date,status:'已通知',result:'已通知',note:`已提醒患者于 ${group.date} 到院复查`,notifiedDate:reminderDate});}
+      record.calls.push({id:`V51-REMINDER-${id}`,date:reminderDate,phone:record.phone,duration:94,result:'已通知',note:`已提醒患者于 ${group.date} 复查${reviewOrderName(record,group)}`,notifier:group.assistant||'陈医助',source:'召回通知',recallId:recall.id});
+    }
+    record.v51CallHistoryFixture=true;
+  });
+}
+function upgradeV52NoticeCallFixture(){
+  const record=db.records.find(entry=>entry.name==='何某华');
+  if(!record?.notify||record.v52NoticeCallFixture)return;
+  record.calls??=[];
+  if(record.notify.method==='电话告知'&&!record.calls.some(call=>call.source==='告知')){
+    record.calls.push({id:`V52-NOTICE-${record.id}`,date:record.notify.date+' 10:18:00',phone:record.phone,duration:168,result:'已通知',note:'已告知体检异常结果及复查安排',notifier:record.doctor||'金医生',source:'告知'});
+  }
+  record.v52NoticeCallFixture=true;
+}
+function upgradeV53TrackingDeadlines(){
+  db.records.filter(record=>record.v43Fixture&&record.notify).forEach(record=>{
+    record.due=addDays(record.report,record.category==='A'?1:15);
+    record.followDue=addDays(record.notify.date,record.category==='A'?10:record.category==='B'?30:90);
+  });
+}
+function upgradeV54ReviewFixtureConsistency(){
+  const femaleNames=new Set(['俞某芳','曹某英','谢某华','任某梅','苏某琴','严某芳','邹某兰','邵某珍','方某娟']);
+  db.records.filter(record=>record.v43Fixture).forEach((record,index)=>{
+    record.sex=femaleNames.has(record.name)?'女':'男';
+    record.age=62+index%17;
+    record.phone='159****'+String(8100+index);
+    record.calls?.forEach(call=>{call.phone=record.phone;});
+    const glucose=record.items.find(item=>item.name==='空腹血糖'&&item.category==='A');
+    if(glucose)glucose.value='16.8';
+  });
+  const combinedSample=findRecord('V50-tracking-single-result');
+  if(combinedSample){combinedSample.phone='159****8150';combinedSample.calls?.forEach(call=>{call.phone=combinedSample.phone;});}
+  ['V43-tracking-0','V50-tracking-single-result'].forEach(id=>{
+    const record=findRecord(id);
+    if(!record)return;
+    const glucose=record.items.find(item=>item.name==='空腹血糖'&&item.category==='A');
+    if(glucose)glucose.value='16.8';
+    const hemoglobin=record.items.find(item=>item.name==='血红蛋白');
+    if(hemoglobin)hemoglobin.reference='131~172';
+    record.reviewVisits?.forEach(visit=>visit.items?.filter(item=>item.name==='血红蛋白').forEach(item=>{
+      item.reference='131~172';
+      if(item.value==='125')item.value='145';
+      if(item.value==='128')item.value='148';
+      item.abnormal=false;
+    }));
+  });
+}
+function upgradeV55TimelineConsistency(){
+  const shift=(value,days)=>value?addDays(value.slice(0,10),days)+value.slice(10):value;
+  [['TJ20260022',-2],['TJ20260024',-4]].forEach(([id,days])=>{
+    const record=findRecord(id);
+    if(!record||record.v55TimelineFixture)return;
+    record.exam=shift(record.exam,days);
+    record.report=shift(record.report,days);
+    record.notify.date=shift(record.notify.date,days);
+    record.closedDate=shift(record.closedDate,days);
+    if(record.end)record.end.date=shift(record.end.date,days);
+    record.firstFollowDate=shift(record.firstFollowDate,days);
+    record.followDate=shift(record.followDate,days);
+    if(record.referral){record.referral.date=shift(record.referral.date,days);record.referral.appointmentDate=shift(record.referral.appointmentDate,days);}
+    record.reviewVisits?.forEach(visit=>{visit.date=shift(visit.date,days);});
+    record.referralVisits?.forEach(visit=>{visit.date=shift(visit.date,days);});
+    record.history?.forEach(entry=>{entry.date=shift(entry.date,days);});
+    record.calls?.forEach(call=>{call.date=shift(call.date,days);});
+    record.groups?.forEach(group=>{group.createdAt=shift(group.createdAt,days);});
+    db.recalls.filter(recall=>recall.recordId===id&&recall.notifiedDate).forEach(recall=>{recall.notifiedDate=shift(recall.notifiedDate,days);});
+    record.v55TimelineFixture=true;
+  });
+  db.records.forEach(record=>{
+    record.due=addDays(record.report,record.category==='A'?1:15);
+    if(record.notify)record.followDue=addDays(record.notify.date,record.category==='A'?10:record.category==='B'?30:90);
+  });
+}
+function upgradeV56UniqueReviewPlans(){
+  ['TJ20260017','TJ20260018'].forEach(id=>{
+    const record=findRecord(id),extra=record?.groups.find(group=>group.id==='V42-'+id);
+    if(!extra)return;
+    const duplicate=record.groups.find(group=>group!==extra&&!group.cancelled&&group.items.some(item=>extra.items.includes(item)));
+    if(!duplicate)return;
+    const removed=linkedReviewOrder(record,extra)&&!linkedReviewOrder(record,duplicate)?duplicate:extra;
+    record.groups=record.groups.filter(group=>group!==removed);
+    record.activeGroupIds=record.activeGroupIds?.filter(groupId=>groupId!==removed.id);
+    db.recalls=db.recalls.filter(recall=>recall.groupId!==removed.id);
+  });
 }
 function upgradeV44ReviewHistoryFixtures(){
   db.records.filter(record=>record.notify).forEach(record=>{
@@ -1621,9 +1906,10 @@ function upgradeV45AbnormalReportFixtures(){
 }
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV41RecallFixture();persist();render();}});
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV42RecallSelectionFixtures();persist();render();}});
-document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV43TrackingStatusFixtures();upgradeV47ReportPartialFixtures();upgradeV48CombinedOrderFixture();persist();render();}});
+document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV43TrackingStatusFixtures();upgradeV47ReportPartialFixtures();upgradeV48CombinedOrderFixture();upgradeV49IndicatorComparisonFixtures();upgradeV50SingleReviewResultFixture();upgradeV51CallHistoryFixtures();persist();render();}});
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV44ReviewHistoryFixtures();persist();render();}});
 document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV45AbnormalReportFixtures();persist();render();}});
+document.addEventListener('click',event=>{if(event.target.closest?.('[data-action="reset-data"]')){upgradeV53TrackingDeadlines();upgradeV54ReviewFixtureConsistency();upgradeV55TimelineConsistency();upgradeV56UniqueReviewPlans();persist();render();}});
 document.addEventListener('submit',event=>{
   if(event.target.id==='stats-filters'){event.preventDefault();const data=new FormData(event.target);state.statsFilters={year:data.get('year'),institution:data.get('institution'),doctor:data.get('doctor')};render();}
   if(event.target.id==='patient-label-form'){event.preventDefault();const label=document.getElementById('patient-label-input').value.trim();const record=getReferenceRecord(state.tagEditor);const labels=record.patientLabels||['责任患者','体检标签（演示）'];if(!label||label.length>20){toast('请输入1–20字的标签');return;}if(labels.includes(label)){toast('该标签已存在');return;}savePatientLabels(record.id,[...labels,label]);state.tagEditor=null;render();}
@@ -1645,6 +1931,14 @@ upgradeV42RecallSelectionFixtures();
 upgradeV43TrackingStatusFixtures();
 upgradeV47ReportPartialFixtures();
 upgradeV48CombinedOrderFixture();
+upgradeV49IndicatorComparisonFixtures();
+upgradeV50SingleReviewResultFixture();
+upgradeV51CallHistoryFixtures();
+upgradeV52NoticeCallFixture();
+upgradeV53TrackingDeadlines();
+upgradeV54ReviewFixtureConsistency();
+upgradeV55TimelineConsistency();
+upgradeV56UniqueReviewPlans();
 upgradeV44ReviewHistoryFixtures();
 upgradeV45AbnormalReportFixtures();
 persist();
