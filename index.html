@@ -145,6 +145,9 @@ body[data-page="population"] .page-head{display:none}.category-panel{padding:18p
 .plan-timeline .plan-card-actions{position:absolute;right:0;top:0}
 @media(max-width:700px){.plan-timeline .plan-card-title{padding-right:0}.plan-timeline .plan-card-actions{position:static;margin-top:8px;justify-content:flex-start}}
 @media(max-width:900px){.review-result-modal .result-order-head{flex-wrap:wrap}.review-result-modal .result-order .order-decision{order:2;flex-basis:100%;justify-content:flex-start}.review-result-modal .result-order .review-result-outcome{order:3;flex-basis:100%;max-width:100%;margin:0;text-align:left}}
+.recall-left .legacy-card-measures .call-emphasis{background:var(--blue);border:1px solid var(--blue);border-radius:3px;color:white;padding:5px 10px;font-weight:600}
+.recall-left .legacy-card-measures .call-emphasis:hover{background:var(--blue-hover)}
+.patient-tag.exam-tag.A{background:#e34b51}.patient-tag.exam-tag.B{background:#d69a25}.patient-tag.exam-tag.C{background:#1687ff}.patient-tag.exam-tag.closed{background:#929eae}
 </style>
 </head>
 <body>
@@ -260,7 +263,7 @@ function filterPanel(){
 function renderBase(){renderNav();let body=(['tracking','review'].includes(state.page)?'':pageHead())+tabs();if(state.page==='population'&&state.populationTab==='unexamined')body+=unexaminedTable();else{body+=state.page==='stats'?statsFilters():filterPanel();if(state.page==='population')body+=populationOverview()+recordTable();if(state.page==='tracking')body+=recordTable();if(state.page==='review')body+=reviewTaskTable();if(state.page==='recall')body+=recallTable();if(state.page==='stats')body+=statistics();}document.getElementById('app').innerHTML=body+`<div class="end-note">V3.0 交互原型 · 无真实患者数据 · 无实际拨号或转诊 · 刷新保留本地演示操作</div>`;}
 function patientCard(record){
   const profile=record.profile||{};
-  return `<div class="legacy-card"><div class="patient-portrait">${icon('user')}</div><div class="legacy-card-content"><div class="legacy-card-top"><strong>${escapeHTML(record.name)}　${record.sex}　${record.age}岁</strong>${patientTags(record)}${record.historical?'<span class="badge neutral">历史报告 · 未重新分级</span>':''}</div><div class="legacy-card-measures"><span><em>身高：</em>${profile.height||'—'} cm</span><span><em>体重：</em>${profile.weight||'—'} kg</span><span><em>BMI：</em>${profile.bmi||'—'} kg/m²</span><span><em>联系电话：</em>${escapeHTML(record.phone)}</span>${state.drawer?.type==='inform'?`<button class="call-emphasis" data-action="call" data-id="${record.id}">${icon('phone')} 一键拨号</button>`:''}</div></div></div>`;
+  return `<div class="legacy-card"><div class="patient-portrait">${icon('user')}</div><div class="legacy-card-content"><div class="legacy-card-top"><strong>${escapeHTML(record.name)}　${record.sex}　${record.age}岁</strong>${patientTags(record)}${record.historical?'<span class="badge neutral">历史报告 · 未重新分级</span>':''}</div><div class="legacy-card-measures"><span><em>身高：</em>${profile.height||'—'} cm</span><span><em>体重：</em>${profile.weight||'—'} kg</span><span><em>BMI：</em>${profile.bmi||'—'} kg/m²</span><span><em>联系电话：</em>${escapeHTML(record.phone)}</span>${state.drawer?.type==='inform'?`<button class="call-emphasis" data-action="call" data-id="${record.id}">${icon('phone')} 一键拨号</button>`:state.drawer?.type==='recall'&&state.recallTab==='未通知'?`<button class="call-emphasis" data-action="recall-call" data-recall="${record.id}">${icon('phone')} 一键拨号</button>`:''}</div></div></div>`;
 }
 function showOverlay(content,type='drawer'){state.originFocus=document.activeElement;state.panel=null;document.getElementById('overlay-root').innerHTML=`<div class="overlay ${type==='modal'?'modal-overlay':''}" id="overlay"><section class="${type}" role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1">${content}</section></div>`;const target=document.querySelector('#overlay button');target?.focus();document.body.style.overflow='hidden';}
 function closeOverlay(){
@@ -393,7 +396,12 @@ function saveFollow(){
 function callModal(id,kind='report'){
   if(state.activeCall){toast('请先结束当前模拟通话');return;}
   const subject=callSubject({kind,id});
-  if(state.drawer?.type==='inform')captureInform();const returnTo=['detail','inform'].includes(state.drawer?.type)?structuredClone(state.drawer):null;
+  if(kind==='recall'&&state.drawer?.type==='recall'&&state.drawer.id===subject.id){
+    modal('请确认手机号',`<div class="phone-confirm"><input class="call-modal-input" id="call-phone" aria-label="确认手机号" value="${subject.phone}" maxlength="11"></div>`,`<button data-action="close">取消</button><button class="primary" data-action="call-confirm">确定拨号</button>`,true);
+    state.panel.callContext={kind,id};
+    return;
+  }
+  if(state.drawer?.type==='inform')captureInform();const returnTo=['detail','inform','recall'].includes(state.drawer?.type)?structuredClone(state.drawer):null;
   state.drawer={type:'call',id,callContext:{kind,id},returnTo};
   modal('请确认手机号',`<div class="phone-confirm"><input class="call-modal-input" id="call-phone" aria-label="确认手机号" value="${subject.phone}" maxlength="11"></div>`,`<button data-action="close">取消</button><button class="primary" data-action="call-confirm">确定拨号</button>`);
 }
@@ -423,6 +431,7 @@ function saveRecall(){
   if(result==='改期'&&(!newDate||newDate<TODAY||newDate>addDays(record.report,365)))return formError('计划复查日期须在今天至总检日期后365天之间。');
   const status=result==='联系失败'?'未通知':'已通知';
   ids.forEach(id=>{const recall=db.recalls.find(entry=>entry.id===id&&entry.recordId===record.id&&entry.status==='未通知');if(!recall)return;const oldDate=recall.reviewDate;recall.result=result;recall.note=note;recall.status=status;recall.notifiedDate=at;if(newDate){const group=record.groups.find(entry=>entry.id===recall.groupId);if(group)group.date=newDate;recall.reviewDate=newDate;recall.date=addDays(newDate,-(group?.lead||1));}recall.history??=[];recall.history.push({date:at,result,message:newDate?`改期；计划复查日期：${oldDate} → ${newDate}${changeReason?`；改期原因：${changeReason}`:''}${note?`；结果备注：${note}`:''}`:note?`${result}；${note}`:result,notifier:recall.assistant});});
+  if(state.lastRecallCall?.recordId===record.id){const call=record.calls.find(entry=>entry.id===state.lastRecallCall.callId);if(call){call.result=result;call.note=note;call.notifier=db.recalls.find(recall=>recall.id===ids[0])?.assistant||'陈医助';}state.lastRecallCall=null;}
   log(record,`召回通知：${result}；覆盖${ids.length}张复查单`,db.recalls.find(recall=>recall.id===ids[0])?.assistant||'陈医助');
   persist();closeOverlay();render();toast(`已保存${ids.length}张复查单的通知结果`);
 }
@@ -502,8 +511,27 @@ function sampleDiseaseProfiles(index){
   ];return structuredClone(samples[index%samples.length]);
 }
 const DISEASE_TAGS={高:['高血压','#258dff'],糖:['糖尿病','#00bd83'],脂:['血脂异常','#fa8c16'],肺:['慢阻肺','#9047ef']};
+function examTagState(patient,asOf=TODAY,reports=db.records){
+  const currentYear=asOf.slice(0,4);
+  const latest=reports.filter(report=>report.identity===patient.identity&&report.exam&&report.report&&report.exam<=asOf&&report.report<=asOf&&['A','B','C'].includes(report.category)&&(
+    report.exam.slice(0,4)===currentYear||report.notify?.date&&report.followDue&&report.notify.date<=asOf&&report.followDue>=asOf
+  )).sort((a,b)=>b.exam.localeCompare(a.exam)||b.report.localeCompare(a.report)||String(b.id).localeCompare(String(a.id)))[0];
+  if(!latest)return null;
+  if(latest.notify){
+    if(latest.notify.date>asOf||!latest.followDue||latest.followDue<asOf)return null;
+    if(latest.closedDate&&latest.closedDate>=latest.notify.date&&latest.closedDate<=asOf)return {kind:'closed',report:latest};
+  }
+  return {kind:latest.category,report:latest};
+}
 function patientTags(record){
-  const ordinary=(record.tags||['责','签','检']).filter(tag=>!DISEASE_TAGS[tag]).map((tag,index)=>`<span class="patient-tag t${index}" title="${escapeHTML(({责:'责任患者',签:'签约标签（示例）',检:'体检标签（示例）'})[tag]||tag)}">${escapeHTML(tag)}</span>`).join('');
+  const ordinary=(record.tags||['责','签','检']).filter(tag=>!DISEASE_TAGS[tag]).map((tag,index)=>{
+    if(tag==='检'){
+      const state=examTagState(record);if(!state)return '';
+      const title=state.kind==='closed'?`检后跟踪已结束 · ${state.report.closedDate} · 展示至${state.report.followDue}`:`${state.report.category}类体检报告 · ${state.report.exam}${state.report.notify?` · 跟踪期限${state.report.followDue}`:' · 待告知'}`;
+      return `<span class="patient-tag exam-tag ${state.kind}" title="${escapeHTML(title)}" aria-label="${escapeHTML(title)}">检</span>`;
+    }
+    return `<span class="patient-tag t${index}" title="${escapeHTML(({责:'责任患者',签:'签约标签（示例）'})[tag]||tag)}">${escapeHTML(tag)}</span>`;
+  }).join('');
   const disease=Object.entries(DISEASE_TAGS).map(([tag,[name,color]])=>{const profile=record.diseaseProfiles?.[tag];if(!profile)return '';const files=[['public','公卫专档'],['ai','AI专档']].filter(([source])=>profile[source]);if(!files.length&&!profile.diagnosis)return '';const active=files.some(([source])=>profile[source].status==='正常');const title=files.length?files.map(([source,label])=>{const file=profile[source];return `${label}-${file.status==='正常'?file.level||'管理等级未提供':file.status}${source==='ai'&&file.status==='正常'?'-'+(file.doctor||'主管医生未提供'):''}`;}).join('；'):`${name}-诊断`;const source=profile.public?'public':profile.ai?'ai':'diagnosis';const status=active?'':' inactive';return `<span class="patient-tag disease ${source}${status}" style="--tag-color:${color}" title="${escapeHTML(title)}" aria-label="${escapeHTML(name+' '+title)}">${tag}</span>`;}).join('');
   return `<span class="patient-tags">${ordinary}${disease}</span>`;
 }
@@ -623,12 +651,12 @@ function comparePage(){
   return `<div class="comparison-page"><div class="back-strip"><button data-action="comparison-back">◀ 返回</button><span>体检管理 / ${record.name}体检专档信息</span></div><section class="patient-full-card">${patientCard(record)}<div class="profile-grid"><div><em>身份证号：</em>${record.identity}</div><div><em>本人电话：</em>${record.phone}</div><div><em>责任医生：</em>${record.doctor}</div><div><em>联系人：</em>${profile.contact}</div><div><em>联系人电话：</em>138****0000</div><div><em>联系地址：</em>${profile.address}</div><div><em>体检套餐：</em>${record.package}</div><div><em>体检日期：</em>${record.exam}</div>${patientLabelMarkup(record)}</div></section><section class="comparison-filters"><div class="comparison-filter-row"><span>体检项目：</span><div class="comparison-options">${['全部',...groups].map(group=>`<label><input type="checkbox" data-compare-group="${group}" ${comparison.groups.includes(group)?'checked':''}>${group}</label>`).join('')}</div></div><div class="comparison-filter-row"><span>三色分类：</span><div class="comparison-options">${[['全部','全部'],['A','A类（红）'],['B','B类（黄）'],['C','C类（蓝）'],['normal','未见异常']].map(([value,label])=>`<label><input type="checkbox" data-compare-category="${value}" ${comparison.categories.includes(value)?'checked':''}>${label}</label>`).join('')}</div></div></section><section class="comparison-table-panel"><h2>3年体检数据对比</h2><div class="table-wrap" style="padding:0"><table class="comparison-table"><thead><tr><th>序号</th><th>指标名称</th>${years.map(year=>`<th>${year}年</th>`).join('')}<th>常规参考范围</th><th>单位</th></tr></thead><tbody>${abnormal.map(row).join('')}${normal.length?`<tr class="normal-divider"><td colspan="7"><button data-action="comparison-normal">${comparison.showNormal?'收起':'展开'} ${normal.length} 项未见异常指标 ${comparison.showNormal?'⌃':'⌄'}</button></td></tr>${comparison.showNormal?normal.map((item,index)=>row(item,abnormal.length+index)).join(''):''}`:''}</tbody></table>${!filtered.length?'<div class="empty">未选择项目或当前筛选无匹配指标</div>':''}</div></section></div>`;
 }
 function startSimulatedCall(){
-  const context=state.drawer.callContext;const phone=document.getElementById('call-phone').value.trim();
+  const context=state.panel?.callContext||state.drawer.callContext;const phone=document.getElementById('call-phone').value.trim();
   if(!/^1\d{2}\*{4}\d{4}$/.test(phone))return formError('请使用159****8901形式的脱敏示例号码，Demo不保存真实手机号。');
   const subject=callSubject(context);
   const call={id:'CALL'+Date.now(),date:TODAY+' '+new Date().toTimeString().slice(0,8),phone,duration:0,result:'未录入',note:'',...(context.kind==='recall'?{recallId:context.id}:{})};subject.calls.push(call);
   if(context.kind==='report')log(subject,'开始模拟拨号（不产生真实电话）');
-  state.activeCall={...context,callId:call.id,started:Date.now(),returnTo:state.drawer.returnTo};persist();closeOverlay();if(context.kind==='report'&&!state.drawer)openDetail(context.id);else if(context.kind!=='report')render();
+  state.activeCall={...context,callId:call.id,started:Date.now(),returnTo:state.drawer.returnTo};persist();closeOverlay();if(context.kind==='report'&&!state.drawer)openDetail(context.id);else if(context.kind==='recall'&&state.drawer?.type!=='recall')recallModal(subject.id);else if(context.kind==='unexamined')render();
   const banner=document.createElement('div');banner.id='call-banner';banner.className='call-banner';banner.innerHTML=`${icon('phone')}<span>模拟通话中 · ${subject.name}</span><span id="call-time">00:00</span><button class="primary" data-action="finish-call">结束通话</button>`;document.body.append(banner);
   state.callTimer=setInterval(()=>{const elapsed=document.getElementById('call-time');if(elapsed&&state.activeCall)elapsed.textContent=formatDuration(Math.floor((Date.now()-state.activeCall.started)/1000));},1000);
 }
@@ -638,8 +666,13 @@ function notificationBody(subject,result='',note=''){
 function finishSimulatedCall(){
   const context=state.activeCall;if(!context)return;const subject=callSubject(context);
   const call=subject.calls.find(entry=>entry.id===context.callId);call.duration=Math.max(2,Math.floor((Date.now()-context.started)/1000));clearInterval(state.callTimer);document.getElementById('call-banner')?.remove();state.activeCall=null;
+  if(context.kind==='recall'){
+    state.lastRecallCall={recordId:subject.id,callId:call.id};persist();
+    if(state.drawer?.type!=='recall'||state.drawer.id!==subject.id)recallModal(subject.id);
+    const note=document.getElementById('recall-note');note?.scrollIntoView({block:'center'});note?.focus();return;
+  }
   if(context.kind==='report'&&state.drawer?.type==='inform'){captureInform();state.drawer.step=2;state.drawer.draft.method='电话告知';state.drawer.draft.callId=call.id;log(subject,'结束通话，进入告知结果录入');persist();informDrawer();return;}
-  if(state.drawer?.type==='inform')captureInform();const returnTo=context.kind==='report'?structuredClone(state.drawer||context.returnTo||{type:'detail',id:context.id,detailTab:'calls'}):null;
+  if(state.drawer?.type==='inform')captureInform();const returnTo=context.kind==='report'?structuredClone(state.drawer||context.returnTo||{type:'detail',id:context.id,detailTab:'calls'}):context.kind==='recall'?structuredClone(state.drawer?.type==='recall'?state.drawer:context.returnTo||{type:'recall',id:subject.id,detailTab:'calls'}):null;
   state.drawer={type:'call-result',context,returnTo};persist();modal('通知结果',notificationBody(subject),'<button data-action="close">取消</button><button class="primary" data-action="call-result-save">确定</button>');
 }
 function readNotification(){
@@ -661,7 +694,7 @@ function saveCallResult(){
   const notification=readNotification();if(!notification)return;
   const context=state.drawer.context;const subject=callSubject(context);const call=subject.calls.find(entry=>entry.id===context.callId);call.result=notification.result;call.note=notification.message;call.notifier=subject.doctor||'金医生';
   if(context.kind==='unexamined'){subject.lastNotify=TODAY;subject.notifyResult=notification.result;subject.notifyHistory??=[];subject.notifyHistory.push({date:TODAY,result:notification.result,message:notification.message,notifier:call.notifier,callId:call.id});}else if(context.kind==='recall'){const recall=db.recalls.find(entry=>entry.id===context.id);call.notifier=recall.assistant;recall.result=notification.result;recall.note=notification.message;recall.status=notification.result==='已通知'?'已通知':'未通知';recall.notifiedDate=TODAY;recall.history??=[];recall.history.push({date:TODAY,result:notification.result,message:notification.message,notifier:recall.assistant,callId:call.id});log(subject,'召回通知：'+notification.result+'；'+notification.message);}else log(subject,'模拟通话结果：'+notification.result+'；'+notification.message);
-  persist();closeOverlay();render();toast(context.kind==='report'?'拨号记录已保存；报告告知仍须完成三步流程':context.kind==='recall'?'已保存召回通知结果':'已保存通知结果，未检人群名单已更新');
+  persist();if(context.kind==='recall'&&state.recallTab==='未通知'&&!db.recalls.some(recall=>recall.recordId===subject.id&&!recall.cancelled&&recall.status==='未通知'))state.recallTab='已通知';closeOverlay();render();toast(context.kind==='report'?'拨号记录已保存；报告告知仍须完成三步流程':context.kind==='recall'?'已保存召回通知结果':'已保存通知结果，未检人群名单已更新');
 }
 function downloadCSV(rows,name){
   const csv='\ufeff'+rows.map(row=>row.map(value=>'"'+String(value??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const anchor=document.createElement('a');anchor.href=url;anchor.download=name;document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);toast('已生成当前筛选条件下的演示CSV');
@@ -868,7 +901,11 @@ function recallColumns(){return ['序号','姓名','性别','年龄','类别','�
 
 function recallValues(group,index){
   const recall=group.representative,record=findRecord(group.recordId);
-  return [index,record.name,record.sex,record.age,categoryBadge(record),record.exam,record.report,recall.reviewDate,recall.date,textBadge(recall.status,recall.status==='已通知'?'closed':'pending'),...reportReviewCells(record),record.identity,record.phone,`<button class="link" data-action="recall-notify" data-recall="${record.id}">查看</button>${group.status==='未通知'?`<button class="link" data-action="recall-notify" data-recall="${record.id}">一键拨号</button>`:''}`];
+  return [index,record.name,record.sex,record.age,categoryBadge(record),record.exam,record.report,recall.reviewDate,recall.date,textBadge(recall.status,recall.status==='已通知'?'closed':'pending'),...reportReviewCells(record),record.identity,record.phone,`<button class="link" data-action="recall-notify" data-recall="${record.id}">查看</button>${group.status==='未通知'?`<button class="link" data-action="recall-call" data-recall="${record.id}">一键拨号</button>`:''}`];
+}
+function openRecallCall(recordId){
+  const representative=recallGroups('未通知').find(group=>group.recordId===recordId)?.representative;
+  if(representative)callModal(representative.id,'recall');
 }
 
 function patientLabelMarkup(record){
@@ -939,7 +976,7 @@ function stackedChart(labels,series,unit='人次'){
 
 function statsPanel(title,body,wide=false){return `<section class="stats-panel ${wide?'span-two':''}"><h2>${title} <span class="muted" title="仅根据本地虚构记录演示；不作为正式考核口径">ⓘ</span></h2>${body}</section>`;}
 
-function restoreDrawer(){if(state.drawer?.type==='inform')informDrawer();else detailDrawer();}
+function restoreDrawer(){if(state.drawer?.type==='inform')informDrawer();else if(state.drawer?.type==='recall')recallModal(state.drawer.id);else detailDrawer();}
 function reviewCandidates(record,group){
   const start=addDays(group.date,-7),end=addDays(group.date,7);
   const normalized=value=>({血糖:'生化',血脂:'生化',影像检查:'B超'})[value]||value;
@@ -1515,6 +1552,7 @@ document.addEventListener('click',event=>{const button=event.target.closest?.('[
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action]');if(!button)return;const action=button.dataset.action;if(action==='tab'){state.filters=defaultFilters('tracking',button.dataset.tab);return;}if(!['nav','clear-filters','clear-date-range'].includes(action))return;event.preventDefault();event.stopImmediatePropagation();if(action==='nav'){state.comparison=null;stopRecordingPlayback();hideSuggestion();state.page=button.dataset.page;state.pageNumber=1;state.filters=defaultFilters(state.page,state.tab);document.body.classList.remove('nav-open');render();return;}if(action==='clear-filters'){state.filters=defaultFilters();state.pageNumber=1;render();return;}const form=button.closest('form');form.elements[button.dataset.filter+'Start'].value='';form.elements[button.dataset.filter+'End'].value='';form.requestSubmit();},true);
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="recall-tab"]');if(!button)return;state.recallTab=button.dataset.tab;state.pageNumber=1;render();});
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="recall-notify"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();recallModal(button.dataset.recall);},true);
+document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="recall-call"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();openRecallCall(button.dataset.recall);},true);
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="recall-detail-tab"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();state.drawer.detailTab=button.dataset.tab;recallModal(state.drawer.id);},true);
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="jump-review-plan"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();state.drawer.detailTab='plans';if(state.drawer.type==='recall')recallModal(state.drawer.id);else detailDrawer();document.querySelector(`[data-confirm-group="${button.dataset.group}"]`)?.scrollIntoView({block:'center'});},true);
 document.addEventListener('click',event=>{const button=event.target.closest?.('[data-action="review-cancel"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();const record=findRecord(button.dataset.id),group=record?.groups.find(entry=>entry.id===button.dataset.group);if(!group||group.cancelled||reviewPlanProgress(record,group).label==='已复查')return;state.cancelTarget={recordId:record.id,groupId:group.id};const category=reviewOrderCategory(record,group),actualDates=actualReviewDates(record,group);modal('取消异常复查任务',`<div class="review-cancel-summary"><div class="plan-card-title"><strong>${escapeHTML(reviewOrderName(record,group))}</strong><span class="plan-source">${escapeHTML(group.source||'告知时设置')}</span></div><div class="plan-card-meta"><span>原始类别：${textBadge(category+'类',category)}</span><span>创建时间：${escapeHTML(group.createdAt||'—')}</span><span>应复查日期：${escapeHTML(group.date||'未设置')}</span><span>实际复查日期：${escapeHTML(actualDates.join('、')||'—')}</span><span>通知状态：${escapeHTML(reviewNotificationStatus(record,group))}</span></div></div><p class="review-cancel-note">取消后停止该复查任务和通知任务。</p><label for="review-cancel-reason">取消原因</label><textarea id="review-cancel-reason" maxlength="100" placeholder="请输入取消原因"></textarea><div class="cancel-reason-count" id="review-cancel-count">0/100 字符</div><div id="form-error"></div>`,`<button data-action="close">返回</button><button class="primary" data-action="review-cancel-save">确认取消</button>`,Boolean(document.querySelector('#overlay .drawer')));},true);
