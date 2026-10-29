@@ -176,6 +176,10 @@ body.consult-embed.consult-workflow .inform-right .consult-form-title button{pad
 body.consult-embed.consult-workflow .inform-right-content{flex:1;min-height:0;overflow-y:auto;padding:18px}
 body.consult-embed.consult-workflow .inform-right .drawer-footer{position:static;flex-shrink:0;padding:12px 18px}
 body.consult-embed.consult-workflow .inform-right .drawer-footer .actions{flex-wrap:wrap;justify-content:flex-end}
+.closure-pending-list{list-style:none;margin:12px 0 18px;padding:0;max-height:220px;overflow-y:auto;border:1px solid var(--line);border-radius:4px}
+.closure-pending-list li{display:flex;justify-content:space-between;gap:12px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.closure-pending-list li:last-child{border-bottom:0}.closure-pending-list span{color:var(--muted);white-space:nowrap}
+@media(max-width:520px){.closure-pending-list li{display:block}.closure-pending-list span{display:block;white-space:normal}}
 </style>
 </head>
 <body>
@@ -2102,6 +2106,54 @@ if(consultEmbedded){
     consultSync();
   });
 }else render();
+
+function pendingClosureGroups(record){
+  return record.groups.filter(group=>group.items?.length&&!group.cancelled&&reviewPlanProgress(record,group).label!=='已复查');
+}
+function confirmClosurePrerequisites(record){
+  const groups=pendingClosureGroups(record);
+  if(!groups.length)return false;
+  const rows=groups.map(group=>`<li><strong>${escapeHTML(reviewOrderName(record,group))}</strong><span>应复查日期：${escapeHTML(group.date||'未设置')}</span></li>`).join('');
+  state.closurePendingRecordId=record.id;
+  modal('确认取消未完成复查任务',`<p>本报告还有 ${groups.length} 项待复查任务。跟踪结束前，须确认取消全部未完成项目。</p><ul class="closure-pending-list">${rows}</ul><label class="required" for="closure-cancel-reason">取消原因</label><textarea id="closure-cancel-reason" maxlength="100" placeholder="请填写取消原因"></textarea><p class="muted">取消后，关联的未完成召回通知任务将停止；已完成通知和历史记录保留。</p>`,`<button data-action="close">返回</button><button class="primary" data-action="closure-cancel-all">确认取消全部项目</button>`,Boolean(document.querySelector('#overlay .drawer')));
+  return true;
+}
+document.addEventListener('click',event=>{
+  const button=event.target.closest?.('[data-action]');
+  if(!button||!((button.dataset.action==='follow-direct'||button.dataset.action==='follow-mode')&&button.dataset.mode==='closed'))return;
+  const record=findRecord(button.dataset.id||state.drawer?.id);
+  if(!record||!pendingClosureGroups(record).length)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  confirmClosurePrerequisites(record);
+},true);
+document.addEventListener('click',event=>{
+  const button=event.target.closest?.('[data-action="closure-cancel-all"]');
+  if(!button)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  const record=findRecord(state.closurePendingRecordId),reason=document.getElementById('closure-cancel-reason')?.value.trim();
+  if(!record||!pendingClosureGroups(record).length)return formError('待复查任务已变化，请重新检查。');
+  if(!reason)return formError('请填写取消原因。');
+  const groups=pendingClosureGroups(record),now=TODAY+' '+new Date().toTimeString().slice(0,5),actor=record.doctor||'金医生';
+  const previous=structuredClone({groups:record.groups,history:record.history,recalls:db.recalls});
+  try{
+    groups.forEach(group=>{group.cancelled=true;group.cancelReason=reason;group.cancelledAt=now;group.cancelledBy=actor;log(record,`取消异常复查任务：${reviewOrderName(record,group)}；原因：${reason}`,actor,now);});
+    const ids=new Set(groups.map(group=>group.id));
+    db.recalls.filter(recall=>recall.recordId===record.id&&ids.has(recall.groupId)&&recall.status==='未通知').forEach(recall=>{recall.cancelled=true;});
+  }catch{
+    record.groups=previous.groups;record.history=previous.history;db.recalls=previous.recalls;
+    return formError('取消任务未全部成功，请重试。');
+  }
+  persist();state.closurePendingRecordId=null;
+  if(document.getElementById('modal-layer')){document.getElementById('modal-layer').remove();state.panel=null;}
+  else closeOverlay();
+  openFollow(record.id);state.drawer.mode='closed';followDrawer();
+  toast('未完成复查任务已全部取消，请填写跟踪结束信息');
+},true);
+const saveFollowBeforeClosureCheck=saveFollow;
+saveFollow=function(){
+  if(state.drawer?.mode==='closed'&&pendingClosureGroups(findRecord(state.drawer.id)).length)return formError('仍有待复查任务，请先取消全部未完成项目。');
+  return saveFollowBeforeClosureCheck();
+};
 </script>
 </body>
 </html>
