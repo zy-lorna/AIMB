@@ -96,6 +96,7 @@ body[data-page="population"] .page-head{display:none}.category-panel{padding:18p
 .recall-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,430px);height:calc(100% - 61px);min-height:0}.recall-left,.recall-right{overflow-y:auto;padding:20px 24px}.recall-right{border-left:1px solid var(--line);background:#fff;display:flex;flex-direction:column;min-height:0}.recall-drawer{width:min(1280px,98vw)}.recall-order{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid #e1e8f0;margin:9px 0;border-radius:4px}.recall-order input{min-height:0;margin-top:4px;accent-color:var(--blue)}.recall-order strong,.recall-order small{display:block}.recall-order small{color:#718096}.recall-order.is-recommended{border-color:#8ab9ff;background:#f1f7ff}.recall-order:has(input:checked){border-color:#1989ff;background:#edf5ff;box-shadow:inset 3px 0 #1989ff}.recall-order:has(input:not(:checked)){background:#fff}.recall-settings{margin:18px 0;border:0;padding:0;min-width:0}.recall-settings legend{font-weight:600;margin-bottom:9px}.recall-result-options{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}.recall-result-options label{display:flex;align-items:center;gap:5px}.recall-result-options input{min-height:0;accent-color:var(--blue)}.recall-right textarea{width:100%}.recall-right-content{flex:1;overflow-y:auto}.recall-actionbar{display:flex;justify-content:flex-end;gap:8px;margin:16px -24px -20px;padding:12px 24px;border-top:1px solid var(--line);background:#fff}.recall-required{color:#e5484d}.recall-optional{font-weight:400;color:#8290a3}.recall-reschedule{display:grid;gap:10px;margin-top:14px}.recall-reschedule label{display:grid;gap:5px;color:#53677f}.recall-reschedule input{width:100%}.review-cancel-button{border:1px solid #dfe5ef;border-radius:3px;background:#fff;color:var(--ink);padding:5px 10px;margin-left:8px;cursor:pointer}.review-cancel-button:hover{border-color:var(--blue);color:var(--blue)}.result-order .order-decision{margin-top:10px;padding-top:9px;border-top:1px solid #e1e8f0}.result-order .order-decision label{display:inline-flex;margin-right:15px;gap:5px;align-items:center}.result-order .order-decision input{min-height:0;accent-color:var(--blue)}.result-order .order-reason{margin-top:8px;min-height:38px}.review-result-history h3 small{font-weight:400;color:#8290a3}@media(max-width:800px){.recall-layout{display:block;overflow-y:auto}.recall-left,.recall-right{overflow:visible}.recall-right{border-left:0;border-top:1px solid var(--line)}}
 
 .recall-reschedule[hidden]{display:none}
+.recall-result-options label:has(input[value="改期"]),.recall-reschedule{display:none!important}
 .recall-result-field{border:0;padding:0;margin:0 0 12px;min-width:0}.recall-result-field legend{font-weight:500;color:#53677f}
 .table .ops .review-cancel-button{border:0;background:transparent;padding:0 5px;margin:0;color:var(--blue)}
 .table .ops .review-cancel-button:hover{color:var(--blue-hover);background:transparent}
@@ -148,6 +149,21 @@ body[data-page="population"] .page-head{display:none}.category-panel{padding:18p
 .recall-left .legacy-card-measures .call-emphasis{background:var(--blue);border:1px solid var(--blue);border-radius:3px;color:white;padding:5px 10px;font-weight:600}
 .recall-left .legacy-card-measures .call-emphasis:hover{background:var(--blue-hover)}
 .patient-tag.exam-tag.A{background:#e34b51}.patient-tag.exam-tag.B{background:#d69a25}.patient-tag.exam-tag.C{background:#1687ff}.patient-tag.exam-tag.closed{background:#929eae}
+body.consult-embed{background:#fff}body.consult-embed>header,body.consult-embed>#sidebar,body.consult-embed>#app{display:none}body.consult-embed .overlay{background:#fff;position:fixed;inset:0}body.consult-embed .overlay>.drawer,body.consult-embed .overlay>.inform-drawer{width:100%;max-width:none;box-shadow:none;animation:none}body.consult-embed .modal-overlay{background:rgba(31,47,69,.28)}body.consult-embed .consult-form-title,body.consult-embed .consult-resume{display:none}
+@media(max-width:900px){
+body.consult-embed .inform-drawer{position:relative}
+body.consult-embed .inform-layout{display:block;position:relative;overflow:hidden}
+body.consult-embed .inform-left{height:100%;overflow-y:auto;border-right:0;border-bottom:0;padding:18px}
+body.consult-embed .inform-layout.form-open:before{content:"";position:absolute;inset:0;z-index:2;background:rgba(31,47,69,.28)}
+body.consult-embed .inform-right{display:none;position:absolute;z-index:3;top:14px;bottom:14px;left:14px;right:14px;min-height:0;overflow:hidden;background:#fff;border:1px solid #dfe6ef;border-radius:5px;box-shadow:0 12px 36px #25395830}
+body.consult-embed .inform-layout.form-open .inform-right{display:flex}
+body.consult-embed .consult-form-title{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600}
+body.consult-embed .consult-form-title button{border:0;padding:3px 7px;font-size:18px;line-height:1}
+body.consult-embed .consult-resume{position:sticky;top:0;z-index:1;display:block;margin:0 0 14px auto;background:var(--blue);border-color:var(--blue);color:#fff}
+body.consult-embed .inform-right-content{padding:16px;overflow-y:auto}
+body.consult-embed .inform-right .drawer-footer{position:static;flex-shrink:0;padding:12px 16px}
+body.consult-embed .inform-right .drawer-footer .actions{flex-wrap:wrap;justify-content:flex-end}
+}
 </style>
 </head>
 <body>
@@ -425,6 +441,7 @@ function saveRecall(){
   const result=document.querySelector('input[name="recall-result"]:checked')?.value;
   const note=document.getElementById('recall-note')?.value.trim()||'';
   if(!result)return formError('请选择通知结果。');
+  if(!['已通知待复查','患者拒绝','联系失败'].includes(result))return formError('请选择有效的通知结果。');
   const record=findRecord(state.drawer.id),at=TODAY+' '+new Date().toTimeString().slice(0,5);
   const newDate=result==='改期'?document.getElementById('recall-new-date')?.value:'';
   const changeReason=result==='改期'?document.getElementById('recall-change-reason')?.value.trim()||'':'';
@@ -1161,8 +1178,8 @@ function reviewPlansMarkupV38(record){
   const byDate=new Map();groups.forEach(group=>{const date=group.date||'日期未设置';if(!byDate.has(date))byDate.set(date,[]);byDate.get(date).push(group);});
   return `<div class="review-timeline drawer-timeline plan-timeline">${[...byDate].map(([date,dateGroups])=>`<article class="plan-event drawer-timeline-item"><time>${escapeHTML(date)} 应复查</time>${dateGroups.map(group=>{
     const progress=reviewPlanProgress(record,group),confirmed=confirmedReviewItems(record,group);
-    const orderCategory=reviewOrderCategory(record,group),actualDates=actualReviewDates(record,group);
-    return `<div class="plan-card ${group.cancelled?'is-cancelled':confirmed.size===group.items.length?'is-complete':''}" data-confirm-group="${escapeHTML(group.id)}"><div class="plan-card-head"><div><div class="plan-card-title"><strong>${escapeHTML(reviewOrderName(record,group))}</strong></div><div class="plan-card-meta"><span>设置环节：${escapeHTML(group.source||'告知时设置')}</span><span>原始类别：${textBadge(orderCategory+'类',orderCategory)}</span><span>创建时间：${escapeHTML(group.createdAt||'—')}</span><span>应复查日期：${escapeHTML(group.date||'未设置')}</span>${progress.label==='已复查'?`<span>实际复查日期：${escapeHTML(actualDates.join('、')||'—')}</span>`:''}<span>通知状态：${escapeHTML(reviewNotificationStatus(record,group))}</span></div></div><div class="plan-card-actions">${reviewProgressBadge(progress)}${!group.cancelled?`<button type="button" class="primary" data-action="review-item-detail" data-id="${record.id}" data-group="${escapeHTML(group.id)}" data-item="${escapeHTML(group.items[0])}">${progress.label==='已复查'?'指标匹配':'匹配项目'}</button>`:''}${!group.cancelled&&progress.label!=='已复查'?`<button type="button" class="review-cancel-button" data-action="review-cancel" data-id="${record.id}" data-group="${escapeHTML(group.id)}">取消任务</button>`:''}</div></div>${confirmedIndicatorMarkup(record,group)}${group.cancelled?`<div class="plan-cancel-meta">取消时间：${escapeHTML(group.cancelledAt||'历史记录未载明')}　操作人：${escapeHTML(group.cancelledBy||'历史记录未载明')}${group.cancelReason?`　取消原因：${escapeHTML(group.cancelReason)}`:''}</div>`:''}</div>`;
+    const actualDates=actualReviewDates(record,group);
+    return `<div class="plan-card ${group.cancelled?'is-cancelled':confirmed.size===group.items.length?'is-complete':''}" data-confirm-group="${escapeHTML(group.id)}"><div class="plan-card-head"><div><div class="plan-card-title"><strong>${escapeHTML(reviewOrderName(record,group))}</strong></div><div class="plan-card-meta"><span>设置环节：${escapeHTML(group.source||'告知时设置')}</span><span>创建日期：${escapeHTML(group.createdAt||'—')}</span>${progress.label==='已复查'?`<span>实际复查日期：${escapeHTML(actualDates.join('、')||'—')}</span>`:''}<span>通知状态：${escapeHTML(reviewNotificationStatus(record,group))}</span></div></div><div class="plan-card-actions">${reviewProgressBadge(progress)}${!group.cancelled?`<button type="button" class="primary" data-action="review-item-detail" data-id="${record.id}" data-group="${escapeHTML(group.id)}" data-item="${escapeHTML(group.items[0])}">${progress.label==='已复查'?'指标匹配':'匹配项目'}</button>`:''}${!group.cancelled&&progress.label!=='已复查'?`<button type="button" class="review-cancel-button" data-action="review-cancel" data-id="${record.id}" data-group="${escapeHTML(group.id)}">取消任务</button>`:''}</div></div>${confirmedIndicatorMarkup(record,group)}${group.cancelled?`<div class="plan-cancel-meta">取消时间：${escapeHTML(group.cancelledAt||'历史记录未载明')}　操作人：${escapeHTML(group.cancelledBy||'历史记录未载明')}${group.cancelReason?`　取消原因：${escapeHTML(group.cancelReason)}`:''}</div>`:''}</div>`;
   }).join('')}</article>`).join('')}</div>`;
 }
 function confirmedIndicatorMarkup(record,group){
@@ -1981,7 +1998,75 @@ upgradeV44ReviewHistoryFixtures();
 upgradeV45AbnormalReportFixtures();
 persist();
 
-render();
+const consultEmbedded=typeof location!=='undefined'&&new URLSearchParams(location.search).has('consultEmbed');
+if(consultEmbedded){
+  document.body.classList.add('consult-embed');
+  const originalShowOverlay=showOverlay;
+  showOverlay=function(content,type){
+    const previousLayout=document.querySelector('#overlay .inform-layout');
+    const keepReportVisible=previousLayout&&!previousLayout.classList.contains('form-open');
+    originalShowOverlay(content,type);
+    const layout=document.querySelector('#overlay .inform-layout');
+    if(!layout)return;
+    const left=layout.querySelector('.inform-left');
+    const right=layout.querySelector('.inform-right');
+    if(!left||!right)return;
+    left.insertAdjacentHTML('afterbegin','<button type="button" class="consult-resume" data-action="consult-show-form">继续处理 ›</button>');
+    right.insertAdjacentHTML('afterbegin','<div class="consult-form-title"><span>检后处理</span><button type="button" data-action="consult-hide-form" aria-label="返回体检详情" title="返回体检详情">×</button></div>');
+    if(!keepReportVisible)layout.classList.add('form-open');
+  };
+  document.addEventListener('click',event=>{
+    const action=event.target.closest('[data-action="consult-hide-form"],[data-action="consult-show-form"]')?.dataset.action;
+    if(!action)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    const layout=document.querySelector('#overlay .inform-layout');
+    layout?.classList.toggle('form-open',action==='consult-show-form');
+    layout?.querySelector(action==='consult-show-form'?'.consult-form-title button':'.consult-resume')?.focus();
+  },true);
+  const originalPersist=persist;
+  persist=function(){originalPersist();consultSync()};
+  const originalCloseOverlay=closeOverlay;
+  closeOverlay=function(){originalCloseOverlay();if(!state.drawer)parent.postMessage({type:'consult-close'},'*')};
+  function consultSync(){
+    const record=db.records.find(entry=>entry.id===state.consultRecordId);
+    if(!record)return;
+    const plans=record.groups.filter(group=>group.items?.length).map(group=>{
+      const progress=reviewPlanProgress(record,group);
+      return {id:group.id,item:reviewOrderName(record,group),date:group.date,state:group.cancelled?'已取消':progress.label==='已复查'?'已复查':'待复查',source:group.source||'告知时设置',notice:reviewNotificationStatus(record,group),created:group.createdAt||'',actual:actualReviewDates(record,group)[0]||''};
+    });
+    parent.postMessage({type:'consult-sync',patientId:state.consultPatientId,changes:{status:record.status,category:record.category,informed:record.notify?.date||null,followDue:record.followDue||null,closedDate:record.closedDate||null,referral:record.referral||null,history:record.history.map(entry=>({date:entry.date,text:entry.text})),plans}},'*');
+  }
+  function consultRecord(patient){
+    const id='CONSULT-'+patient.id;
+    let record=findRecord(id);
+    if(record)return record;
+    const template=db.records.find(entry=>entry.status===patient.status&&entry.category===patient.category)||db.records.find(entry=>entry.status===patient.status)||db.records[0];
+    record=structuredClone(template);
+    Object.assign(record,{id,name:patient.name,sex:patient.sex,age:patient.age,category:patient.category,originalCategory:patient.category,correctionReason:'',normal:!!patient.normal,historical:false,exam:patient.exam,report:patient.report,due:patient.due||addDays(patient.report,15),status:patient.status,phone:patient.phone,identity:patient.identity,doctor:patient.owner?'陈医生':'团队医生',profile:{},patientLabels:[],notify:patient.informed?{date:patient.informed,method:'面对面告知',target:'本人',result:'已告知',note:'诊中面板示例告知记录'}:null,followDue:patient.followDue||null,followDate:patient.status==='following'?patient.informed||patient.report:null,closedDate:patient.closedDate||null,end:patient.status==='closed'?{date:patient.closedDate||patient.informed,method:'面对面跟踪',reason:'复查正常',note:''}:null,groups:[],activeGroupIds:[],reviewVisits:[],referral:patient.referral?{...patient.referral,status:'已转诊',source:'主动转诊',type:'上转',reason:'体检异常'}:null,referralVisits:[],history:(patient.history||[]).map(entry=>({...entry,actor:'陈医生'})),calls:[]});
+    record.items=(patient.abnormal||[]).map((value,index)=>({id:'CONSULT-ITEM-'+index,group:value.includes('超声')?'影像检查':value.includes('心电')?'心电图':value.includes('血糖')?'血糖':value.includes('脂蛋白')?'血脂':value.includes('尿')?'尿常规':'一般检查',name:value.split(/\s+|提示/)[0],value,unit:'',category:patient.category,reference:'—',reviewed:false}));
+    if(!record.items.length)record.items=[{id:'CONSULT-NORMAL',group:'体检项目',name:'各项检验检查',value:'未见异常',unit:'',category:'',reference:'无异常提示',reviewed:false}];
+    for(const plan of patient.plans||[]){
+      let item=record.items.find(entry=>entry.name===plan.item||entry.group===plan.item);
+      if(!item){item={id:'CONSULT-PLAN-'+plan.id,group:plan.item,name:plan.item,value:'体检异常，建议复查',unit:'',category:patient.category,reference:'—',reviewed:false};record.items.push(item)}
+      const group={id:plan.id,items:[item.id],date:plan.date,datePreset:'custom',needsAssistant:plan.notice!=='无需通知',assistant:plan.notice==='无需通知'?'':'陈医助',lead:1,source:plan.source,createdAt:plan.created,cancelled:plan.state==='已取消',cancelReason:plan.cancelReason||'',reviewDecisions:{},reviewOrderDecisions:{}};
+      if(plan.state==='已复查'&&plan.actual){const visitId='CONSULT-VISIT-'+plan.id;record.reviewVisits.push({id:visitId,date:plan.actual+' 09:20:00',diagnosis:'复查结果已确认',items:[{itemId:item.id,name:item.name,group:item.group,value:'复查结果',unit:'',reference:item.reference,abnormal:false}]});group.reviewOrderDecisions[visitId+'|'+item.group]={decision:'accepted'};}
+      record.groups.push(group);
+      if(!group.cancelled)record.activeGroupIds.push(group.id);
+      if(group.needsAssistant)db.recalls.push({id:'CONSULT-RECALL-'+plan.id,recordId:id,groupId:plan.id,date:addDays(plan.date,-1),reviewDate:plan.date,assistant:'陈医助',status:plan.notice==='已通知'?'已通知':'未通知',result:plan.notice==='已通知'?'已通知':'',note:'',notifiedDate:plan.notice==='已通知'?addDays(plan.date,-1):''});
+    }
+    db.records.push(record);persist();return record;
+  }
+  window.addEventListener('message',event=>{
+    if(event.source!==parent||event.data?.type!=='consult-open')return;
+    const patient=event.data.patient;if(!patient?.id)return;
+    if(event.data.reset){db.records=db.records.filter(entry=>!entry.id.startsWith('CONSULT-'));db.recalls=db.recalls.filter(entry=>!entry.recordId.startsWith('CONSULT-'));persist()}
+    const record=consultRecord(patient);
+    state.consultPatientId=patient.id;state.consultRecordId=record.id;state.page='tracking';state.tab=record.status;
+    if(record.status==='pending')openInform(record.id);
+    else openDetail(record.id,event.data.tab==='plans'?'plans':null,event.data.planId||null);
+    consultSync();
+  });
+}else render();
 </script>
 </body>
 </html>
