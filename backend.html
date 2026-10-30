@@ -785,8 +785,45 @@ function reviewResultKind(name){
   const labNames=['血常规','尿常规','大便OB','乙肝表面抗原','生化','肿瘤相关'];
   return name.split(/[+＋、，,]/).every(part=>labNames.includes(part.trim()))?'检验':'检查';
 }
+function operationHistoryEvents(record){
+  const events=[];
+  const add=(date,actor,text)=>{if(date&&text)events.push({date,actor,text});};
+  add(record.report+' 09:00','AI系统',`获取到类别为 ${record.originalCategory||record.category}类 的体检报告`);
+  add(record.report+' 09:01','AI系统','创建了体检异常待告知任务');
+  if(record.notify&&!record.normal)add(record.notify.date+' 10:31','AI系统','创建了体检异常待跟踪任务');
+  const generated=/同步总检报告|获取到类别为|创建了体检异常待告知任务|创建了体检异常待跟踪任务|创建了召回通知任务|创建了.*召回通知任务|通知.*召回患者复查|停止召回通知任务|完成异常复查设置|取消异常复查任务|确认复查结果|确认复查检验检查记录|召回通知：|完成召回通知：|尝试召回通知：/;
+  (record.history||[]).filter(item=>!generated.test(item.text)).forEach(item=>{
+    let description=item.text;
+    if(description==='完成体检报告告知'&&record.notify)description=`完成告知，告知方式：${record.notify.method}，告知日期：${record.notify.date}`;
+    if(description==='完成持续跟踪')description='更新了[跟踪状态]为 持续跟踪';
+    if(description==='完成体检异常转诊')description='更新了[跟踪状态]为 已转诊';
+    add(item.date,item.actor==='系统'?'AI系统':item.actor,description);
+  });
+  if(record.referral&&!events.some(event=>event.text.includes('创建了转诊单')))add(record.referral.date+' 11:20',record.doctor||'金医生',`创建了转诊单，转诊医院：${record.referral.hospital}，转诊科室：${record.referral.department}`);
+  (record.groups||[]).filter(group=>group.items?.length).forEach(group=>{
+    const name=reviewOrderName(record,group),created=group.createdAt||(record.notify?.date||record.report)+' 10:30';
+    add(created,record.doctor||'金医生',`完成异常复查设置：${name}`);
+    const recalls=(db.recalls||[]).filter(recall=>recall.recordId===record.id&&recall.groupId===group.id);
+    recalls.forEach(recall=>{
+      add(created,'AI系统',`创建召回通知任务：${name}；应复查日期：${recall.reviewDate||group.date}；应提醒日期：${recall.date}；通知医助：${recall.assistant||group.assistant||'未指定'}。`);
+      if(group.cancelled&&(recall.cancelled||recall.status==='未通知'))add(group.cancelledAt||created,'AI系统',`停止召回通知任务：${name}；取消原因：关联的异常复查任务已取消。`);
+      const attempts=recall.history?.length?recall.history:recall.result?[{date:recall.notifiedDate||recall.date,result:recall.result,message:recall.note,notifier:recall.assistant}]:[];
+      attempts.forEach(attempt=>{
+        const result=attempt.result||'',note=recall.history?.length?(attempt.message||'').replace(new RegExp('^'+result+'[；;]?'),'').trim():(recall.note||'');
+        add(attempt.date,attempt.notifier||recall.assistant||'医助',`${result==='联系失败'?'尝试':'完成'}召回通知：${name}；通知结果：${result}${note?`；结果备注：${note}`:''}。`);
+      });
+    });
+    if(group.cancelled)add(group.cancelledAt||created,group.cancelledBy||record.doctor||'金医生',`取消异常复查任务：${name}；取消原因：${group.cancelReason||'未填写'}。`);
+    Object.entries(group.reviewOrderDecisions||{}).filter(([,value])=>value.decision==='accepted').forEach(([key,value])=>{
+      const visit=(record.reviewVisits||[]).find(entry=>key.startsWith(entry.id+'|'));
+      const complete=reviewPlanProgress(record,group).label==='已复查';
+      add(value.at,value.doctor||record.doctor||'金医生',`确认${name}${complete?'已复查':'的复查结果'}，复查日期：${visit?.date?.slice(0,10)||'未记录'}。`);
+    });
+  });
+  return events.sort((a,b)=>b.date.localeCompare(a.date));
+}
 function historyMarkup(record){
-  return `<div class="history-list drawer-timeline">${[...record.history].sort((first,second)=>second.date.localeCompare(first.date)).map(item=>`<div class="history-event drawer-timeline-item"><time>${escapeHTML(item.date)}</time><span class="actor">${escapeHTML(item.actor)}</span><span>${escapeHTML(item.text)}</span></div>`).join('')}</div>`;
+  return `<div class="history-list drawer-timeline">${operationHistoryEvents(record).map(item=>`<div class="history-event drawer-timeline-item"><time>${escapeHTML(item.date)}</time><span class="actor">${escapeHTML(item.actor)}</span><span>${escapeHTML(item.text)}</span></div>`).join('')}</div>`;
 }
 
 function upgradeV30History(){
