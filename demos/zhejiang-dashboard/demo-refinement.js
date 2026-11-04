@@ -1715,7 +1715,7 @@ function homeFilingChart(population){
   const bars=labels.map((label,index)=>series.map(([name,total,color],seriesIndex)=>{
     const factor=.82+.18*(index+1)/labels.length,value=total*factor,x=left+index*step+step*(seriesIndex?.52:.12),barWidth=step*.34;
     return `<rect x="${x}" y="${y(value)}" width="${barWidth}" height="${height-bottom-y(value)}" fill="${color}" data-board-tip="${label}｜${name} ${value.toFixed(1)} w份"/>`;
-  }).join('')+`<text x="${left+step*(index+.5)}" y="${height-5}" text-anchor="middle">${labels.length===12?label:label.replace('第一季度','一季').replace('第二季度','二季').replace('第三季度','三季').replace('第四季度','四季')}</text>`).join('');
+  }).join('')+`<text x="${left+step*(index+.5)}" y="${height-5}" text-anchor="middle">${label}</text>`).join('');
   return `<svg class="home-filing-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="按统计周期展示高血压和糖尿病专档份数，纵轴单位为份"><g class="construction-grid">${[0,.5,1].map(tick=>`<line x1="${left}" x2="${width-right}" y1="${y(max*tick)}" y2="${y(max*tick)}"/><text x="${left-4}" y="${y(max*tick)+4}" text-anchor="end">${Math.round(max*tick)}w</text>`).join('')}</g><text x="3" y="10" class="home-filing-unit">单位：份</text>${bars}</svg>`;
 }
 const dashboardBeforeHomeRequest=dashboard;
