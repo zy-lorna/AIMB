@@ -1,5 +1,29 @@
 "use strict";
-(() => {
+var ZhejiangMap3D = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // outputs/2026-10-29-浙江省慢病监管平台方案/zhejiang-map-3d-entry.js
+  var zhejiang_map_3d_entry_exports = {};
+  __export(zhejiang_map_3d_entry_exports, {
+    mount: () => mount
+  });
+
   // node_modules/three/build/three.core.js
   var REVISION = "176";
   var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
@@ -28871,7 +28895,7 @@ void main() {
     const valid = values.map((item) => item.value).filter(Number.isFinite);
     const min = Math.min(...valid);
     const max = Math.max(...valid);
-    const heatColors = ["#12639c", "#20aee1", "#efc65f", "#f5814d", "#e8474d"].map((color) => new Color(color));
+    const heatColors = ["#218ed0", "#29c3e6", "#f4d467", "#fb9a53", "#f15c55"].map((color) => new Color(color));
     const labelLayer = document.createElement("div");
     labelLayer.className = "map-3d-label-layer";
     host.appendChild(labelLayer);
@@ -28902,7 +28926,7 @@ void main() {
         });
         shape.closePath();
         const geometry = new ExtrudeGeometry(shape, { depth: 10, bevelEnabled: false, curveSegments: 1 });
-        const mesh = new Mesh(geometry, [new MeshPhongMaterial({ color: topColor, shininess: 32 }), new MeshPhongMaterial({ color: sideColor })]);
+        const mesh = new Mesh(geometry, [new MeshPhongMaterial({ color: topColor, emissive: topColor, emissiveIntensity: 0.17, shininess: 54 }), new MeshPhongMaterial({ color: sideColor })]);
         mesh.userData.name = name;
         scene.add(mesh);
         meshes.push(mesh);
@@ -28985,7 +29009,7 @@ void main() {
       orbitArc.rotation.z += 3e-3;
       for (const label of labels) {
         const projected = label.position.clone().project(camera);
-        const visible = callbacks.showLabels !== false && projected.z < 1 && Math.abs(projected.x) < 0.97 && Math.abs(projected.y) < 0.97 && (!label.county || camera.zoom >= 2.5);
+        const visible = (callbacks.showLabels !== false || geojson.features.length <= 11) && projected.z < 1 && Math.abs(projected.x) < 0.97 && Math.abs(projected.y) < 0.97 && (!label.county || geojson.features.length <= 20 || camera.zoom >= 2.5);
         label.element.style.display = visible ? "" : "none";
         if (visible) label.element.style.transform = `translate(${(projected.x + 1) * host.clientWidth / 2}px, ${(-projected.y + 1) * host.clientHeight / 2}px) translate(-50%, -50%)`;
       }
@@ -29017,7 +29041,7 @@ void main() {
       }
     };
   }
-  window.ZhejiangMap3D = { mount };
+  return __toCommonJS(zhejiang_map_3d_entry_exports);
 })();
 /*! Bundled license information:
 
