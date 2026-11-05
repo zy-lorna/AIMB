@@ -35,18 +35,21 @@ function mount(host, geojson, values, callbacks) {
   controls.minPolarAngle = Math.PI * .13;
   controls.target.set(0, 0, 0);
   const viewSize = Math.max(projectedWidth, projectedHeight) * 1.18;
+  const depth = callbacks.townLevel ? Math.max(projectedWidth, projectedHeight) * .055 : 10;
+  const baseZ = callbacks.townLevel ? -depth * .8 : -8;
   const pedestalRadius = Math.max(projectedWidth, projectedHeight) * .64;
+  const ringWidth = callbacks.townLevel ? pedestalRadius * .012 : .55;
   const pedestal = new THREE.Mesh(new THREE.CircleGeometry(pedestalRadius, 96), new THREE.MeshBasicMaterial({ color: '#08294d', transparent: true, opacity: .72, depthWrite: false }));
-  pedestal.position.z = -8;
+  pedestal.position.z = baseZ;
   scene.add(pedestal);
   const pedestalRings = [1, .87].map((scale, index) => {
-    const ring = new THREE.Mesh(new THREE.RingGeometry(pedestalRadius * scale - .55, pedestalRadius * scale, 128), new THREE.MeshBasicMaterial({ color: index ? '#1c7dbb' : '#39bffc', transparent: true, opacity: index ? .2 : .48, side: THREE.DoubleSide, depthWrite: false }));
-    ring.position.z = -7.8 + index * .1;
+    const ring = new THREE.Mesh(new THREE.RingGeometry(pedestalRadius * scale - ringWidth, pedestalRadius * scale, 128), new THREE.MeshBasicMaterial({ color: index ? '#1c7dbb' : '#39bffc', transparent: true, opacity: index ? .2 : .48, side: THREE.DoubleSide, depthWrite: false }));
+    ring.position.z = baseZ + depth * (.02 + index * .01);
     scene.add(ring);
     return ring;
   });
-  const orbitArc = new THREE.Mesh(new THREE.RingGeometry(pedestalRadius - .8, pedestalRadius + .2, 48, 1, 0, Math.PI * .32), new THREE.MeshBasicMaterial({ color: '#79e6ff', transparent: true, opacity: .85, side: THREE.DoubleSide, depthWrite: false }));
-  orbitArc.position.z = -7.55;
+  const orbitArc = new THREE.Mesh(new THREE.RingGeometry(pedestalRadius - (callbacks.townLevel ? ringWidth * 1.5 : .8), pedestalRadius + (callbacks.townLevel ? ringWidth * .4 : .2), 48, 1, 0, Math.PI * .32), new THREE.MeshBasicMaterial({ color: '#79e6ff', transparent: true, opacity: .85, side: THREE.DoubleSide, depthWrite: false }));
+  orbitArc.position.z = baseZ + depth * .045;
   scene.add(orbitArc);
   const meshes = [];
   const hitMeshes = [];
@@ -57,6 +60,7 @@ function mount(host, geojson, values, callbacks) {
   const heatColors = ['#218ed0', '#29c3e6', '#f4d467', '#fb9a53', '#f15c55'].map(color => new THREE.Color(color));
   const labelLayer = document.createElement('div');
   labelLayer.className = 'map-3d-label-layer';
+  if (callbacks.townLevel) labelLayer.classList.add('township-labels');
   host.appendChild(labelLayer);
   const tooltip = document.createElement('div');
   tooltip.className = 'map-3d-tooltip';
@@ -84,7 +88,7 @@ function mount(host, geojson, values, callbacks) {
         else shape.lineTo(x, y);
       });
       shape.closePath();
-      const geometry = new THREE.ExtrudeGeometry(shape, { depth: 10, bevelEnabled: false, curveSegments: 1 });
+      const geometry = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false, curveSegments: 1 });
       const mesh = new THREE.Mesh(geometry, [new THREE.MeshPhongMaterial({ color: topColor, emissive: topColor, emissiveIntensity: .17, shininess: 54 }), new THREE.MeshPhongMaterial({ color: sideColor })]);
       mesh.userData.name = name;
       scene.add(mesh);
@@ -92,21 +96,22 @@ function mount(host, geojson, values, callbacks) {
       hitMeshes.push(mesh);
       const linePoints = sample.map(point => {
         const [x, y] = project(point);
-        return new THREE.Vector3(x, y, 10.1);
+        return new THREE.Vector3(x, y, depth + .01);
       });
       linePoints.push(linePoints[0].clone());
       const outline = new THREE.Line(new THREE.BufferGeometry().setFromPoints(linePoints), new THREE.LineBasicMaterial({ color: '#83dcff', transparent: true, opacity: .72 }));
       scene.add(outline);
       meshes.push(outline);
     }
-    const position = feature.properties.centroid || feature.properties.center;
+    const largestRing = polygons.map(polygon => polygon[0]).filter(Boolean).sort((a, b) => b.length - a.length)[0];
+    const position = feature.properties.centroid || feature.properties.center || (largestRing && largestRing.reduce((sum, point) => [sum[0] + point[0] / largestRing.length, sum[1] + point[1] / largestRing.length], [0, 0]));
     if (position) {
       const label = document.createElement('span');
       label.className = 'map-3d-label';
       label.textContent = item?.displayName || name;
       labelLayer.appendChild(label);
       const [x, y] = project(position);
-      labels.push({ element: label, position: new THREE.Vector3(x, y, 10.2), county: callbacks.countyLevel || geojson.features.length > 20 });
+      labels.push({ element: label, position: new THREE.Vector3(x, y, depth + .02), county: !callbacks.townLevel && (callbacks.countyLevel || geojson.features.length > 20) });
     }
   }
   const raycaster = new THREE.Raycaster();

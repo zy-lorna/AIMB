@@ -946,3 +946,94 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .process-stage-bars>div>span,.outcome-matrix-row>strong{white-space:nowrap}
 .management-table{overflow-x:auto}.management-table th,.management-table td{white-space:nowrap}
 .outcome-summary{grid-template-columns:repeat(6,minmax(0,1fr))}.outcome-summary strong small{font-size:12px;font-weight:400}@media(max-width:1100px){.outcome-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.outcome-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.copd-filing-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+.copd-filing-summary>div:last-child{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
+.home-filing-panel .home-filing-chart{margin-top:8px}
+.copd-filing-summary>div{padding:3px 6px;gap:1px}
+.copd-filing-summary strong{font-size:16px}
+.copd-filing-summary span{white-space:normal;line-height:1.15}
+.three-disease-venn{min-height:120px;max-height:150px}
+.copd-venn-circle{position:absolute;width:52%;height:70%;border:1px solid;border-radius:50%;display:flex;flex-direction:column;justify-content:center;text-align:center;font-size:10px;line-height:1.15;color:#fff}
+.copd-venn-circle strong{font-size:11px}
+.copd-venn-high{left:1%;top:0;background:#287ac4a8;border-color:#56b5ff;align-items:flex-start;padding-left:8%}
+.copd-venn-diabetes{right:1%;top:0;background:#20a18ba8;border-color:#57e0c4;align-items:flex-end;padding-right:8%}
+.copd-venn-lung{left:24%;bottom:0;background:#c99432a8;border-color:#f5cf75;justify-content:flex-end;padding-bottom:5%}
+.disease-venn-layout{display:flex;align-items:center;flex:1;min-height:0;gap:4px}
+.disease-venn-svg{width:65%;height:100%;min-height:85px;overflow:visible}
+.disease-venn-svg path{cursor:help}
+.disease-venn-svg path:hover{fill:#fff;fill-opacity:.18}
+.disease-venn-totals{flex:1;min-width:0;display:grid;gap:7px;font-size:10px}
+.disease-venn-totals div{display:grid;grid-template-columns:7px 1fr;column-gap:4px;align-items:center}
+.disease-venn-totals i{width:7px;height:7px;border-radius:50%}
+.disease-venn-totals strong{grid-column:2;color:#fff;white-space:nowrap}
+.disease-matrix-panel{display:flex;flex-direction:column;min-height:0}
+.situation-board .board-stack:first-child:has(.disease-matrix-panel){grid-template-rows:1.3fr 1.15fr 1.35fr 1fr}
+.disease-matrix-totals{display:flex;justify-content:space-between;gap:3px;font-size:9px;color:#a7c9dc;white-space:nowrap}
+.disease-matrix-totals strong{color:#fff}
+.disease-matrix-scroll{flex:1;min-height:0;overflow:auto;margin-top:3px}
+.disease-matrix{width:100%;border-collapse:collapse;font-size:10px;text-align:center;color:#b9d6e6}
+.disease-matrix th,.disease-matrix td{padding:2px 1px;border-bottom:1px solid #23506c;white-space:nowrap}
+.disease-matrix th:first-child,.disease-matrix td:first-child{text-align:left}
+.disease-matrix td:last-child{text-align:right;color:#fff}
+.disease-matrix i{display:inline-block;width:7px;height:7px;border:1px solid #557b90;border-radius:50%}
+.disease-matrix i.on{background:#56c7e8;border-color:#56c7e8}
+.disease-matrix-note{margin:2px 0 0;color:#91b7ca;font-size:9px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.clinic-report-source{color:#88b6ce;font-size:10px;text-align:right;margin-top:3px}
+.report-other span{font-size:11px;color:#a9c7d9}
+
+/* Dashboard composition uses a 1920 x 1080 canvas, scaled by fitDashboard. */
+.dashboard-board{--board-gap:20px;padding:0 20px 20px;gap:20px}
+.dashboard-board:not(.board-no-kpis){grid-template-rows:76px auto minmax(0,1fr)}
+.dashboard-board .board-kpis{align-items:stretch;grid-auto-rows:1fr}
+.dashboard-board:not(.board-no-kpis) .board-kpi,.dashboard-board:has(.home-disease-panel) .board-kpi{padding:20px;justify-content:flex-start}
+.dashboard-board .board-title{background:none;border:0}
+.dashboard-board .board-title>.filters{left:20px;max-width:none}
+.dashboard-board .period-control>.filter-field{display:none}
+.dashboard-board #periodSeg{display:flex;gap:12px;background:transparent;border:0}
+.dashboard-board #periodSeg button{position:relative;width:64px;height:34px;padding:0;border:1px solid transparent;border-radius:20px;background:#122f54;color:#8daec5;font-size:0}
+.dashboard-board #periodSeg button::after{font-size:17px}
+.dashboard-board #periodSeg [data-period-mode="year"]::after{content:'年'}
+.dashboard-board #periodSeg [data-period-mode="quarter"]::after{content:'季'}
+.dashboard-board #periodSeg button.active{background:#14345b;border-color:#b5e5ff;color:#fff;box-shadow:inset 0 0 12px #3983b755}
+.dashboard-board .board-title>.filters label[for="year"],.dashboard-board .board-title>.filters label[for="quarter"]{font-size:0}
+.dashboard-board .board-title>.filters label[for="year"] select,.dashboard-board .board-title>.filters label[for="quarter"] select{font-size:15px;border:0;border-radius:20px;background:#122f54;color:#c1dced;height:34px;padding:0 14px;min-width:105px}
+.dashboard-board .board-panel{background-image:url('dashboard-border.svg');background-repeat:no-repeat;background-position:center bottom;background-size:100% 8px}
+.dashboard-board .board-panel>h2,.dashboard-board .situation-panel-title{background:none;padding:8px 0;border:0;border-bottom:1px solid #1e567d;min-height:36px}
+.dashboard-board .situation-panel-title h2{padding:0;border:0}
+.disease-matrix-scroll{min-width:0;overflow-y:auto;overflow-x:hidden}
+.disease-matrix{min-width:0;table-layout:fixed}
+.disease-matrix th,.disease-matrix td{padding:2px 1px;overflow:hidden;text-overflow:ellipsis}
+.disease-matrix th:first-child,.disease-matrix td:first-child{width:27%}
+.disease-matrix th:last-child,.disease-matrix td:last-child{width:24%}
+.situation-board .board-stack:first-child:has(.disease-matrix-panel){grid-template-rows:1.35fr 1.15fr 1.5fr}
+.situation-board .board-stack:last-child:has(.situation-complication-panel){grid-template-rows:.8fr 1.35fr .8fr .75fr}
+.situation-board .situation-complication-panel .situation-complication-list{height:auto;flex:1;min-height:0}
+.situation-board .board-stack:last-child:has(.situation-complication-panel) .construction-coverage{flex:1;align-items:center}
+
+/* Keep the period controls aligned to the 20px canvas inset. */
+.dashboard-board .board-title>.filters{left:0;margin:0}
+.dashboard-board .board-stack .board-panel{padding:14px 16px}
+.dashboard-board .board-stack .board-panel>h2,
+.dashboard-board .board-stack .situation-panel-title{
+  margin: -14px -16px 9px;
+  padding:0;
+  min-height:0;
+}
+.dashboard-board .board-stack .situation-panel-title h2{margin:0;padding:0}
+.dashboard-board:not(.board-no-kpis) .board-stack:last-child .board-panel>h2{margin:-14px -16px 9px;padding:0}
+.dashboard-board .map-zoom button{background:#143d5c;color:#d7edfa;border-color:#2c668e}
+.dashboard-board .map-zoom button:hover{background:#1b5a80;color:#fff}
+
+/* Panel headings and filing-chart spacing on the dashboard canvas. */
+.dashboard-board .board-stack .board-panel>h2,
+.dashboard-board .board-stack .situation-panel-title,
+.dashboard-board:not(.board-no-kpis) .board-stack:last-child .board-panel>h2{
+  padding:12px 20px;
+}
+.dashboard-board .home-filing-legend{margin:16px 0 0}
+.dashboard-board .home-filing-panel .home-filing-chart,
+.dashboard-board .situation-filing .home-filing-chart{margin-top:12px}
+.township-boundary-notice{position:absolute;left:12px;bottom:10px;z-index:3;max-width:70%;color:#b9d7e9;font-size:11px;line-height:1.4;pointer-events:none}
+.township-county-picker{position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:8;max-width:80%;padding:8px 12px;color:#e5f6ff;background:#103554;border:1px solid #4da3d0;border-radius:4px;font-size:14px}
+.dashboard-board .township-labels .map-3d-label{font-size:11px}
