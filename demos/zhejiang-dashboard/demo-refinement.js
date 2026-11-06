@@ -1119,7 +1119,7 @@ dashboard=function(){
     }
     return root.innerHTML;
   }
-  if(state.dashboardMetricView!=='situation'){state.mapMetric='diagnosed';state.mapScope=scopeLevel()==='province'?'city':'county';state.dashboardMetricView='situation';mapZoom=1.3}
+  if(state.dashboardMetricView!=='situation'){state.mapMetric='comorbidity';state.situationCombination='7';state.mapScope=scopeLevel()==='province'?'city':'county';state.dashboardMetricView='situation';mapZoom=1}
   const root=document.createElement('div');root.innerHTML=dashboardBeforeSituation();const board=root.querySelector('#dashboardBoard'),parts=situationPanels();
   board.classList.add('situation-board','board-no-kpis');board.querySelector('.board-stack').innerHTML=parts.left;board.querySelector('.board-stack:last-child').innerHTML=parts.right;
   board.querySelector('.board-kpis')?.remove();
@@ -1153,7 +1153,7 @@ changeMapZoom=function(action){
   if(state.page!=='dashboard'||state.dashboardView!=='situation'||state.mapMetric!=='flow')return changeMapZoomBeforeSituation(action);
   if(!provinceChart)return;
   const current=provinceChart.getOption().geo?.[0]?.zoom||1.3;
-  mapZoom=action==='reset'?1.3:Math.max(1,Math.min(8,current*(action==='in'?1.5:1/1.5)));
+  mapZoom=action==='reset'?1:Math.max(.5,Math.min(8,current*(action==='in'?1.5:1/1.5)));
   provinceChart.setOption({geo:{zoom:mapZoom,center:action==='reset'?null:provinceChart.getOption().geo?.[0]?.center}});
   updateMapZoom();
 };
@@ -2108,7 +2108,7 @@ dashboard=function(){
   const html=dashboardBeforeCopd();if(!homeView()){if(state.page==='dashboard'&&state.dashboardView==='situation'){const root=document.createElement('div');root.innerHTML=html;const filing=root.querySelector('.situation-filing');if(filing)filing.innerHTML=copdFilingContent(populationData());return root.innerHTML}return html}
   const root=document.createElement('div');root.innerHTML=html;const p=populationData(),kpis=root.querySelectorAll('.board-kpi');
   const update=(index,label,note)=>{kpis[index].querySelector('span').textContent=label;let small=kpis[index].querySelector('small');if(!small){small=document.createElement('small');kpis[index].appendChild(small)}small.textContent=note};
-  update(1,'慢病确诊患者数','总患者中高血压/糖尿病/慢阻肺患者去重数');
+  update(1,'重点慢病人数','高血压/糖尿病/慢阻肺患者去重人数');
   update(2,'慢病专档数','高血压专档+糖尿病专档+慢阻肺专档');
   kpis[2].querySelector('strong').innerHTML=`${(p.managedHigh+p.managedDiabetes+p.managedCopd).toFixed(1)}<em class="board-kpi-unit">万份</em>`;
   update(3,'高风险患者数','专档患者中高风险患者去重数');
@@ -2153,7 +2153,7 @@ function diseaseVenn(p){
     const bits=circles.reduce((mask,[cx,cy],i)=>mask|((x+1-cx)**2+(y+1-cy)**2<65**2?1<<i:0),0);
     if(bits)paths[bits]+=`M${x} ${y}h2v2h-2z`;
   }
-  return `<div class="disease-venn-layout"><svg viewBox="0 0 300 170" class="disease-venn-svg" aria-label="三种疾病确诊患者交集，交集人数为模拟数据"><circle cx="110" cy="58" r="65" fill="#398ff0" fill-opacity=".42" stroke="#66b8ff"/><circle cx="190" cy="58" r="65" fill="#2cc5a4" fill-opacity=".42" stroke="#64e2c5"/><circle cx="150" cy="105" r="65" fill="#eab85e" fill-opacity=".42" stroke="#f5d281"/>${rows.map(row=>`<path d="${paths[row.bits]}" fill="transparent" data-board-tip="${row.name}｜${people(row.value)}人\n仅包含所列疾病 · 模拟数据"><title>${row.name}：${people(row.value)}人，仅包含所列疾病，模拟数据</title></path>`).join('')}</svg><div class="disease-venn-totals">${[['高血压',p.high,'#66b8ff'],['糖尿病',p.diabetes,'#64e2c5'],['慢阻肺',p.copd,'#f5d281']].map(([name,value,color])=>`<div><i style="background:${color}"></i><span>${name}</span><strong>${people(value)}人</strong></div>`).join('')}</div></div><p class="home-venn-note">各病种人数含共患；交集为互斥组合，人数为模拟数据。</p>`;
+  return `<div class="disease-venn-layout"><svg viewBox="0 0 300 170" class="disease-venn-svg" aria-label="三种疾病确诊患者交集，交集人数为模拟数据"><circle cx="110" cy="58" r="65" fill="#398ff0" fill-opacity=".42" stroke="#66b8ff"/><circle cx="190" cy="58" r="65" fill="#2cc5a4" fill-opacity=".42" stroke="#64e2c5"/><circle cx="150" cy="105" r="65" fill="#eab85e" fill-opacity=".42" stroke="#f5d281"/>${rows.map(row=>`<path d="${paths[row.bits]}" fill="transparent" data-board-tip="${row.name}｜${people(row.value)}人\n仅包含所列疾病 · 模拟数据"><title>${row.name}：${people(row.value)}人，仅包含所列疾病，模拟数据</title></path>`).join('')}</svg><div class="disease-venn-totals">${[['高血压',p.high,'#66b8ff'],['糖尿病',p.diabetes,'#64e2c5'],['慢阻肺',p.copd,'#f5d281']].map(([name,value,color])=>`<div><i style="background:${color}"></i><span>${name}</span><strong>${people(value)}人</strong></div>`).join('')}</div></div><p class="home-venn-note">统计数据为非去重</p>`;
 }
 function diseaseMatrix(p){
   const rows=diseaseCombinations(p), diseases=[['高血压',p.high],['糖尿病',p.diabetes],['慢阻肺',p.copd]];
@@ -2165,7 +2165,7 @@ dashboard=function(){
   if(state.page!=='dashboard'||!['home','situation'].includes(view))return html;
   const root=document.createElement('div');root.innerHTML=html;
   const panel=view==='home'?root.querySelector('.home-disease-panel'):root.querySelector('.board-stack .situation-panel');
-  if(panel){const p=populationData();if(view==='home')panel.innerHTML=`<h2>确诊患者疾病分布</h2>${diseaseVenn(p)}`;else {panel.classList.add('disease-matrix-panel');panel.innerHTML=diseaseMatrix(p)}}
+  if(panel){panel.classList.add('disease-distribution-panel');panel.innerHTML=`<h2>重点慢病患者分布</h2>${diseaseVenn(populationData())}`}
   if(view==='situation'){
     const complication=root.querySelector('.situation-complication-list')?.closest('.situation-panel');
     const right=root.querySelector('.situation-board .board-stack:last-child');
@@ -2226,20 +2226,20 @@ renderProvinceMap=function(){
   if(state.page!=='dashboard'||state.mapScope!=='town'){renderProvinceMapBeforeTownships();return}
   const element=$('zhejiangMap'),county=currentNode();
   if(!element)return;
-  const notice=document.createElement('div');notice.className='township-boundary-notice';notice.textContent='乡镇边界为历史数据，区划待核验；热力指标为模拟数据';$('mapStage').append(notice);
   const target=state.mapView==='3d'?$('zhejiangMap3D'):element;
   if(!townshipFeatures){
     target.textContent='正在加载乡镇边界…';
     if(!townshipLoad)townshipLoad=fetch('zhejiang-townships.geojson').then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json()}).catch(async()=>{const parts=await Promise.all(Array.from({length:16},(_,i)=>fetch(`township-parts/${String(i).padStart(2,'0')}.bin`).then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.arrayBuffer()})));return JSON.parse(await new Blob(parts).text())}).then(data=>{townshipFeatures=data.features;townshipLoad=null;if(state.mapScope==='town')renderProvinceMap()}).catch(error=>{townshipLoad=null;console.error('乡镇边界加载失败',error);if(state.mapScope==='town')target.textContent='乡镇边界加载失败，请检查数据文件后重试'});
     return;
   }
-  const features=townshipFeatures.filter(f=>!county||(f.properties['市']===county.cityName&&f.properties['县']===county.name)).map(f=>({...f,properties:{...f.properties,name:[f.properties['市'],f.properties['县'],f.properties['乡']].join('')}}));
+  const countyName=name=>name==='临安市'?'临安区':name;
+  const features=townshipFeatures.filter(f=>!county||(f.properties['市']===county.cityName&&countyName(f.properties['县'])===county.name)).map(f=>({...f,properties:{...f.properties,name:[f.properties['市'],countyName(f.properties['县']),f.properties['乡']].join('')}}));
   provinceChart?.dispose();provinceChart=null;map3DHandle?.dispose();map3DHandle=null;
   if(!features.length){target.textContent=`${county.name}暂无可匹配的乡镇边界`;return}
   target.textContent='';
   const geo={type:'FeatureCollection',features};
   const metricLabel=document.querySelector('#mapMetricLabel')?.textContent||'指标';
-  const values=features.map(f=>{const name=f.properties.name,node=counties.find(c=>c.cityName===f.properties['市']&&c.name===f.properties['县']),base=node?Number(mapValue(node)):NaN,hash=Array.from(name+state.mapMetric).reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,0);return {name,displayName:f.properties['乡'],value:Number.isFinite(base)?Math.max(0,base*(.82+(hash%37)/100)):null}});
+  const values=features.map(f=>{const name=f.properties.name,node=counties.find(c=>c.cityName===f.properties['市']&&c.name===countyName(f.properties['县'])),base=node?Number(mapValue(node)):NaN,hash=Array.from(name+state.mapMetric).reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,0);return {name,displayName:f.properties['乡'],value:Number.isFinite(base)?Math.max(0,base*(.82+(hash%37)/100)):null}});
   const valid=values.map(x=>x.value).filter(Number.isFinite),min=Math.min(...valid),max=Math.max(...valid);
   const tooltip=name=>{const value=values.find(x=>x.name===name)?.value;return `<div class="map-tooltip"><strong>${esc(name)}</strong><div>${esc(metricLabel)}：${Number.isFinite(value)?value.toFixed(2)+(metricLabel.includes('人数')?'':'%'):'待接入'}</div><div>模拟数据</div></div>`};
   if(state.mapView==='3d'){
@@ -2253,5 +2253,128 @@ renderProvinceMap=function(){
   provinceChart.on('georoam',()=>{mapZoom=provinceChart.getOption().series[0].zoom||1;updateMapZoom()});
   updateMapZoom();setTimeout(()=>provinceChart?.resize(),0);
 };
+// Home panel controls share the existing map metric state and drilldown rendering.
+const dashboardBeforeHomeMapLinks=dashboard;
+dashboard=function(){
+  const html=dashboardBeforeHomeMapLinks();
+  if(!homeView())return html;
+  const root=document.createElement('div');root.innerHTML=html;
+  const board=root.querySelector('#dashboardBoard');
+  const labels={bloodPressure:'血压控制率',bloodGlucose:'血糖控制率',hba1cTarget:'糖化血红蛋白控制率',bloodLipids:'血脂控制率'};
+  Object.entries(labels).forEach(([key,label])=>{homeMapDefinitions[key][0]=label;homeMapDefinitions[key][1]=homeMapDefinitions[key][1].replace(/达标率/g,'控制率')});
+  const link=(heading,key)=>{if(heading)heading.insertAdjacentHTML('beforeend',`<button class="home-map-link" type="button" data-home-map-link="${key}" title="联动地图">⌖ 联动地图</button>`)};
+  link(board.querySelector('.home-risk-panel h2'),'highRisk');
+  const panels=board.querySelectorAll('.board-stack:last-child > .board-panel');
+  link(panels[0]?.querySelector('h2'),'construction');
+  const core=panels[2],heading=core?.querySelector('h2');
+  if(heading){heading.textContent='核心指标控制率';link(heading,'control')}
+  core?.querySelectorAll('.outcome-ring-item').forEach(item=>{item.innerHTML=item.innerHTML.replace(/达标率/g,'控制率');if(item.dataset.boardTip)item.dataset.boardTip=item.dataset.boardTip.replace(/达标率/g,'控制率')});
+  const metric=homeMapDefinitions[state.mapMetric];
+  const mapTitle=board.querySelector('.board-map .panel-head h2');
+  if(mapTitle&&metric&&state.homeMapLinked)mapTitle.textContent=`${currentNode()?.name||'浙江省'}${metric[0]}热力图`;
+  if(mapTitle&&state.homeMapLinked&&labels[state.mapMetric]){const selected=state.mapMetric;mapTitle.insertAdjacentHTML('afterend',`<div class="home-control-tabs" role="tablist" aria-label="核心指标控制率">${Object.entries(labels).map(([key,label])=>`<button type="button" role="tab" data-home-control="${key}" aria-selected="${selected===key}" class="${selected===key?'active':''}">${label.replace('控制率','')}</button>`).join('')}</div>`)}
+  const mapLabel=board.querySelector('#mapMetricLabel');if(mapLabel&&metric)mapLabel.textContent=metric[0];
+  board.querySelector('.home-filing-chart')?.setAttribute('preserveAspectRatio','none');
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+document.addEventListener('click',event=>{
+  const link=event.target.closest('[data-home-map-link]'),tab=event.target.closest('[data-home-control]');
+  if(!homeView()||(!link&&!tab))return;
+  const key=tab?.dataset.homeControl||(link.dataset.homeMapLink==='control'?(state.homeControlMetric||'bloodPressure'):link.dataset.homeMapLink);
+  if(labelsForHomeControl(key))state.homeControlMetric=key;
+  state.mapMetric=key;state.homeMapLinked=true;render();
+});
+function labelsForHomeControl(key){return ['bloodPressure','bloodGlucose','hba1cTarget','bloodLipids'].includes(key)}
+
+// Combination values are mutually exclusive, as in the disease distribution.
+const situationCombinationLabels={'3':'高+糖','5':'高+慢','6':'糖+慢','7':'高+糖+慢'};
+function situationCombinationValue(node,key){return diseaseCombinations(node?populationFor(node):populationData()).find(row=>row.bits===Number(key))?.value||0}
+const mapValueBeforeCombination=mapValue;
+mapValue=function(node){
+  if(situationActive()&&state.mapMetric==='comorbidity')return situationCombinationValue(node,state.situationCombination||'7')/Math.max(.0001,situationData(node).p.diagnosed)*100;
+  if(situationActive()&&state.mapMetric==='diagnosed')return situationData(node).p.diagnosed/Math.max(.0001,situationData(node).p.diagnosed*1.28)*100;
+  return mapValueBeforeCombination(node);
+};
+const mapTooltipBeforeCombination=mapTooltip;
+mapTooltip=function(node){
+  if(situationActive()&&state.mapMetric==='comorbidity'){const d=situationData(node),n=situationCombinationValue(node,state.situationCombination||'7');return `<div class="map-tooltip"><strong>${esc(fullName(node))}</strong><div><span>${situationCombinationLabels[state.situationCombination||'7']}共病人数</span><b>${people(n)}人</b></div><div><span>占确诊人群比例</span><b>${(n/Math.max(.0001,d.p.diagnosed)*100).toFixed(2)}%</b></div><p>共病人数 ÷ 重点慢病确诊人数；模拟数据</p></div>`}
+  return mapTooltipBeforeCombination(node);
+};
+const dashboardBeforeSituationMapLinks=dashboard;
+dashboard=function(){
+  const html=dashboardBeforeSituationMapLinks();if(state.page!=='dashboard')return html;
+  const root=document.createElement('div');root.innerHTML=html;const board=root.querySelector('#dashboardBoard');
+  if(homeView()){
+    const title=board.querySelector('.board-map .panel-head h2'),metric=homeMapDefinitions[state.mapMetric];
+    if(title&&metric)title.textContent=`${currentNode()?.name||'浙江省'}${metric[0]}热力图`;
+  }
+  if(situationActive()){
+    const metric=state.mapMetric,units=childUnits(),key=state.situationCombination||'7';
+    const venn=board.querySelector('.disease-venn-svg');if(venn){[['高血压',65,52],['糖尿病',228,52],['慢阻肺',150,143]].forEach(([name,x,y])=>{const text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('x',x);text.setAttribute('y',y);text.setAttribute('text-anchor','middle');text.setAttribute('class','venn-disease-label');text.textContent=name;venn.append(text)})}
+    const title=board.querySelector('.board-map .panel-head h2');
+    if(title)title.textContent=`${currentNode()?.name||'浙江省'}${metric==='diagnosed'?'重点慢病患者占比':metric==='comorbidity'?'共病负荷':'高风险人数占比'}热力图`;
+    const label=board.querySelector('#mapMetricLabel');if(label)label.textContent=metric==='diagnosed'?'重点慢病患者占比':metric==='comorbidity'?`${situationCombinationLabels[key]}占确诊人群比例`:'高风险人数占比';
+    if(metric==='comorbidity'){
+      const ordered=[...units].sort((a,b)=>mapValue(b)-mapValue(a)),total=cities.reduce((sum,x)=>sum+situationData(x).p.diagnosed,0),average=cities.reduce((sum,x)=>sum+situationCombinationValue(x,key),0)/Math.max(.0001,total)*100;
+      const items=ordered.slice(0,5).map(x=>`${fullName(x)}${situationCombinationLabels[key]}共病人数 ${people(situationCombinationValue(x,key))}人，占确诊人群 ${mapValue(x).toFixed(2)}%，省平均 ${average.toFixed(2)}%。`);
+      const ticker=board.querySelector('.board-ticker');if(ticker){ticker.dataset.items=JSON.stringify(items);const text=ticker.querySelector('#boardTickerText');if(text)text.textContent=items[0]||'暂无下级单位'}
+    }
+    const link=(heading,value)=>heading?.insertAdjacentHTML('beforeend',`<button type="button" class="home-map-link" data-situation-map-link="${value}">⌖ 联动地图</button>`);
+    link(board.querySelector('.disease-distribution-panel h2'),'diagnosed');
+    link(board.querySelector('.board-stack:last-child > .board-panel:first-child h2'),'highRisk');
+    const tabs=(selected,slot)=>`<div class="situation-combination-tabs" role="tablist" aria-label="疾病组合">${Object.entries(situationCombinationLabels).map(([id,name])=>`<button type="button" role="tab" data-combination="${id}" data-combination-slot="${slot}" aria-selected="${id===selected}" class="${id===selected?'active':''}">${name}</button>`).join('')}</div>`;
+    const rank=(name,slot,fn,percent=false)=>{const selected=state[`combination${slot}`]||'7';const holder=document.createElement('div');holder.innerHTML=requestedRank(name,units,x=>fn(x,selected),percent);holder.querySelector('h2').insertAdjacentHTML('beforeend',tabs(selected,slot));holder.querySelector('.requested-rank-list')?.insertAdjacentHTML('afterend','<small class="combination-note">互斥组合，数据为模拟值</small>');return holder.innerHTML};
+    board.querySelectorAll('.construction-coverage strong').forEach(el=>{el.innerHTML=el.innerHTML.replace(/(万次)/g,'<small class="visit-unit">$1</small>')});
+    const bottom=board.querySelector('.situation-bottom');
+    if(metric==='comorbidity')bottom.innerHTML=rank('区域共病人数','Count',(x,k)=>situationCombinationValue(x,k))+rank('共病占确诊人群比例','Rate',(x,k)=>situationCombinationValue(x,k)/Math.max(.0001,situationData(x).p.diagnosed)*100,true);
+    else if(metric==='diagnosed')bottom.innerHTML=rank('区域确诊人数','Diagnosed',(x,k)=>situationCombinationValue(x,k))+rank('区域未建档人数','Missing',(x,k)=>{const d=situationData(x);return situationCombinationValue(x,k)*d.missing/Math.max(.0001,d.p.diagnosed)});
+    else bottom.innerHTML=requestedRank('区域高风险人数',units,x=>situationData(x).risk.high)+requestedRank('区域高风险人数占比',units,x=>situationData(x).riskRate,true);
+  }
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+document.addEventListener('click',event=>{
+  if(!situationActive())return;
+  const link=event.target.closest('[data-situation-map-link]'),tab=event.target.closest('[data-combination]');
+  if(link){state.mapMetric=link.dataset.situationMapLink;render()}
+  if(tab){state[`combination${tab.dataset.combinationSlot}`]=tab.dataset.combination;if(state.mapMetric==='comorbidity')state.situationCombination=tab.dataset.combination;render()}
+});
+const renderProvinceMapBeforeCanvasAdjustment=renderProvinceMap;
+renderProvinceMap=function(){renderProvinceMapBeforeCanvasAdjustment();if(state.page==='dashboard'&&state.mapView==='2d'&&provinceChart)provinceChart.setOption({series:[{layoutSize:'80%',scaleLimit:{min:.05,max:100}}]})};
+const changeMapZoomBeforeAnnotations=changeMapZoom;
+changeMapZoom=function(action){
+  if(state.page!=='dashboard'||state.mapView!=='2d'||!provinceChart)return changeMapZoomBeforeAnnotations(action);
+  const current=provinceChart.getOption().series[0];
+  mapZoom=action==='reset'?1:Math.max(.05,Math.min(100,(current.zoom||1)*(action==='in'?1.5:1/1.5)));
+  provinceChart.setOption({series:[{zoom:mapZoom,center:action==='reset'?null:current.center}]});updateMapZoom();
+};
+const dashboardBeforeCurrentAnnotations=dashboard;
+dashboard=function(){
+  const html=dashboardBeforeCurrentAnnotations();
+  if(state.page!=='dashboard')return html;
+  const root=document.createElement('div');root.innerHTML=html;
+  const board=root.querySelector('#dashboardBoard');
+  board.querySelectorAll('.board-ticker span').forEach(el=>{el.textContent=el.textContent.replace(/预警/g,'')});
+  board.querySelectorAll('.board-ticker strong').forEach(el=>{const viewport=document.createElement('div');viewport.className='ticker-viewport';el.replaceWith(viewport);viewport.append(el)});
+  board.querySelectorAll('.outcome-ring-item').forEach(item=>{item.querySelectorAll('span').forEach(el=>{el.textContent=el.textContent.replace(/控制率/g,'')})});
+  if(state.dashboardView==='construction'){
+    const left=board.querySelector('.board-stack:first-child'),right=board.querySelector('.board-stack:last-child');
+    const link=(heading,key)=>heading?.insertAdjacentHTML('beforeend',`<button type="button" class="home-map-link" data-construction-map-link="${key}">⌖ 联动地图</button>`);
+    link(left?.children[0]?.querySelector('h2'),'construction');
+    link(right?.children[0]?.querySelector('h2'),'entry');
+    link(right?.children[1]?.querySelector('h2'),'monitoring');
+    const titles={construction:'一体化门诊覆盖率',entry:'医防融合入径率',monitoring:'路径节点总执行率'};
+    const title=board.querySelector('.board-map .panel-head h2');if(title)title.textContent=`${currentNode()?.name||'浙江省'}${titles[state.mapMetric]||titles.construction}热力图`;
+    const row=clinicReportRow(currentNode());
+    left?.children[1]?.insertAdjacentHTML('afterend',`<section class="board-panel construction-panel leading-clinic"><h2>引领型一体化门诊</h2><div class="leading-count">鼓励探索型机构 <strong>${row?row[3]:'--'}</strong> 家</div><div class="leading-content"><span>机构名称待接入</span><div class="leading-photo">机构图片待接入</div></div></section>`);
+    const bottom=board.querySelector('.situation-bottom');
+    if(state.mapMetric==='entry')bottom?.querySelector('h2')?.replaceChildren('区域医防融合入径率');
+    if(state.mapMetric==='monitoring')bottom?.querySelector('h2')?.replaceChildren('区域路径节点总执行率');
+  }
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+document.addEventListener('click',event=>{const link=event.target.closest('[data-construction-map-link]');if(link&&state.page==='dashboard'&&state.dashboardView==='construction'){state.mapMetric=link.dataset.constructionMapLink;render()}});
 render();
 document.body.classList.remove('dashboard-booting');
