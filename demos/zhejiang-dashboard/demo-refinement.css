@@ -1037,3 +1037,69 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .township-boundary-notice{position:absolute;left:12px;bottom:10px;z-index:3;max-width:70%;color:#b9d7e9;font-size:11px;line-height:1.4;pointer-events:none}
 .township-county-picker{position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:8;max-width:80%;padding:8px 12px;color:#e5f6ff;background:#103554;border:1px solid #4da3d0;border-radius:4px;font-size:14px}
 .dashboard-board .township-labels .map-3d-label{font-size:11px}
+.situation-board .board-stack:first-child:has(.disease-distribution-panel){grid-template-rows:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr)}
+.situation-board .board-stack:last-child:has(.situation-complication-panel){grid-template-rows:minmax(0,.8fr) minmax(0,1.05fr) minmax(0,1.05fr) minmax(0,.8fr)}
+.situation-board .disease-distribution-panel{display:flex;flex-direction:column}
+.dashboard-board .board-title>.filters{width:max-content;flex:none}
+.dashboard-board:has(.home-disease-panel) .map-metrics{display:none!important}
+.dashboard-board .home-filing-panel>h2{margin-bottom:16px}
+.dashboard-board .home-filing-panel .home-filing-chart{flex:1 1 0;min-height:0;max-height:none;width:100%}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.home-map-link{flex:none;border:0;background:transparent;color:#64d1f3;font-size:13px;padding:4px;white-space:nowrap}
+.home-map-link:hover{color:#fff}
+.home-control-tabs{display:flex;flex-wrap:wrap;gap:8px;align-content:center;flex:1}
+.home-control-tabs button{border:1px solid #28668c;background:#123b59;color:#bcd9e9;padding:6px 9px;font-size:13px}
+.home-control-tabs button.active{background:#1476b4;color:#fff;border-color:#54bce6}
+.dashboard-board:has(.home-disease-panel) .home-service-summary{margin:12px 0 20px;flex-wrap:wrap}
+.dashboard-board:has(.home-disease-panel) .home-service-summary + .construction-bar-chart{min-height:0;flex:1}
+.dashboard-board .board-title>div:not(.filters){pointer-events:auto;z-index:1;width:max-content;flex:none}
+.dashboard-board:has(.home-disease-panel) .map-tools{display:none!important}
+.dashboard-board .board-map .panel-head:has(.home-control-tabs){flex-wrap:wrap;gap:8px}
+.dashboard-board .board-map .home-control-tabs{flex:0 1 auto;gap:4px;align-content:center}
+.dashboard-board .board-map .home-control-tabs button{font-size:12px;padding:4px 6px;white-space:nowrap}
+.dashboard-board .home-filing-summary.copd-filing-summary{gap:5px}
+.dashboard-board .copd-filing-summary>div{padding:6px 7px;gap:4px}
+.dashboard-board .copd-filing-summary span{font-size:10px;line-height:1.3}
+.dashboard-board .copd-filing-summary strong{font-size:15px}
+.dashboard-board:has(.home-disease-panel) .home-service-summary{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:12px 0 16px}
+
+/* Situation headings, combination controls and an unobstructed map surface. */
+.dashboard-board .board-map .map-panel{background:transparent;box-shadow:none;border:0}
+.dashboard-board .map-stage{overflow:visible;background:transparent}
+.dashboard-board .map-chart,.dashboard-board .map-3d{background:transparent}
+.dashboard-board .map-scale{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;gap:4px;align-items:end}
+.dashboard-board .map-scale #mapMetricLabel{grid-column:1 / 3}
+.dashboard-board .map-scale i{width:10px;height:80px;background:linear-gradient(0deg,#0751b8,#11b9ec,#f9cc5e,#e8474d)}
+.dashboard-board .map-scale span:last-child{writing-mode:vertical-rl}
+.situation-board .requested-rank>h2{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:-16px -16px 9px;padding:12px 20px;min-height:0;border-bottom:1px solid #1e567d;font-size:16px}
+.situation-board .board-stack .board-panel>h2{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.situation-combination-tabs{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.situation-combination-tabs button{padding:3px 4px;border:1px solid #28668c;background:#123b59;color:#bcd9e9;font-size:11px;white-space:nowrap}
+.situation-combination-tabs button.active{background:#1476b4;color:#fff}
+.combination-note{display:block;color:#9bbbd0;font-size:10px;margin-top:3px}
+.visit-unit{font-size:.65em;font-weight:400}
+.venn-disease-label{fill:#fff;font-size:13px;pointer-events:none}
+
+/* Dashboard annotations: shared columns, map legend and panel spacing. */
+.dashboard-board .board-columns,.situation-board .board-columns,.outcome-board .board-columns{grid-template-columns:450px minmax(0,1fr) 450px}
+.dashboard-board .map-scale #mapMetricLabel{display:none}
+.dashboard-board .map-scale{grid-template-rows:auto;align-items:center}
+.dashboard-board .map-scale i{background:linear-gradient(180deg,#0751b8,#11b9ec,#f9cc5e,#e8474d)}
+.dashboard-board:has(.home-disease-panel) .map-metrics,.situation-board .map-metrics,.construction-board .map-metrics{display:none!important}
+.dashboard-board .ticker-viewport{flex:1;min-width:0;overflow:hidden}
+.dashboard-board .board-ticker strong{display:inline-block;min-width:100%;overflow:visible;white-space:nowrap;animation:ticker-slide 8s linear infinite}
+.dashboard-board .board-ticker span{position:relative;z-index:1;background:#103752}
+.dashboard-board .situation-panel-title .situation-tabs{margin-right:20px}
+.dashboard-board .situation-bottom .board-panel{padding:0 16px 12px;display:flex;flex-direction:column;min-height:0}
+.dashboard-board .situation-bottom .board-panel>h2,.dashboard-board .situation-bottom .node-region-head{margin:0 -16px 9px;padding:12px 20px;min-height:0;border-bottom:1px solid #1e567d}
+.dashboard-board .situation-bottom .node-region-head h2{padding:0}
+.dashboard-board .situation-bottom .construction-scroll{height:auto;min-height:0;flex:1}
+.dashboard-board .construction-node-regions{max-height:none;min-height:0;flex:1;display:block;overflow:hidden}
+.dashboard-board .construction-node-region:not([hidden]){display:flex;flex-direction:column;height:100%}
+.dashboard-board .construction-node-region .construction-scroll{height:auto;flex:1}
+.construction-board .board-stack:first-child{grid-template-rows:1.2fr .7fr .8fr 1.1fr}
+.construction-board .board-stack .board-panel>h2{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.leading-clinic{display:flex;flex-direction:column;min-height:0}
+.leading-count{color:#bad9e8;font-size:13px}.leading-count strong{color:#55c9ec;font-size:22px;margin-left:8px}
+.leading-content{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;flex:1;min-height:0;color:#b4d1e3}
+.leading-photo{height:100%;min-height:48px;display:grid;place-items:center;border:1px dashed #39769a;color:#9bbcd0;font-size:12px}
