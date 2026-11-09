@@ -1179,8 +1179,8 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 /* Final home artwork supplied with the design. */
 .dashboard-board:has(.home-disease-panel){position:relative}
 .dashboard-board:has(.home-disease-panel)::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:url('dashboard-assets/边框.svg') center / 100% 100% no-repeat}
-.dashboard-board:has(.home-disease-panel) .board-title{background:url('dashboard-assets/顶部.svg') center top / 100% 100% no-repeat}
-.dashboard-board:has(.home-disease-panel) .board-title h1{visibility:hidden}
+.dashboard-board:has(.home-disease-panel) .board-title{background:url('dashboard-assets/顶部-无标题.svg') center top / 100% 100% no-repeat}
+.dashboard-board:has(.home-disease-panel) .board-title h1{visibility:visible}
 .dashboard-board:has(.home-disease-panel) .board-fullscreen{position:absolute;left:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent url('dashboard-assets/放大缩小.svg') center / contain no-repeat;font-size:0;z-index:4}
 .dashboard-board:has(.home-disease-panel) .board-title>.filters{left:48px}
 .dashboard-board:has(.home-disease-panel) #periodSeg button.active{background:linear-gradient(#168cff,#00428c);color:#fff;border:1px solid #50a9ff}
@@ -1244,6 +1244,8 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 @font-face{font-family:DashboardDIN;src:url('dashboard-assets/DIN-Bold.otf');font-weight:700}
 @font-face{font-family:DashboardChinese;src:url('dashboard-assets/AlibabaPuHuiTi-3-55-Regular.ttf')}
 @font-face{font-family:DashboardChinese;src:url('dashboard-assets/AlibabaPuHuiTi-3-85-Bold.ttf');font-weight:700}
+@font-face{font-family:DashboardTitle;src:url('dashboard-assets/YouSheBiaoTiHei.ttf') format('truetype');font-display:swap}
+.dashboard-board .board-title h1{font-family:DashboardTitle,sans-serif;font-weight:normal}
 .dashboard-board:has(.home-disease-panel){font-family:DashboardChinese,sans-serif}
 .dashboard-board:has(.home-disease-panel) strong,.dashboard-board:has(.home-disease-panel) .outcome-ring-item b{font-family:DashboardDIN,DashboardChinese,sans-serif}
 .dashboard-board:has(.home-disease-panel) .board-stack .board-panel{background-color:transparent;background-image:url('dashboard-assets/上.svg'),url('dashboard-assets/下.svg'),linear-gradient(rgba(5,22,51,.76),rgba(5,22,51,.76));background-position:center 53px,center bottom,center 53px;background-size:100% 6px,100% 6px,100% calc(100% - 53px)}
@@ -1490,8 +1492,8 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 
 /* Secondary-view geometry from the 1920 x 1080 designs. */
 .dashboard-board:is(.situation-board,.construction-board,.outcome-board){padding:0 56px 40px;gap:0;grid-template-rows:102px minmax(0,1fr);background:#06152e url('dashboard-home-background.png') center top / cover no-repeat}
-.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title{height:82px;background:url('dashboard-assets/顶部.svg') center top / 849px 103px no-repeat}
-.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title h1{visibility:hidden}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title{height:82px;background:url('dashboard-assets/顶部-无标题.svg') center top / 849px 103px no-repeat}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title h1{visibility:visible}
 .dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-fullscreen{position:absolute;left:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent url('dashboard-assets/放大缩小.svg') center / contain no-repeat;font-size:0;z-index:4}
 .dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title>.filters{left:48px}
 .dashboard-board:is(.situation-board,.construction-board,.outcome-board) #periodSeg button{width:48px;border-radius:0;border-color:#0f84ff;background:#001c48}
@@ -1525,3 +1527,4 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .outcome-board .latest-monitor thead{height:32px;background:linear-gradient(90deg,transparent,rgba(0,123,245,.3),transparent)}
 .outcome-board .latest-monitor th{color:rgba(255,255,255,.8)}
 .outcome-board .latest-monitor tbody tr:nth-child(even){background:rgba(0,131,245,.08)}
+.map-fallback-notice{position:absolute;left:12px;top:12px;z-index:5;padding:6px 9px;background:#253749;color:#fff;font-size:12px;pointer-events:none}

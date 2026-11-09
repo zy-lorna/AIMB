@@ -1202,7 +1202,7 @@ renderProvinceMap=function(){
     const hub=hubFeature?situationCenter(hubFeature):[120.15,30.28];
     const lines=geo.features.map(feature=>situationCenter(feature)).filter(Boolean).map(center=>[center,hub]);
     provinceChart?.dispose();provinceChart=null;map3DHandle?.dispose();map3DHandle=null;
-    try{map3DHandle=window.ZhejiangMap3D.mount(target,geo,items.map(item=>({name:item.name,value:visitsFor(item).hospital})),{showLabels:true,countyLevel:county,flowLines:lines,onHover:name=>{const item=items.find(x=>x.name===name);return item?mapTooltip(item):''},onClick:regionDetail,onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom()}catch(error){console.error('就诊流向三维地图加载失败',error);target.textContent='三维地图加载失败'}
+    try{map3DHandle=window.ZhejiangMap3D.mount(target,geo,items.map(item=>({name:item.name,value:visitsFor(item).hospital})),{showLabels:true,countyLevel:county,flowLines:lines,onHover:name=>{const item=items.find(x=>x.name===name);return item?mapTooltip(item):''},onClick:regionDetail,onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom()}catch(error){fallbackTo2D(error)}
     return;
   }
   const baseGeo=state.mapScope==='county'?window.ZHEJIANG_COUNTIES_DATAV_GEOJSON:window.ZHEJIANG_DATAV_GEOJSON,element=$('zhejiangMap');
@@ -2281,8 +2281,8 @@ renderProvinceMap=function(){
   const tooltip=name=>{const value=values.find(x=>x.name===name)?.value;return `<div class="map-tooltip"><strong>${esc(name)}</strong><div>${esc(metricLabel)}：${Number.isFinite(value)?value.toFixed(2)+(metricLabel.includes('人数')?'':'%'):'待接入'}</div><div>模拟数据</div></div>`};
   const openTownClinic=name=>{if(state.dashboardView!=='construction')return;const county=currentNode();leadingClinicItems();selectedClinicTown=county&&name.startsWith(county.cityName+county.name)?name.slice((county.cityName+county.name).length):name;leadingPhotoIndex=0;clinicImageIndex=0;const items=leadingClinicItems(),content=document.querySelector('.leading-content');if(content)content.innerHTML=items.length?leadingClinicMarkup(items[0],items.length):'<span>该街道暂无可匹配的机构照片</span><div class="leading-photo">暂无展示图片</div>';const dialog=document.createElement('dialog');dialog.className='town-clinic-dialog';dialog.innerHTML=`<h2>${esc(name)}机构图片</h2>${items.length?items.map(item=>`<p>${esc(item.name)}</p><div class="town-photo-grid">${clinicImages(item).map((photo,i)=>`<button type="button" data-photo-preview="${esc(photo)}" data-photo-name="${esc(item.name)}" aria-label="放大查看${esc(item.name)}第${i+1}张照片"><img src="${esc(photo)}" alt="${esc(item.name)}"></button>`).join('')}</div>`).join(''):'<p>该街道暂无可匹配的机构图片</p>'}<button type="button" data-close-town>关闭</button>`;document.body.append(dialog);dialog.querySelector('[data-close-town]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.showModal()};
   if(state.mapView==='3d'){
-    if(!window.ZhejiangMap3D){target.textContent='三维地图资源未加载';return}
-    try{map3DHandle=window.ZhejiangMap3D.mount(target,geo,values,{showLabels:!!county,countyLevel:false,townLevel:true,onHover:tooltip,onClick:openTownClinic,onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom()}catch(error){console.error('乡镇三维地图加载失败',error);target.textContent='乡镇三维地图加载失败'}
+    if(!window.ZhejiangMap3D){fallbackTo2D(new Error('三维地图资源未加载'));return}
+    try{map3DHandle=window.ZhejiangMap3D.mount(target,geo,values,{showLabels:!!county,countyLevel:false,townLevel:true,onHover:tooltip,onClick:openTownClinic,onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom()}catch(error){fallbackTo2D(error)}
     return;
   }
   echarts.registerMap('zhejiang-townships-current',geo);

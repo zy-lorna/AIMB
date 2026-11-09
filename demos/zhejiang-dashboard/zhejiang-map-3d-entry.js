@@ -205,6 +205,7 @@ function mount(host, geojson, values, callbacks) {
         if (object.material) (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => material.dispose());
       });
       renderer.dispose();
+      renderer.forceContextLoss();
       host.replaceChildren();
     }
   };
