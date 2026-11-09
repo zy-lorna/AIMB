@@ -49,7 +49,7 @@
 <script src="echarts.min.js"></script>
 <script src="zhejiang-datav-map.js"></script>
 <script src="zhejiang-counties-datav.js"></script>
-<script src="zhejiang-map-3d.js?v=dashboard-3d-20261109"></script>
+<script src="zhejiang-map-3d.js?v=dashboard-hover-20261109"></script>
 <script>
 const $=id=>document.getElementById(id);
 // Original outline geometry from @icon-park/svg 1.4.2; all icons use its 48px viewBox.
@@ -284,7 +284,7 @@ const metricRules={
 };
 const metricTooltip=document.createElement('div');metricTooltip.className='metric-tooltip';metricTooltip.setAttribute('role','tooltip');document.body.appendChild(metricTooltip);let activeHelp=null;
 function positionMetricTooltip(){if(!activeHelp)return;let rect=activeHelp.getBoundingClientRect(),box=metricTooltip.getBoundingClientRect(),left=Math.min(Math.max(10,rect.left+rect.width/2-box.width/2),window.innerWidth-box.width-10),top=rect.top-box.height-9;if(top<10)top=rect.bottom+9;if(top+box.height>window.innerHeight-10)top=Math.max(10,window.innerHeight-box.height-10);metricTooltip.style.left=left+'px';metricTooltip.style.top=top+'px'}
-function showMetricTooltip(icon){activeHelp=icon;metricTooltip.textContent=icon.dataset.tip;metricTooltip.style.visibility='visible';positionMetricTooltip()}
+function showMetricTooltip(icon){(document.fullscreenElement||document.body).appendChild(metricTooltip);activeHelp=icon;metricTooltip.textContent=icon.dataset.tip;metricTooltip.style.visibility='visible';positionMetricTooltip()}
 function hideMetricTooltip(icon){if(activeHelp!==icon)return;activeHelp=null;metricTooltip.style.visibility='hidden'}
 window.addEventListener('resize',positionMetricTooltip);window.addEventListener('scroll',positionMetricTooltip,true);
 function attachMetricHelp(){document.querySelectorAll('#view .kpi > span:first-child,#view .flow-item > small:first-child,#view .stat-line > span,#view .region > small,#view .card > strong,#view .mini > span,#view .legend,#view th,#view .dash-metric-label,#view .dash-breakdown span,#view .population-total small,#view .population-cover small,#view .population-breakdown span,#view .pop-legend .metric-label,#view .coverage-row > span,#view .gap-line > span,#view .resource-line > span').forEach(node=>{let name=node.textContent.trim().split(' · ')[0].replace(/\s+\d[\s\S]*$/,'').trim(),rule=metricRules[name];if(!rule&&node.closest('.kpi'))rule=`${name}：当前显示模拟数据。正式规则需明确统计对象、分子、分母、统计期和来源，并经省级确认。`;if(!rule)return;let icon=document.createElement('span');icon.className='metric-help';icon.textContent='?';icon.dataset.tip=rule;icon.setAttribute('aria-label',`${name}口径：${rule}`);icon.tabIndex=0;icon.onmouseenter=()=>showMetricTooltip(icon);icon.onmouseleave=()=>hideMetricTooltip(icon);icon.onfocus=()=>showMetricTooltip(icon);icon.onblur=()=>hideMetricTooltip(icon);icon.onclick=event=>event.stopPropagation();node.appendChild(icon)})}
@@ -376,6 +376,6 @@ $('help').onclick=showPrototypeHelp;
 </script>
 <script src="clinic-report-20261105.js"></script>
 <script src="clinic-photo-data.js"></script>
-<script src="demo-refinement.js?v=dashboard-3d-20261109"></script>
+<script src="demo-refinement.js?v=dashboard-hover-20261109"></script>
 </body>
 </html>

@@ -155,8 +155,10 @@ function mount(host, geojson, values, callbacks) {
     tooltip.hidden = !name;
     if (!name) return;
     tooltip.innerHTML = callbacks.onHover(name);
-    tooltip.style.left = `${Math.max(5, Math.min(event.clientX - rect.left + 12, rect.width - tooltip.offsetWidth - 5))}px`;
-    tooltip.style.top = `${Math.max(5, Math.min(event.clientY - rect.top + 12, rect.height - tooltip.offsetHeight - 5))}px`;
+    const x = (event.clientX - rect.left) * host.clientWidth / rect.width;
+    const y = (event.clientY - rect.top) * host.clientHeight / rect.height;
+    tooltip.style.left = `${Math.max(5, Math.min(x + 12, host.clientWidth - tooltip.offsetWidth - 5))}px`;
+    tooltip.style.top = `${Math.max(5, Math.min(y + 12, host.clientHeight - tooltip.offsetHeight - 5))}px`;
   }
   const onLeave = () => { hovered = ''; tooltip.hidden = true; };
   const onClick = event => { if (hovered && (!pointerStart || Math.hypot(event.clientX - pointerStart[0], event.clientY - pointerStart[1]) < 5)) callbacks.onClick(hovered); };

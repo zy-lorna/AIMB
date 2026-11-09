@@ -301,6 +301,8 @@ document.addEventListener('pointermove',event=>{
   if(!event.target.closest('#dashboardBoard .board-panel')){boardChartTooltip.classList.remove('visible');return}
   const detail=boardTipText(event.target);
   if(!detail){boardChartTooltip.classList.remove('visible');return}
+  const tooltipHost=document.fullscreenElement||document.body;
+  if(boardChartTooltip.parentElement!==tooltipHost)tooltipHost.append(boardChartTooltip);
   const target=event.target.closest('[data-board-tip]');
   if(homeView()){
     const parts=detail.split('｜'), lines=(parts[1]||'').split(/[；\n]/).map(s=>s.trim()).filter(Boolean);
