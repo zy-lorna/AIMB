@@ -1097,9 +1097,431 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .dashboard-board .construction-node-regions{max-height:none;min-height:0;flex:1;display:block;overflow:hidden}
 .dashboard-board .construction-node-region:not([hidden]){display:flex;flex-direction:column;height:100%}
 .dashboard-board .construction-node-region .construction-scroll{height:auto;flex:1}
-.construction-board .board-stack:first-child{grid-template-rows:1.2fr .7fr .8fr 1.1fr}
+.construction-board .board-stack:first-child{grid-template-rows:1fr 1.7fr 1.1fr}
+.construction-board .board-stack:first-child>.board-panel:nth-child(2){display:flex;flex-direction:column}
 .construction-board .board-stack .board-panel>h2{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .leading-clinic{display:flex;flex-direction:column;min-height:0}
 .leading-count{color:#bad9e8;font-size:13px}.leading-count strong{color:#55c9ec;font-size:22px;margin-left:8px}
-.leading-content{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;flex:1;min-height:0;color:#b4d1e3}
+.leading-content{display:flex;flex-direction:column;align-items:stretch;gap:6px;flex:1;min-height:0;margin:8px 4px 6px;color:#b4d1e3}
+.leading-content>span{flex:none;line-height:1.4;overflow-wrap:anywhere}
+.leading-content .leading-photo{flex:1;min-height:48px;overflow:hidden}
+.construction-board .home-capacity-bars{flex:none;grid-template-rows:repeat(3,auto);gap:8px}
+.leading-name{display:flex;align-items:center;gap:6px;min-width:0;line-height:1.4}
+.leading-name>span{flex:1;min-width:0;overflow-wrap:anywhere}
+.leading-controls{display:flex;flex:none;gap:3px}
+.leading-controls button{width:22px;height:22px;padding:0;border:1px solid #39769a;background:#103c5b;color:#bceaff;cursor:pointer;font-size:20px;line-height:18px}
+.leading-controls button:disabled{opacity:.4;cursor:default}
+.leading-photo{position:relative}
+.leading-dots{position:absolute;bottom:5px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.leading-dots button{width:9px;height:9px;padding:0;border:1px solid white;border-radius:50%;background:#687d89;cursor:pointer}
+.leading-dots button[aria-pressed="true"]{background:#45c6fa}
+.rotating-doughnut,.construction-coverage:has(.rotating-doughnut) .construction-coverage-legend>div:nth-child(-n+2){cursor:pointer}
 .leading-photo{height:100%;min-height:48px;display:grid;place-items:center;border:1px dashed #39769a;color:#9bbcd0;font-size:12px}
+.outcome-board .map-tools{display:none!important}
+.home-map-link.active{color:#fff;background:#14618b;border-radius:3px}
+.outcome-board .board-stack .board-panel>h2,.outcome-board .situation-panel-title{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.construction-board .construction-coverage{height:auto;max-height:none;flex:1;min-height:0}
+.dashboard-board .map-tools{display:none!important}
+.dashboard-board .rotating-doughnut{transition:filter .3s;filter:drop-shadow(0 0 7px #42c8f080);background:conic-gradient(#45c6fa 0 var(--doughnut),#337d75 var(--doughnut) 100%)}
+.dashboard-board .rotating-doughnut.second-selected{filter:drop-shadow(0 0 7px #6ed9ba99);background:conic-gradient(#246389 0 var(--doughnut),#6ed9ba var(--doughnut) 100%)}
+.construction-coverage-legend>div{opacity:.66;transition:opacity .3s}
+.construction-coverage-legend>div:first-child,.construction-coverage-legend>div.ring-selected{opacity:1}
+.construction-coverage:has(.second-selected) .construction-coverage-legend>div:first-child{opacity:.66}
+.construction-board .stacked-total{display:flex;flex-direction:column-reverse;align-items:flex-start;gap:3px}
+.construction-board .summary-unit{font-size:.48em;font-weight:400}
+.construction-board .entry-formula{font-size:10px;color:#a9cada;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.construction-board .stacked-node{display:grid;grid-template-columns:1fr auto;gap:3px}
+.construction-board .stacked-node span{grid-column:1;grid-row:1}
+.construction-board .stacked-node strong{grid-column:1;grid-row:2}
+.construction-board .stacked-node svg{grid-column:2;grid-row:1 / 3}
+.construction-board .construction-line{width:100%;max-width:100%}
+.dashboard-board .construction-bar-chart{display:block;width:100%;max-width:100%;min-width:0}
+.dashboard-board .entry-formula{font-size:10px;color:#a9cada;white-space:nowrap}
+.disease-venn-svg path{cursor:pointer}
+.disease-venn-svg path.venn-selected{fill:#438de3;fill-opacity:.8;stroke:none}
+.disease-venn-svg path.venn-selected:nth-of-type(2){fill:#19b99b}
+.disease-venn-svg path.venn-selected:nth-of-type(3){fill:#dda93d}
+.disease-venn-svg path.venn-selected:nth-of-type(4){fill:#3fbaae}
+.disease-venn-svg path.venn-selected:nth-of-type(5){fill:#a99c62}
+.disease-venn-svg path.venn-selected:nth-of-type(6){fill:#83b067}
+.disease-venn-svg path.venn-selected:nth-of-type(7){fill:#8eb59a}
+.disease-venn-totals.showing-selection div{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.disease-venn-totals.showing-selection span,.disease-venn-totals.showing-selection strong{white-space:nowrap}
+.dashboard-board .board-kpi small{color:#98c6de}
+.construction-board .board-stack:first-child>.board-panel:first-child{display:flex;flex-direction:column}
+.leading-photo img{width:100%;height:100%;min-height:48px;object-fit:cover}
+.town-clinic-dialog{max-width:min(680px,90vw);border:1px solid #2a6289;background:#0a2845;color:#e9f6ff;padding:20px}
+.town-clinic-dialog::backdrop{background:rgba(0,0,0,.7)}
+.town-clinic-dialog img{display:block;max-width:100%;max-height:60vh;object-fit:contain}
+.town-clinic-dialog button{margin-top:12px;padding:6px 18px;background:#1476b4;color:white;border:0}
+.leading-photo.photo-grid,.town-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:3px;overflow:hidden}
+.leading-photo.photo-grid{place-items:stretch}
+.leading-photo.photo-grid button,.town-photo-grid button{min-width:0;min-height:0;padding:0;margin:0;border:0;background:#071b2c;cursor:zoom-in;overflow:hidden}
+.leading-photo.photo-grid img,.town-photo-grid img{display:block;width:100%;height:100%;min-height:0;object-fit:cover}
+.photo-empty{background:#071b2c}
+.town-photo-grid{grid-auto-rows:120px;grid-template-rows:none;max-height:50vh;overflow:auto}
+.photo-preview-dialog img{max-width:100%;max-height:70vh;object-fit:contain}
+
+/* Home dashboard visual treatment based on the finalized design. */
+.dashboard-board:has(.home-disease-panel){background:#06152e url('dashboard-home-background.png') center top / cover no-repeat;padding:0 56px 40px;gap:16px;grid-template-rows:82px 104px minmax(0,1fr)}
+.dashboard-board:has(.home-disease-panel) .board-columns{grid-template-columns:480px minmax(0,1fr) 480px;gap:32px}
+.dashboard-board:has(.home-disease-panel) .board-kpis{gap:16px}
+.dashboard-board:has(.home-disease-panel) .board-kpi{display:flex;flex-direction:column;padding:0 8px 4px;background:rgba(15,132,255,.15);border:1px solid rgba(15,132,255,.5);border-top:2px solid #0f84ff;align-items:stretch;text-align:right;gap:0}
+.dashboard-board:has(.home-disease-panel) .board-kpi strong{order:0;display:block;margin:0 -8px 2px;padding:5px 8px;background:repeating-linear-gradient(130deg,rgba(0,0,0,.3) 0 5px,rgba(50,102,151,.15) 5px 10px);border-bottom:1px solid rgba(15,132,255,.5);color:#fff;font-size:32px;line-height:38px}
+.dashboard-board:has(.home-disease-panel) .board-kpi span{order:1;color:#fff;font-size:16px;line-height:24px}
+.dashboard-board:has(.home-disease-panel) .board-kpi small{order:2;color:rgba(255,255,255,.7);font-size:12px;line-height:17px}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{background-color:rgba(16,53,156,.10);border-color:rgba(32,89,147,.45);border-radius:0}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{height:45px;min-height:45px;padding:8px 20px 8px 30px;color:#fff;font-size:22px;background:url('dashboard-section-title.svg') left center / 100% 100% no-repeat;border:0}
+.dashboard-board:has(.home-disease-panel) .home-map-link{border:1px solid #afd1ff;background:#001c48;color:#fff;padding:4px 8px;font-size:16px}
+.dashboard-board:has(.home-disease-panel) #periodSeg button{width:48px;border-radius:0;border-color:#0f84ff;background:#001c48}
+.dashboard-board:has(.home-disease-panel) .board-title>.filters label[for="year"] select,.dashboard-board:has(.home-disease-panel) .board-title>.filters label[for="quarter"] select{border:1px solid #0f84ff;border-radius:0;background:#001c48}
+
+/* Final home artwork supplied with the design. */
+.dashboard-board:has(.home-disease-panel){position:relative}
+.dashboard-board:has(.home-disease-panel)::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:url('dashboard-assets/边框.svg') center / 100% 100% no-repeat}
+.dashboard-board:has(.home-disease-panel) .board-title{background:url('dashboard-assets/顶部.svg') center top / 100% 100% no-repeat}
+.dashboard-board:has(.home-disease-panel) .board-title h1{visibility:hidden}
+.dashboard-board:has(.home-disease-panel) .board-fullscreen{position:absolute;left:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent url('dashboard-assets/放大缩小.svg') center / contain no-repeat;font-size:0;z-index:4}
+.dashboard-board:has(.home-disease-panel) .board-title>.filters{left:48px}
+.dashboard-board:has(.home-disease-panel) #periodSeg button.active{background:linear-gradient(#168cff,#00428c);color:#fff;border:1px solid #50a9ff}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{background-image:url('dashboard-assets/标题.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi{position:relative}
+.dashboard-board:has(.home-disease-panel) .board-kpi::before{content:"";position:absolute;left:10px;bottom:24px;width:24px;height:24px;background-position:center;background-size:contain;background-repeat:no-repeat}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(1)::before{background-image:url('dashboard-assets/material-symbols--group 1.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(2)::before{background-image:url('dashboard-assets/material-symbols--person 2.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(3)::before{background-image:url('dashboard-assets/material-symbols--create-new-folder-sharp 1.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(4)::before{background-image:url('dashboard-assets/material-symbols--e911-emergency-sharp 1.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(5)::before{background-image:url('dashboard-assets/griddy-icons--hospital-filled 1.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(6)::before{background-image:url('dashboard-assets/material-symbols--route 1.svg')}
+.dashboard-board:has(.home-disease-panel) .board-kpi:nth-child(7)::before{background-image:url('dashboard-assets/ri--nurse-fill 1.svg')}
+.dashboard-board:has(.home-disease-panel) .home-filing-summary>div{border:0;background:linear-gradient(#17345e,#0a2145)}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars i{background:#1a2b46;transform:skewX(-28deg)}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars i{height:6px;background:#1a2b46;overflow:visible}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars i b{position:relative;background:linear-gradient(90deg,#103b83,#72c9ff)!important}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars i b::after{content:"";position:absolute;right:-5px;top:-4px;width:14px;height:14px;border:1px solid #68c6ff;border-radius:50%;background:#62b9fa;box-shadow:0 0 8px #61c5ff}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{order:3;margin:8px 0 0;padding:12px;background:#0d2c58}
+.dashboard-board:has(.home-disease-panel) .board-ticker{border:1px solid #f06b20;background:rgba(45,25,25,.7)}
+.dashboard-board:has(.home-disease-panel) .board-ticker span{background:transparent;color:#ff792e}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg circle:nth-of-type(1){fill:#1763d0;stroke:#69b7ff}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg circle:nth-of-type(2){fill:#e76a29;stroke:#ffae74}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg circle:nth-of-type(3){fill:#83d9ff;stroke:#b5e9ff}
+
+/* Home modules: separate the heading artwork from the framed content. */
+.dashboard-board:has(.home-disease-panel) .board-title{background-size:auto 100%}
+.dashboard-board:has(.home-disease-panel) .board-tabs{gap:4px}
+.dashboard-board:has(.home-disease-panel) .board-tabs button{min-width:116px;height:48px;padding:0 20px 0 28px;clip-path:polygon(25% 0,100% 0,75% 100%,0 100%);border:0;border-bottom:2px solid #2462a7;background:linear-gradient(135deg,#071731,#123a78);color:#b1c3d8}
+.dashboard-board:has(.home-disease-panel) .board-tabs button.active{background:linear-gradient(135deg,#0b2651,#2387ed);color:#fff;box-shadow:inset 0 -4px #65c8ff}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{position:relative;border:0;background-color:rgba(16,53,156,.10);background-image:url('dashboard-assets/上.svg'),url('dashboard-assets/下.svg');background-position:center 53px,center bottom;background-size:100% 6px,100% 6px;background-repeat:no-repeat;padding-top:14px}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{margin-bottom:17px}
+.dashboard-board:has(.home-disease-panel) .board-kpi small{font-size:14px;line-height:18px}
+.dashboard-board:has(.home-disease-panel) .home-disease-panel{display:flex;flex-direction:column}
+.dashboard-board:has(.home-disease-panel) .disease-venn-layout{gap:8px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg{width:48%;min-height:0}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals{gap:12px;font-size:16px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals div{grid-template-columns:8px 1fr auto;gap:8px;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals i{width:8px;height:8px;border-radius:0}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals strong{grid-column:auto;font-weight:400}
+.dashboard-board:has(.home-disease-panel) .home-venn-note{margin:0 0 8px 49%;font-size:14px;color:rgba(255,255,255,.7)}
+.dashboard-board:has(.home-disease-panel) .venn-disease-label{font-size:16px}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary{gap:0}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div{padding:8px 8px 6px 30px;position:relative}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:not(:last-child)::before{content:'';position:absolute;left:8px;top:9px;width:18px;height:18px;background:center / contain no-repeat}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:nth-child(1)::before{background-image:url('dashboard-assets/高血压-面 1.svg')}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:nth-child(2)::before{background-image:url('dashboard-assets/糖尿病 1.svg')}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:nth-child(3)::before{background-image:url('dashboard-assets/慢阻肺 1.svg')}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary span{font-size:14px;color:#fff}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary strong{font-size:19px}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child{padding:5px 32px;background:repeating-linear-gradient(130deg,#10274a 0 5px,#15345d 5px 10px)}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div{grid-template-columns:90px minmax(0,1fr) 160px;font-size:16px}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div span::before{content:'';display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:#ff4646;box-shadow:0 0 7px currentColor}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div:nth-child(2) span::before{background:#ff792e}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div:nth-child(3) span::before{background:#1664d7}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars strong{font-size:15px;font-weight:400}
+.dashboard-board:has(.home-disease-panel) .home-panel-note{font-size:14px;color:rgba(255,255,255,.7)}
+
+/* Fonts and visual details from the supplied dashboard artwork. */
+@font-face{font-family:DashboardDIN;src:url('dashboard-assets/DIN-Regular.otf')} 
+@font-face{font-family:DashboardDIN;src:url('dashboard-assets/DIN-Bold.otf');font-weight:700}
+@font-face{font-family:DashboardChinese;src:url('dashboard-assets/AlibabaPuHuiTi-3-55-Regular.ttf')}
+@font-face{font-family:DashboardChinese;src:url('dashboard-assets/AlibabaPuHuiTi-3-85-Bold.ttf');font-weight:700}
+.dashboard-board:has(.home-disease-panel){font-family:DashboardChinese,sans-serif}
+.dashboard-board:has(.home-disease-panel) strong,.dashboard-board:has(.home-disease-panel) .outcome-ring-item b{font-family:DashboardDIN,DashboardChinese,sans-serif}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{background-color:transparent;background-image:url('dashboard-assets/上.svg'),url('dashboard-assets/下.svg'),linear-gradient(rgba(5,22,51,.76),rgba(5,22,51,.76));background-position:center 53px,center bottom,center 53px;background-size:100% 6px,100% 6px,100% calc(100% - 53px)}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg circle{fill-opacity:.55;filter:drop-shadow(0 0 3px #6dbaff55)}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg path.venn-selected{fill:#509dff;fill-opacity:.65}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg path.venn-selected:nth-of-type(2){fill:#ff8a45}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg path.venn-selected:nth-of-type(3){fill:#9bdfff}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg path.venn-selected:nth-of-type(n+4){fill:#a5cfff}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars i{overflow:visible}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars i b{position:relative}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars i b::after{content:'';position:absolute;right:0;top:0;width:4px;height:100%;background:#fff;box-shadow:0 0 10px 3px #fff8}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item{position:relative;display:grid;grid-template-columns:68px 1fr;grid-template-rows:1fr 1fr;column-gap:12px;align-items:center;text-align:left}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>i{grid-row:1 / 3;width:62px;height:62px;--ring-color:#438fe3!important;background:conic-gradient(#68baff var(--ring),#1a2b46 0);position:relative}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>i::after{content:'';position:absolute;inset:17px;background:center / contain no-repeat url('dashboard-assets/高血压.svg')}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item:nth-child(2)>i::after{background-image:url('dashboard-assets/糖尿病.svg')}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item:nth-child(3)>i::after{background-image:url('dashboard-assets/血脂.svg')}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item:nth-child(4)>i::after{background-image:url('dashboard-assets/糖化血红蛋白.svg')}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>i b{position:absolute;left:74px;top:31px;white-space:nowrap;font-size:22px;color:#fff}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>span{grid-column:2;grid-row:1;align-self:end;color:#b8c7d9;font-size:16px;white-space:nowrap}
+
+/* Align the home header and content frames with the 1920 x 1080 design. */
+.dashboard-board:has(.home-disease-panel) .board-title{background-size:849px 103px;background-position:center top}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{padding-top:0;background-position:center 53px,center bottom,center 53px}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{margin-bottom:8px}
+.dashboard-board:has(.home-disease-panel) .home-map-link{font-size:0;display:inline-flex;align-items:center;gap:6px}
+.dashboard-board:has(.home-disease-panel) .home-map-link::before{content:'';width:18px;height:18px;background:url('dashboard-assets/地图联动.svg') center / contain no-repeat}
+.dashboard-board:has(.home-disease-panel) .home-map-link::after{content:'联动地图';font-size:16px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{padding-left:62px;position:relative;color:#fff}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head::before{content:'';position:absolute;left:14px;top:9px;width:34px;height:38px;background:url('dashboard-assets/tdesign--hospital-filled 1.svg') center / contain no-repeat}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head strong{color:#fff;font-family:DashboardDIN,sans-serif}
+.dashboard-board:has(.home-disease-panel) .home-service-summary{flex-direction:row-reverse;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;background:rgba(15,50,100,.6);padding:6px 12px}
+.dashboard-board:has(.home-disease-panel) .home-service-summary>strong{color:#fff;font-family:DashboardDIN,sans-serif}
+.dashboard-board:has(.home-disease-panel) .home-service-summary>span::before{content:'•';color:#8bdcff;margin-right:8px}
+.dashboard-board:has(.home-disease-panel) .board-tabs button{clip-path:none;border:0;background:transparent center / 100% 100% no-repeat;box-shadow:none}
+.dashboard-board:has(.home-disease-panel) .board-tabs button:nth-child(1){background-image:url('dashboard-assets/首页.svg')}
+.dashboard-board:has(.home-disease-panel) .board-tabs button:nth-child(2){background-image:url('dashboard-assets/态势.svg')}
+.dashboard-board:has(.home-disease-panel) .board-tabs button:nth-child(3){background-image:url('dashboard-assets/一体化建设.svg')}
+.dashboard-board:has(.home-disease-panel) .board-tabs button.active{filter:brightness(1.6);color:#fff}
+
+/* Preserve the supplied heading's aspect ratio and keep the frame below it. */
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{background-position:center 45px,center bottom,center 45px;background-size:100% 6px,100% 6px,100% calc(100% - 45px)}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{box-sizing:border-box;margin:0 -16px 8px;padding:0 16px 0 30px;background-size:auto 46px;background-position:left center;overflow:visible;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .home-map-link::before{background-image:url('dashboard-assets/map.svg')}
+.dashboard-board:has(.home-disease-panel) .venn-disease-label{fill:#fff;font-family:DashboardChinese,sans-serif;font-size:14px;pointer-events:none}
+/* The exported navigation artwork contains lettering, so draw one label per tab. */
+.dashboard-board:has(.home-disease-panel) .board-tabs{gap:0}
+.dashboard-board:has(.home-disease-panel) .board-tabs button,.dashboard-board:has(.home-disease-panel) .board-tabs button:nth-child(n){min-width:145px;height:48px;padding:0 12px 0 24px;clip-path:polygon(24% 0,100% 0,76% 100%,0 100%);background:linear-gradient(160deg,#06132b,#102c5a);border:0;border-bottom:2px solid #28559b;color:#b5c0d1;filter:none;white-space:nowrap;font-family:DashboardChinese,sans-serif}
+.dashboard-board:has(.home-disease-panel) .board-tabs button.active{background:linear-gradient(160deg,#081735 25%,#174a95 78%,#57bbff);color:#fff;font-weight:700;box-shadow:inset 0 -3px #8cd5ff}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars i b::after{width:20px;height:20px;right:-10px;top:-7px;border:0;border-radius:0;background:transparent url('dashboard-assets/Ellipse 4841.svg') center / contain no-repeat;box-shadow:none}
+
+/* Home panel geometry and typography. */
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{background-image:linear-gradient(rgba(5,22,51,.76),rgba(5,22,51,.76));background-position:center 53px;background-size:100% calc(100% - 53px)}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::before,.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::after{content:'';position:absolute;left:0;right:0;height:7px;pointer-events:none;border-left:1px solid #24618a;border-right:1px solid #24618a}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::before{top:53px;border-top:1px solid #24618a}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::after{bottom:0;border-bottom:1px solid #24618a}
+.dashboard-board:has(.home-disease-panel) .board-kpi::before{left:16px;bottom:23px;width:28px;height:28px}
+.dashboard-board:has(.home-disease-panel) .home-map-link{border-color:#3673b9;background:linear-gradient(180deg,#071d40 20%,#0a2e62 85%,#17519a);box-shadow:inset 0 -2px 5px #52b8ff88,0 2px 7px #108cff44}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars{gap:12px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars>div{grid-template-columns:82px minmax(0,1fr) 145px;font-size:16px;gap:8px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars strong{font-family:DashboardChinese,sans-serif;font-size:16px;font-weight:400}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:8px;padding:10px 16px 10px 62px;align-items:center}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head>span{font-size:16px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head>strong{font-size:24px;grid-column:2;grid-row:1}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head>small{grid-column:2;grid-row:2;font-size:14px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head .home-panel-note{grid-column:1;grid-row:2;margin:0;font-size:13px;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .home-percent-unit{font-family:DashboardChinese,sans-serif;font-size:.55em;font-weight:400;color:#aebdd0;margin-left:3px}
+.dashboard-board:has(.home-disease-panel) .summary-unit{font-family:DashboardChinese,sans-serif;font-size:.6em;font-weight:400;color:#aebdd0}
+.dashboard-board:has(.home-disease-panel) .outcome-rings{grid-template-columns:repeat(2,minmax(0,1fr));justify-items:stretch;gap:12px 16px;padding:6px 16px}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item{width:100%;grid-template-columns:62px minmax(0,1fr);column-gap:12px}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>i b{left:74px;top:31px}
+.dashboard-board:has(.home-disease-panel) .home-filing-chart .construction-grid line{stroke:#697a90;stroke-dasharray:4 4}
+.dashboard-board:has(.home-disease-panel) .map-scale{display:flex;flex-direction:column;gap:6px}
+.dashboard-board:has(.home-disease-panel) .map-scale i{width:12px;height:90px;background:linear-gradient(to bottom,#ff4646,#ff9b00,#d7dd38,#56d3a8,#168ff4)}
+.dashboard-board:has(.home-disease-panel) .map-scale span:last-child{font-size:0;writing-mode:initial;display:contents}
+.dashboard-board:has(.home-disease-panel) .map-scale span:last-child::before{content:'高';order:-1;font-size:14px;color:#b5c1ce}
+.dashboard-board:has(.home-disease-panel) .map-scale span:last-child::after{content:'低';font-size:14px;color:#b5c1ce}
+
+/* Supplied home-screen artwork and spacing. */
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::before,.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::after{left:0;right:0;height:7px;border:0;background-position:center;background-repeat:no-repeat;background-size:100% 7px}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::before{background-image:url('dashboard-assets/上.svg')}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel::after{background-image:url('dashboard-assets/下.svg')}
+.dashboard-board:has(.home-disease-panel) .home-map-link{width:110px;height:28px;padding:0;border:0;background:transparent url('dashboard-assets/地图联动.svg') center/contain no-repeat;box-shadow:none;font-size:0}
+.dashboard-board:has(.home-disease-panel) .home-map-link::before,.dashboard-board:has(.home-disease-panel) .home-map-link::after{content:none}
+.dashboard-board:has(.home-disease-panel) .home-map-link.active,.dashboard-board:has(.home-disease-panel) .home-map-link:hover{background-color:transparent;filter:brightness(1.25)}
+.dashboard-board:has(.home-disease-panel) .home-filing-summary.copd-filing-summary{margin-top:10px}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child{border-top:1px solid #5486ba;box-shadow:0 -1px 5px #6ebcff55}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child strong,.dashboard-board:has(.home-disease-panel) .copd-filing-summary small{font-family:DashboardChinese,sans-serif;font-weight:400}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars{margin-top:10px;font-family:DashboardChinese,sans-serif}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars i b::after{background-image:url('dashboard-assets/圆点.svg')}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>span{justify-self:start;text-align:left}
+.dashboard-board:has(.home-disease-panel) .construction-bar-chart .service-bar-value{fill:#d8ebff;font:9px DashboardDIN,sans-serif}
+.dashboard-board:has(.home-disease-panel) .construction-bar-chart .construction-grid text{font-family:DashboardDIN,DashboardChinese,sans-serif;font-size:9px}
+
+/* Dashboard chart labels and map controls follow the design assets. */
+.dashboard-board svg .construction-grid text,.dashboard-board .home-filing-chart text,.dashboard-board .construction-line text{font-family:DashboardChinese,sans-serif;font-size:14px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals,.dashboard-board:has(.home-disease-panel) .disease-venn-totals strong,.dashboard-board:has(.home-disease-panel) .home-risk-bars,.dashboard-board:has(.home-disease-panel) .home-risk-bars strong,.dashboard-board:has(.home-disease-panel) .home-service-summary>strong{font-family:DashboardChinese,sans-serif}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg{width:160px;height:149px;flex:none;margin-left:16px;overflow:visible}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals{flex:1}
+.dashboard-board:has(.home-disease-panel) .board-map .panel-head h2{color:#fff;background:linear-gradient(180deg,#fff 20%,#75c8ff 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dashboard-board .map-zoom button{font-size:0!important;background-color:transparent!important;background-position:center;background-repeat:no-repeat;background-size:contain;border:0!important;box-shadow:none}
+.dashboard-board .map-zoom [data-map-zoom="in"]{background-image:url('dashboard-assets/放大.svg')}
+.dashboard-board .map-zoom [data-map-zoom="out"]{background-image:url('dashboard-assets/缩小.svg')}
+.dashboard-board .map-zoom [data-map-zoom="reset"]{background-image:url('dashboard-assets/还原.svg')}
+.dashboard-board .map-zoom button:hover{filter:brightness(1.25)}
+.dashboard-board:has(.home-disease-panel) .board-map-modes button{border:1px solid #0f84ff;border-radius:0;background:#001c48;color:#b5c1ce}
+.dashboard-board:has(.home-disease-panel) .board-map-modes button.active{background:linear-gradient(#168cff,#00428c);border-color:#50a9ff;color:#fff}
+.dashboard-board:has(.home-disease-panel) .home-filing-legend{position:relative;z-index:1;margin:12px 0 -18px;font-family:DashboardChinese,sans-serif;font-size:14px}
+.dashboard-board:has(.home-disease-panel) .home-filing-chart{margin-top:0}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars{gap:18px}
+.dashboard-board:has(.home-disease-panel) .board-kpi::before{top:18px;bottom:auto;left:16px}
+
+/* Home design refinements. */
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{margin-bottom:8px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-layout{gap:8px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg{width:190px;max-width:43%;height:100%;max-height:150px;margin-left:8px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals{gap:8px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals div{column-gap:6px}
+.dashboard-board:has(.home-disease-panel) .home-filing-legend{display:flex;align-items:center;gap:12px;margin:8px 0 0}
+.dashboard-board:has(.home-disease-panel) .home-filing-legend::before{content:'万份';margin-right:auto;color:#acd0e0}
+.dashboard-board:has(.home-disease-panel) .home-filing-chart .home-filing-unit{display:none}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars{padding:18px 8px 0;gap:18px}
+.dashboard-board:has(.home-disease-panel) .home-service-summary>strong{font-family:DashboardDIN,DashboardChinese,sans-serif}
+.dashboard-board:has(.home-disease-panel) .construction-bar-chart .construction-grid text,.dashboard-board:has(.home-disease-panel) .construction-bar-chart .construction-month,.dashboard-board:has(.home-disease-panel) .construction-bar-chart .service-bar-value{font-family:DashboardChinese,sans-serif;font-size:14px}
+.dashboard-board:has(.home-disease-panel) .board-kpi::before{top:18px;left:16px}
+
+/* Homepage module measurements from the design. */
+.dashboard-board:has(.home-disease-panel) .disease-venn-layout{gap:39px;align-items:center}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg{width:160px;height:149px;max-width:none;max-height:100%;margin-left:16px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals{gap:12px}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child{position:relative;border:0;box-shadow:none}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child::before,.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent)}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child::before{top:0}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child::after{bottom:0}
+.dashboard-board:has(.home-disease-panel) .home-filing-summary.copd-filing-summary{margin:8px -8px 0;gap:0}
+.dashboard-board:has(.home-disease-panel) .home-filing-legend{margin:12px -8px 0;gap:12px}
+.dashboard-board:has(.home-disease-panel) .home-filing-panel .home-filing-chart{width:calc(100% + 16px);margin:8px -8px 0}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars{margin:10px -8px 0;padding:0;gap:14px}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div{grid-template-columns:64px minmax(0,1fr) 140px;gap:12px;min-height:22px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars{margin:8px -8px 0;gap:14px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars>div{grid-template-columns:63px minmax(0,1fr) 119px;gap:12px;min-height:22px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{margin:17px -8px 0;min-height:64px;box-sizing:border-box}
+.dashboard-board:has(.home-disease-panel) .home-service-summary{min-height:34px;box-sizing:border-box;margin:8px -8px 7px;padding:2px 16px;flex-wrap:nowrap}
+.dashboard-board:has(.home-disease-panel) .home-service-summary>span{font-size:16px;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .home-service-summary>strong{font-size:24px;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .construction-bar-chart{width:calc(100% + 16px);max-width:none;margin:0 -8px 7px}
+.dashboard-board:has(.home-disease-panel) .outcome-rings{margin:20px 16px 28px;padding:0;align-content:space-between;gap:34px 16px}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item{grid-template-columns:64px minmax(0,1fr);column-gap:16px}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>i{width:64px;height:64px}
+.dashboard-board:has(.home-disease-panel) .outcome-ring-item>i b{left:80px;top:32px}
+.dashboard-board:has(.home-disease-panel) .board-map .map-zoom{right:0}
+
+/* Homepage layout aligned to the supplied design measurements. */
+.dashboard-board:has(.home-disease-panel) .board-tabs{gap:8px;margin-right:30px;align-self:flex-end;margin-bottom:8px}
+.dashboard-board:has(.home-disease-panel) .board-tabs button{min-width:116px;height:40px;padding:0 18px}
+.dashboard-board:has(.home-disease-panel) .board-kpi::before{top:auto;bottom:23px;left:8px;width:24px;height:24px}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{background-color:transparent;background-image:url('dashboard-assets/上.svg'),url('dashboard-assets/下.svg'),linear-gradient(to bottom,transparent 53px,rgba(16,53,156,.1) 53px);background-size:100% 6px,100% 6px,100% 100%}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{padding-left:42px;padding-right:0}
+.dashboard-board:has(.home-disease-panel) .home-map-link{margin-left:auto}
+.dashboard-board:has(.home-disease-panel) .disease-venn-layout{align-items:flex-start;padding-top:9px;box-sizing:border-box}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg{height:149px;max-height:none}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals{padding-top:8px;font-size:16px;gap:12px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals.showing-selection div{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:8px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals.showing-selection i{background:#69b7ff}
+.dashboard-board:has(.home-disease-panel) .copd-filing-summary>div:last-child span{font-size:16px}
+.dashboard-board:has(.home-disease-panel) .home-filing-legend{margin:8px -8px 0}
+.dashboard-board:has(.home-disease-panel) .home-filing-panel .home-filing-chart{margin:0 -8px 0}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars{margin:18px -8px 0}
+.dashboard-board:has(.home-disease-panel) .home-risk-panel>.home-panel-note{margin:12px -8px 0}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars{margin:16px -8px 0}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{margin:16px -8px 16px;padding:8px 16px 8px 62px;background:linear-gradient(90deg,rgba(20,72,136,.8),rgba(20,60,115,.45));}
+
+/* Homepage positions measured against the 1920 x 1080 design. */
+.dashboard-board:has(.home-disease-panel) .board-stack:first-child{grid-template-rows:220px 350px 220px;gap:16px}
+.dashboard-board:has(.home-disease-panel) .board-stack:last-child{grid-template-rows:repeat(3,1fr);gap:16px}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel{box-sizing:border-box;background-image:linear-gradient(to bottom,transparent 53px,rgba(16,53,156,.1) 53px);background-position:0 0;background-size:100% 100%;background-repeat:no-repeat}
+.dashboard-board:has(.home-disease-panel) .board-stack .board-panel>h2{padding-left:31px}
+.dashboard-board:has(.home-disease-panel) .board-tabs{position:absolute;right:0;top:30px;display:flex;gap:0;margin:0;align-self:auto}
+.dashboard-board:has(.home-disease-panel) .board-tabs button,.dashboard-board:has(.home-disease-panel) .board-tabs button:nth-child(n){min-width:0;width:136px;height:48px;margin-left:-8px;padding:0 14px;font-size:16px}
+.dashboard-board:has(.home-disease-panel) .board-kpi::before{top:55px;bottom:auto;left:8px;width:26px;height:26px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-layout{flex:none;height:167px;margin:0 -16px;gap:39px;padding:9px 23px 0 32px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-svg{margin:0;width:160px;height:149px}
+.dashboard-board:has(.home-disease-panel) .disease-venn-totals{padding-top:12px}
+.dashboard-board:has(.home-disease-panel) .home-venn-note{position:absolute;left:231px;top:181px;margin:0;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .home-capacity-bars{position:absolute;top:69px;left:8px;right:8px;margin:0;gap:15px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{position:absolute;top:182px;left:8px;right:8px;height:64px;min-height:0;margin:0}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars{position:absolute;top:71px;left:8px;right:8px;margin:0;gap:15px;padding:0}
+.dashboard-board:has(.home-disease-panel) .home-risk-panel>.home-panel-note{position:absolute;left:8px;right:8px;top:178px;margin:0}
+.dashboard-board:has(.home-disease-panel) .home-service-summary{position:absolute;top:61px;left:8px;right:8px;height:34px;margin:0}
+.dashboard-board:has(.home-disease-panel) .home-service-chart{position:absolute;top:103px;left:8px;width:464px;height:154px;margin:0;overflow:visible}
+.dashboard-board:has(.home-disease-panel) .home-service-chart .construction-grid text,.dashboard-board:has(.home-disease-panel) .home-service-chart .construction-month,.dashboard-board:has(.home-disease-panel) .home-service-chart .service-unit{font:14px DashboardChinese,sans-serif;fill:rgba(255,255,255,.7)}
+.dashboard-board:has(.home-disease-panel) .home-service-chart .service-bar-value{font:16px DashboardDIN,sans-serif;fill:#fff}
+.dashboard-board:has(.home-disease-panel) .outcome-rings{position:absolute;top:73px;left:32px;width:416px;margin:0;padding:0;grid-template-columns:200px 200px;grid-template-rows:64px 64px;gap:34px 16px}
+.dashboard-board:has(.home-disease-panel) .map-scale{gap:6px;align-items:center}
+.dashboard-board:has(.home-disease-panel) .map-scale i{width:15px;height:120px;flex:none}
+.dashboard-board:has(.home-disease-panel) .map-scale span:last-child::before,.dashboard-board:has(.home-disease-panel) .map-scale span:last-child::after{line-height:16px}
+.dashboard-board:has(.home-disease-panel) .map-view-switch button[data-map-back]{width:78px;height:32px;border:0;background:transparent url('dashboard-assets/返回.svg') center / 78px 32px no-repeat;font-size:0}
+.dashboard-board:not(.board-no-kpis):has(.home-disease-panel) .board-stack:last-child .board-panel:nth-child(2) .home-service-chart{height:154px}
+
+/* Home chart and hover details. */
+.dashboard-board:has(.home-disease-panel) .home-filing-panel .home-filing-chart{flex:1 1 0;min-height:0;overflow:visible}
+.dashboard-board:has(.home-disease-panel) .home-filing-panel>.home-panel-note{margin:8px -8px 8px}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars{gap:18px}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div{grid-template-columns:64px minmax(0,1fr) 140px;gap:8px;min-height:22px}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars i{height:10px;background:#1a2b46}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div:nth-child(1) i b{background:linear-gradient(90deg,#ad352b,#ff9a77)!important}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div:nth-child(2) i b{background:linear-gradient(90deg,#af792b,#ffdc85)!important}
+.dashboard-board:has(.home-disease-panel) .home-risk-bars>div:nth-child(3) i b{background:linear-gradient(90deg,#006ba8,#53dcff)!important}
+.dashboard-board:has(.home-disease-panel) .home-risk-panel>.home-panel-note{top:184px}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head{background:linear-gradient(90deg,rgba(16,92,205,.5),rgba(16,92,205,0))}
+.dashboard-board:has(.home-disease-panel) .home-capacity-head::before{left:16px;top:16px;width:32px;height:32px}
+.dashboard-board:has(.home-disease-panel) .outcome-rings{align-content:start;justify-content:start}
+.board-chart-tooltip.visible{display:flex;flex-direction:column;max-width:none;border:1px solid #198cff;background:rgba(8,13,33,.5);box-shadow:none;color:#fff;line-height:1.375;white-space:pre-line;-webkit-backdrop-filter:blur(calc(8px * var(--tip-scale,1)));backdrop-filter:blur(calc(8px * var(--tip-scale,1)))}
+.board-chart-tooltip.visible::before{content:'';position:absolute;left:-1px;top:9px;width:4px;height:15px;border:1px solid #198cff;border-left:0;background:#09295b}
+.board-tip-row{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.board-tip-row i{width:8px;height:8px;flex:none}
+.board-chart-tooltip.visible::before{top:calc(10px * var(--tip-scale,1));width:calc(4px * var(--tip-scale,1));height:calc(11px * var(--tip-scale,1))}
+.board-tip-row{gap:calc(8px * var(--tip-scale,1))}
+.board-tip-row i{width:calc(8px * var(--tip-scale,1));height:calc(8px * var(--tip-scale,1))}
+.dashboard-board:not(.board-no-kpis):has(.home-disease-panel) .outcome-rings:has(> :nth-child(4)){top:73px;left:32px;width:416px;grid-template-columns:200px 200px;grid-template-rows:64px 64px;gap:34px 16px;align-content:start}
+.dashboard-board:has(.home-disease-panel) .map-3d-tooltip:has(.home-map-tooltip){max-width:none;padding:0;background:transparent;box-shadow:none}
+.dashboard-board .home-map-tooltip{width:356px;max-width:none;min-width:0;color:#fff;font:16px DashboardChinese,sans-serif;line-height:1.4;white-space:normal}
+.dashboard-board .home-map-tooltip .home-map-tooltip-title{position:relative;display:block;margin:0;height:54px;box-sizing:border-box;text-align:center;line-height:54px;font-size:22px;font-weight:700;color:#d5ebff;border:1px solid #388fe7;background:linear-gradient(90deg,rgba(15,105,186,.9),rgba(7,54,101,.78),rgba(15,105,186,.9));-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.dashboard-board .home-map-tooltip .home-map-tooltip-title::before,.dashboard-board .home-map-tooltip .home-map-tooltip-title::after{position:absolute;top:0;color:#78bfff;font-size:28px;font-weight:400}
+.dashboard-board .home-map-tooltip .home-map-tooltip-title::before{content:'❯';left:14px}
+.dashboard-board .home-map-tooltip .home-map-tooltip-title::after{content:'❮';right:14px}
+.dashboard-board .home-map-tooltip .home-map-tooltip-body{display:block;margin:0;padding:12px;background:rgba(11,17,25,.85);border:1px solid #2178b1;border-top:2px solid #e0c522;box-shadow:0 4px 8px #0008;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.dashboard-board .home-map-tooltip .home-map-tooltip-body>div{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 8px}
+.dashboard-board .home-map-tooltip .home-map-tooltip-body b{font:700 21px DashboardDIN,DashboardChinese,sans-serif}
+.dashboard-board .home-map-tooltip .home-map-tooltip-body em{display:block;margin:4px 0 0;color:#b6c2d1;font:14px DashboardChinese,sans-serif}
+
+/* Shared dashboard chrome for the secondary views. */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-tabs{position:absolute;right:0;top:30px;display:flex;gap:0;margin:0;align-self:auto}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-tabs button,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-tabs button:nth-child(n){box-sizing:border-box;min-width:0;width:136px;height:48px;margin-left:-8px;padding:0 14px;clip-path:polygon(24% 0,100% 0,76% 100%,0 100%);border:0;border-bottom:2px solid #28559b;background:linear-gradient(160deg,#06132b,#102c5a);color:#b5c0d1;filter:none;white-space:nowrap;font:16px DashboardChinese,sans-serif}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-tabs button.active{background:linear-gradient(160deg,#081735 25%,#174a95 78%,#57bbff);color:#fff;font-weight:700;box-shadow:inset 0 -3px #8cd5ff}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.board-stack,.situation-bottom)>.board-panel{position:relative;box-sizing:border-box;border:0;border-radius:0;background:linear-gradient(to bottom,transparent 53px,rgba(16,53,156,.1) 53px)}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.board-stack,.situation-bottom)>.board-panel::before,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.board-stack,.situation-bottom)>.board-panel::after{content:'';position:absolute;left:0;right:0;height:7px;pointer-events:none;background-position:center;background-repeat:no-repeat;background-size:100% 7px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.board-stack,.situation-bottom)>.board-panel::before{top:53px;background-image:url('dashboard-assets/上.svg')}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.board-stack,.situation-bottom)>.board-panel::after{bottom:0;background-image:url('dashboard-assets/下.svg')}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.board-stack,.situation-bottom)>.board-panel>h2,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) :is(.situation-panel-title,.node-region-head){box-sizing:border-box;min-height:45px;border:0;background:url('dashboard-assets/标题.svg') left center/auto 46px no-repeat;color:#fff}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .home-map-link{flex:none;width:110px;height:28px;margin-left:auto;padding:0;border:0;background:transparent url('dashboard-assets/地图联动.svg') center/contain no-repeat;box-shadow:none;font-size:0}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .home-map-link:hover,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .home-map-link.active{background-color:transparent;filter:brightness(1.25)}
+.dashboard-board .map-3d-tooltip:has(.home-map-tooltip){max-width:none;padding:0;background:transparent;box-shadow:none;filter:none}
+.dashboard-board .home-map-tooltip .home-map-tooltip-body p{max-width:none;margin:4px 0 0;color:#b6c2d1;font:14px DashboardChinese,sans-serif;white-space:normal}
+
+/* Secondary-view geometry from the 1920 x 1080 designs. */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board){padding:0 56px 40px;gap:0;grid-template-rows:102px minmax(0,1fr);background:#06152e url('dashboard-home-background.png') center top / cover no-repeat}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title{height:82px;background:url('dashboard-assets/顶部.svg') center top / 849px 103px no-repeat}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title h1{visibility:hidden}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-fullscreen{position:absolute;left:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent url('dashboard-assets/放大缩小.svg') center / contain no-repeat;font-size:0;z-index:4}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title>.filters{left:48px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) #periodSeg button{width:48px;border-radius:0;border-color:#0f84ff;background:#001c48}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) #periodSeg button.active{background:linear-gradient(#168cff,#00428c);color:#fff;border:1px solid #50a9ff}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title>.filters label[for="year"] select,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title>.filters label[for="quarter"] select{border:1px solid #0f84ff;border-radius:0;background:#001c48}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-columns{grid-template-columns:480px minmax(0,1fr) 480px;gap:16px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-stack,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .situation-bottom{gap:16px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-map{grid-template-rows:minmax(0,1fr) 40px 240px;gap:16px}
+.situation-board .board-stack:first-child:has(.disease-distribution-panel){grid-template-rows:220fr 343fr 343fr}
+.situation-board .board-stack:last-child:has(.situation-complication-panel){grid-template-rows:217fr 217fr 217fr 240fr}
+.construction-board .board-stack:first-child{grid-template-rows:216fr 426fr 264fr}
+.construction-board .board-stack:last-child{grid-template-rows:321fr 321fr 264fr}
+.outcome-board .board-stack:first-child,.outcome-board .board-stack:last-child{grid-template-rows:repeat(3,minmax(0,1fr))}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .situation-bottom>.board-panel>h2{height:45px;min-height:45px;margin:0 -16px 8px;padding:0 16px 0 31px;display:flex;align-items:center;font-size:22px}
+.situation-board .situation-bottom .requested-rank>h2{justify-content:flex-start;white-space:nowrap}
+.situation-board .situation-bottom .situation-combination-tabs{position:absolute;top:61px;left:8px;justify-content:flex-start;gap:0;flex-wrap:nowrap}
+.situation-board .situation-bottom .situation-combination-tabs button{height:24px;padding:0 8px;font-size:14px}
+.situation-board .situation-bottom .requested-rank-list{margin-top:32px}
+
+/* Improvement indicators: two rows of 64px rings in the design. */
+.outcome-board .outcome-improve-rings{position:absolute;left:32px;right:32px;top:calc(53px + (100% - 53px - 184px)/2);display:grid;grid-template-columns:200px 200px;gap:56px 16px}
+.outcome-board .outcome-improve-item{display:flex;align-items:center;gap:16px;min-width:0}
+.outcome-board .outcome-improve-item>i{display:grid;place-items:center;position:relative;flex:none;width:64px;height:64px;border-radius:50%;background:conic-gradient(#68baff var(--ring),#1a2b46 0)}
+.outcome-board .outcome-improve-item>i::before{content:'';position:absolute;inset:8px;border-radius:50%;background:#0b2a47}
+.outcome-board .outcome-improve-item img{position:relative;width:30px;height:30px}
+.outcome-board .outcome-improve-item>div{display:flex;flex-direction:column;gap:12px;white-space:nowrap}
+.outcome-board .outcome-improve-item span{font:16px DashboardChinese,sans-serif;color:rgba(255,255,255,.8)}
+.outcome-board .outcome-improve-item strong{font:700 24px DashboardDIN,DashboardChinese,sans-serif;color:#fff}
+.outcome-board .latest-monitor{position:absolute;top:61px;left:20px;width:440px;height:233px;margin:0;table-layout:fixed;border-collapse:collapse}
+.outcome-board .latest-monitor th,.outcome-board .latest-monitor td{text-align:center;padding:0;border:0;font:16px DashboardChinese,sans-serif;color:#fff}
+.outcome-board .latest-monitor thead{height:32px;background:linear-gradient(90deg,transparent,rgba(0,123,245,.3),transparent)}
+.outcome-board .latest-monitor th{color:rgba(255,255,255,.8)}
+.outcome-board .latest-monitor tbody tr:nth-child(even){background:rgba(0,131,245,.08)}

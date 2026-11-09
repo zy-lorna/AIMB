@@ -1,0 +1,28 @@
+<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g clip-path="url(#clip0_70_2096)">
+<g filter="url(#filter0_d_70_2096)">
+<use xlink:href="#stroke0_70_2096" fill="#F09627"/>
+<use xlink:href="#stroke0_70_2096" fill="url(#paint0_linear_70_2096)"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_70_2096" x="-0.666748" y="-3" width="23.427" height="27.998" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.791319 0 0 0 0 0.475688 0 0 0 0.5 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_70_2096"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_70_2096" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_70_2096" x1="11.0468" y1="3" x2="11.0468" y2="18.998" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="0.527897" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_70_2096">
+<rect width="22" height="22" fill="white"/>
+</clipPath>
+<path id="stroke0_70_2096" d="M10.4802 3.28455C10.546 3.19625 10.6315 3.12454 10.7299 3.07513C10.8283 3.02573 10.9369 3 11.047 3C11.1572 3 11.2657 3.02573 11.3642 3.07513C11.4626 3.12454 11.5481 3.19625 11.6139 3.28455L12.1092 3.96278L12.4092 4.3856C13.0139 5.24402 13.5943 6.11934 14.1496 7.01052C14.4985 7.56963 14.8327 8.13778 15.1518 8.71437C16.1803 10.5828 16.7603 12.0821 16.7603 13.1803C16.7608 16.3931 14.2028 18.998 11.047 18.998C7.89132 18.998 5.33325 16.3931 5.33325 13.1803C5.33325 12.0821 5.9132 10.5822 6.94168 8.71437C7.26103 8.13777 7.5954 7.56963 7.94445 7.01052C8.54668 6.04406 9.17835 5.09627 9.83858 4.16848L10.126 3.76737L10.4802 3.28455ZM11.047 10.2714C10.6528 10.2714 10.3328 10.5971 10.3328 10.9987L10.3322 12.4529H8.90437L8.82095 12.458C8.6457 12.4805 8.48476 12.5664 8.36854 12.6995C8.25231 12.8326 8.18885 13.0036 8.19015 13.1803C8.19015 13.5819 8.51012 13.9076 8.90437 13.9076L10.3322 13.9071L10.3328 15.3618L10.3374 15.4469C10.3791 15.8086 10.6808 16.0892 11.047 16.0892C11.4413 16.0892 11.7613 15.7635 11.7613 15.3618L11.7607 13.9071H13.1897L13.2731 13.9025C13.4484 13.88 13.6093 13.7941 13.7255 13.661C13.8418 13.528 13.9052 13.3569 13.9039 13.1803C13.9039 12.7786 13.584 12.4529 13.1897 12.4529H11.7607L11.7613 10.9987L11.7567 10.9142C11.738 10.7386 11.6554 10.576 11.5245 10.4574C11.3936 10.3389 11.2236 10.2726 11.047 10.2714Z"/>
+</defs>
+</svg>
