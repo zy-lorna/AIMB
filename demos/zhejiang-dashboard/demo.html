@@ -37,7 +37,7 @@
 @media(max-width:1100px){.ai-insights{grid-template-columns:1fr}.population-grid{grid-template-columns:1fr}}@media(max-width:800px){.population-hero,.clinic-grid{grid-template-columns:1fr}.population-chart-head,.population-chart-row{grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr)}}
 .population-page .population-hero{grid-template-columns:repeat(3,minmax(0,1fr))}.risk-tiers{display:grid;gap:9px}.risk-tier{padding:10px;background:#f6f9fd;border-left:3px solid #56a2da}.risk-tier:nth-child(2){border-color:#e9ad57}.risk-tier:nth-child(3){border-color:#36a99a}.risk-tier strong{display:block;font-size:12px}.risk-tier span{display:block;font-size:12px;color:#5a7088;margin-top:4px}@media(max-width:1120px){.population-page .population-hero{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="demo-refinement.css?v=dashboard-header-20261109">
+<link rel="stylesheet" href="demo-refinement.css?v=dashboard-header-20261109-3">
 </head>
 <body class="dashboard-booting">
 <div class="app">
@@ -49,7 +49,7 @@
 <script src="echarts.min.js"></script>
 <script src="zhejiang-datav-map.js"></script>
 <script src="zhejiang-counties-datav.js"></script>
-<script src="zhejiang-map-3d.js"></script>
+<script src="zhejiang-map-3d.js?v=dashboard-3d-20261109"></script>
 <script>
 const $=id=>document.getElementById(id);
 // Original outline geometry from @icon-park/svg 1.4.2; all icons use its 48px viewBox.
@@ -62,7 +62,7 @@ function distribute(total,weights,rank){let sum=weights.reduce((a,b)=>a+b,0),raw
 const counties=countyFeatures.map(feature=>{let city=cities[cityCodes.indexOf(feature.properties.parentCityCode)],siblings=countyFeatures.filter(item=>item.properties.parentCityCode===feature.properties.parentCityCode),rank=siblings.indexOf(feature),weights=siblings.map((_,i)=>1+(i%4)*.12);return {...city,name:feature.properties.name,county:feature.properties.name,cityName:city.name,adcode:feature.properties.adcode,should:distribute(city.should,weights,rank),clinics:distribute(city.clinics,weights,rank),active:distribute(city.active,weights,rank),entry:Math.max(0,city.entry+(rank%5-2)*2),follow:Math.max(0,city.follow+(rank%5-2)*2),control:Math.max(0,city.control+(rank%5-2)*2),quality:rank%6===0?'待核验':city.quality}});
 const clinics=counties.flatMap(county=>Array.from({length:county.should},(_,i)=>({...county,name:`${county.cityName}${county.name}第${i+1}${county.name.endsWith('区')?'社区卫生服务中心':'乡镇卫生院'}（演示）`,clinicIndex:i+1,consortiumName:`${county.cityName}${county.name}第${i%2+1}医共体（演示）`,should:1,clinics:Number(i<county.clinics),active:Number(i<county.active)})));
 const consortia=counties.flatMap(county=>[1,2].map(index=>{let group=clinics.filter(x=>x.adcode===county.adcode&&x.consortiumName===`${county.cityName}${county.name}第${index}医共体（演示）`);return {...county,name:`${county.cityName}${county.name}第${index}医共体（演示）`,consortiumName:`${county.cityName}${county.name}第${index}医共体（演示）`,should:group.length,clinics:group.reduce((n,x)=>n+x.clinics,0),active:group.reduce((n,x)=>n+x.active,0)}}));
-const initial=()=>({page:'dashboard',city:'all',role:'province',periodMode:'quarter',year:'2026',quarter:'3',month:'9',level:'city',regionScope:'city',clinicTab:'overview',mapScope:'city',mapMetric:'construction',mapView:'2d',expanded:[],submissions:[],actions:[]});
+const initial=()=>({page:'dashboard',city:'all',role:'province',periodMode:'quarter',year:'2026',quarter:'3',month:'9',level:'city',regionScope:'city',clinicTab:'overview',mapScope:'city',mapMetric:'construction',mapView:'3d',expanded:[],submissions:[],actions:[]});
 let state=initial();
 const sum=(items,key)=>items.reduce((n,item)=>n+item[key],0),rate=(a,b)=>b?Math.round(a/b*100):0;
 function selected(){if(state.city==='all')return cities;let [level,name]=state.city.split(':');let source={city:cities,county:counties,consortium:consortia,clinic:clinics}[level];return source?.filter(item=>item.name===name)||cities}
@@ -97,7 +97,7 @@ function dashboard(){
   let outcomes=`${dashMetric('血压改善率',local?s[0].quality==='已复核'?s[0].control-11+'%':'待核验':'56%','')}${dashMetric('血糖改善率',local?s[0].quality==='已复核'?s[0].control-16+'%':'待核验':'51%','')}${dashMetric('可评价样本占比',local?s[0].quality==='已复核'?s[0].follow-12+'%':'待核验':'48%','')}`;
   let issues=`<div class="mini"><span>建而未用门诊</span><b class="down">${built-active} 家</b></div><div class="mini"><span>建设待核验地市</span><b class="down">${s.filter(x=>x.quality==='待核验').length} 个</b></div><div class="actions"><button class="dash-link" type="button" data-page="governance">查看整改督办 →</button></div>`;
   let map=`<div class="map-tools"><div class="map-metrics" role="group" aria-label="热力指标">${[['construction','建设覆盖率'],['active','有效启用率'],['entry','路径入径率'],['improvement','血压改善率'],['management','专档覆盖率']].map(([id,name])=>`<button type="button" data-map-metric="${id}" class="${state.mapMetric===id?'active':''}">${name}<span class="metric-help" data-tip="${esc(metricRules[name]||'按当前所选机构和统计周期计算。')}" tabindex="0">?</span></button>`).join('')}</div><div class="map-levels" role="group" aria-label="地图行政层级"><button type="button" data-map-scope="province" class="${state.mapScope==='province'?'active':''}">全省</button><button type="button" data-map-scope="city" class="${state.mapScope==='city'?'active':''}">地市</button><button type="button" data-map-scope="county" class="${state.mapScope==='county'?'active':''}">区县</button></div></div><div class="map-stage ${state.mapView==='3d'?'is-3d':''}" id="mapStage"><div id="zhejiangMap" class="map-chart" role="img" aria-label="浙江省地图，可切换行政层级和热力指标，使用鼠标滚轮或右侧按钮缩放，拖动地图查看区域，悬浮查看指标"></div><div id="zhejiangMap3D" class="map-3d" role="img" aria-label="浙江省三维地图，可旋转、缩放并悬浮查看区域指标"></div><div class="map-zoom" role="group" aria-label="地图缩放"><button type="button" data-map-zoom="in" aria-label="放大地图" title="放大地图">+</button><button type="button" data-map-zoom="out" aria-label="缩小地图" title="缩小地图">−</button><button type="button" data-map-zoom="reset" aria-label="复位地图" title="复位地图">⌖</button></div><div class="map-scale"><span id="mapMetricLabel">建设覆盖率</span><i></i><span>低 → 高</span></div><span class="map-zoom-level" id="mapZoomLevel">100%</span></div>`;
-  let viewSwitch=`<span class="map-view-switch" role="group" aria-label="地图视图"><button type="button" data-map-view="3d" class="${state.mapView==='3d'?'active':''}">3D 立体</button><button type="button" data-map-view="2d" class="${state.mapView==='2d'?'active':''}">2D 平面</button></span>`;
+  let viewSwitch=`<span class="map-view-switch" role="group" aria-label="地图视图"><button type="button" data-map-view="3d" class="${state.mapView==='3d'?'active':''}">3D 立体</button></span>`;
   return `<div class="dashboard-layout"><div class="dashboard-stack">${panel('患者情况',patient)}${panel('重点人群与覆盖缺口',priority)}</div>${panel('浙江省慢病管理地图',map,viewSwitch,'map-panel')}<div class="dashboard-stack">${panel('管理手段',measures)}${panel('健康成效',outcomes)}${panel('本期需关注',issues)}</div></div>`
 }
 function population(){
@@ -311,7 +311,7 @@ function renderProvinceMap(){
   let values=items.map(x=>{let value=mapValue(x);return {name:x.name,displayName:county?x.cityName+x.name:x.name,value,itemStyle:value===null?{areaColor:'#244663'}:{}}}),numbers=values.map(x=>x.value).filter(Number.isFinite);
   if(state.mapView==='3d'){
     if(!window.ZhejiangMap3D){$('zhejiangMap3D').textContent='三维地图资源未加载';return}
-    try{map3DHandle=window.ZhejiangMap3D.mount($('zhejiangMap3D'),geojson,values,{showLabels:state.mapScope!=='province',countyLevel:county,onHover:name=>{let item=items.find(x=>x.name===name);return item?mapTooltip(item):''},onClick:name=>regionDetail(name),onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom();return}catch(error){console.error('三维地图加载失败',error);state.mapView='2d';$('mapStage').classList.remove('is-3d');document.querySelectorAll('[data-map-view]').forEach(button=>button.classList.toggle('active',button.dataset.mapView==='2d'))}
+    try{map3DHandle=window.ZhejiangMap3D.mount($('zhejiangMap3D'),geojson,values,{showLabels:state.mapScope!=='province',countyLevel:county,onHover:name=>{let item=items.find(x=>x.name===name);return item?mapTooltip(item):''},onClick:name=>regionDetail(name),onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom();return}catch(error){console.error('三维地图加载失败',error);$('zhejiangMap3D').textContent='三维地图加载失败';return}
   }
   echarts.registerMap('zhejiang-datav',window.ZHEJIANG_DATAV_GEOJSON);
   echarts.registerMap('zhejiang-counties-datav',geojson);
@@ -376,6 +376,6 @@ $('help').onclick=showPrototypeHelp;
 </script>
 <script src="clinic-report-20261105.js"></script>
 <script src="clinic-photo-data.js"></script>
-<script src="demo-refinement.js?v=township-province-1"></script>
+<script src="demo-refinement.js?v=dashboard-3d-20261109"></script>
 </body>
 </html>

@@ -144,7 +144,7 @@ dashboard=function(){
   const tiers=node?tierCounts(node):clinics.reduce((result,x)=>{if(x.clinics){const key={基本保障:'basic',强化功能:'enhanced',鼓励探索:'explore'}[nodeTier(x)];if(key)result[key]++}return result},{basic:0,enhanced:0,explore:0});
   const ranking=[...units].sort((a,b)=>b.active-a.active).slice(0,6),top=Math.max(1,...ranking.map(x=>x.active));
   const card=(title,body)=>`<section class="board-panel"><h2>${title}</h2>${body}</section>`;
-  return `<div class="dashboard-viewport" id="dashboardViewport"><div class="dashboard-board" id="dashboardBoard"><div class="board-title"><div><small>浙江省慢病一体化管理监管平台 · 模拟数据</small><h1>${esc(regionLabel())}慢病管理驾驶舱</h1></div><button type="button" class="board-fullscreen" id="boardFullscreen" aria-label="全屏查看数据大屏" title="全屏查看">⛶</button></div><div class="board-kpis">${cards.map(([title,value,sub])=>`<div class="board-kpi"><span>${title}</span><strong>${value}</strong><small>${sub}</small></div>`).join('')}</div><div class="board-columns"><div class="board-stack">${card('患者路径化执行情况',`<div class="board-path">${stages.map(([label,value])=>`<div><strong>${formatPct(value)}</strong><span>${label}</span></div>`).join('')}</div>`)}${card('核心项目检测情况',`<table class="board-table"><thead><tr><th>检测项目</th><th>检测率</th><th>漏测率</th></tr></thead><tbody>${monitoring.map(([label,value])=>`<tr><td>${label}</td><td>${formatPct(value)}</td><td>${formatPct(100-value)}</td></tr>`).join('')}</tbody></table>`)}</div><div class="board-map">${map.outerHTML}</div><div class="board-stack">${card('一体化建设能力分层',`<div class="board-tiers"><div>基本保障<strong>${tiers.basic} 家</strong></div><div>强化功能<strong>${tiers.enhanced} 家</strong></div><div>鼓励探索<strong>${tiers.explore} 家</strong></div></div>`)}${card('下级机构门诊服务人次排行',`<div class="board-bars">${ranking.map(x=>{const visits=Math.round(x.active*1210+x.follow*35);return `<div><span>${esc(fullName(x))}</span><i style="width:${Math.max(4,x.active/top*100)}%"></i><b>${visits.toLocaleString()}</b></div>`}).join('')}</div>`)}${card('高风险患者及时处置',`<div class="board-treatment"><strong>${formatPct(Math.max(0,base.follow-17))}</strong><span>高风险到期异常复查完成率</span><p>及时复查约 ${people(risk.high*Math.max(0,base.follow-17)/100)} · 待跟进约 ${people(risk.high*(100-Math.max(0,base.follow-17))/100)}</p></div>`)}</div></div></div></div>`;
+  return `<div class="dashboard-viewport" id="dashboardViewport"><div class="dashboard-board" id="dashboardBoard"><div class="board-title"><div><small>浙江省慢病一体化管理监管平台 · 模拟数据</small><h1>${esc(regionLabel())}慢病管理</h1></div><button type="button" class="board-fullscreen" id="boardFullscreen" aria-label="全屏查看数据大屏" title="全屏查看">⛶</button></div><div class="board-kpis">${cards.map(([title,value,sub])=>`<div class="board-kpi"><span>${title}</span><strong>${value}</strong><small>${sub}</small></div>`).join('')}</div><div class="board-columns"><div class="board-stack">${card('患者路径化执行情况',`<div class="board-path">${stages.map(([label,value])=>`<div><strong>${formatPct(value)}</strong><span>${label}</span></div>`).join('')}</div>`)}${card('核心项目检测情况',`<table class="board-table"><thead><tr><th>检测项目</th><th>检测率</th><th>漏测率</th></tr></thead><tbody>${monitoring.map(([label,value])=>`<tr><td>${label}</td><td>${formatPct(value)}</td><td>${formatPct(100-value)}</td></tr>`).join('')}</tbody></table>`)}</div><div class="board-map">${map.outerHTML}</div><div class="board-stack">${card('一体化建设能力分层',`<div class="board-tiers"><div>基本保障<strong>${tiers.basic} 家</strong></div><div>强化功能<strong>${tiers.enhanced} 家</strong></div><div>鼓励探索<strong>${tiers.explore} 家</strong></div></div>`)}${card('下级机构门诊服务人次排行',`<div class="board-bars">${ranking.map(x=>{const visits=Math.round(x.active*1210+x.follow*35);return `<div><span>${esc(fullName(x))}</span><i style="width:${Math.max(4,x.active/top*100)}%"></i><b>${visits.toLocaleString()}</b></div>`}).join('')}</div>`)}${card('高风险患者及时处置',`<div class="board-treatment"><strong>${formatPct(Math.max(0,base.follow-17))}</strong><span>高风险到期异常复查完成率</span><p>及时复查约 ${people(risk.high*Math.max(0,base.follow-17)/100)} · 待跟进约 ${people(risk.high*(100-Math.max(0,base.follow-17))/100)}</p></div>`)}</div></div></div></div>`;
 };
 pages.dashboard=dashboard;
 const governanceBeforeRoleFocus=governance;
@@ -1160,7 +1160,6 @@ bindMapControls=function(){
   if(state.page!=='dashboard'||state.dashboardView!=='situation')return;
   document.querySelectorAll('.situation-board [data-map-metric]').forEach(button=>button.onclick=()=>{
     state.mapMetric=button.dataset.mapMetric;
-    if(state.mapMetric==='flow'){state.mapView='2d';$('mapStage')?.classList.remove('is-3d')}
     document.querySelectorAll('.situation-board [data-map-metric]').forEach(item=>{item.classList.toggle('active',item===button);item.setAttribute('aria-pressed',String(item===button))});
     $('mapMetricLabel').textContent={diagnosed:'确诊去重人数',comorbidity:'两病同患占比',flow:'模拟就诊轨迹'}[state.mapMetric];
     document.querySelector('.situation-board .map-scale span:last-child').textContent=state.mapMetric==='flow'?'基层 → 等级医院':'低 → 高';
@@ -1191,9 +1190,19 @@ renderProvinceMap=function(){
     if(provinceChart&&state.mapView==='2d')provinceChart.setOption({visualMap:{inRange:{color:['#0751b8','#11b9ec','#f9cc5e','#f16a45']}},series:[{itemStyle:{borderColor:'#7acbfa',borderWidth:1.3,shadowColor:'#37aeff',shadowBlur:9},label:{color:'#e9f6ff',textShadowColor:'#123a68',textShadowBlur:4}}]});
     return;
   }
-  state.mapView='2d';$('mapStage')?.classList.remove('is-3d');
-  document.querySelectorAll('.situation-board [data-map-view]').forEach(button=>button.classList.toggle('active',button.dataset.mapView==='2d'));
-  document.querySelector('.situation-board [data-map-view="3d"]')?.setAttribute('disabled','');
+  if(state.mapView==='3d'){
+    const target=$('zhejiangMap3D'),selectedNode=currentNode(),county=state.mapScope==='county';
+    const items=county?(selectedNode?counties.filter(x=>scopeLevel()==='city'?x.cityName===selectedNode.name:x.adcode===selectedNode.adcode):counties):cities;
+    const source=county?window.ZHEJIANG_COUNTIES_DATAV_GEOJSON:window.ZHEJIANG_DATAV_GEOJSON;
+    const geo=county?{...source,features:source.features.filter(feature=>items.some(item=>item.name===feature.properties?.name))}:source;
+    const cityName=scopeLevel()==='city'?selectedNode.name:selectedNode?.cityName||'杭州市';
+    const hubFeature=window.ZHEJIANG_DATAV_GEOJSON.features.find(feature=>feature.properties?.name===cityName);
+    const hub=hubFeature?situationCenter(hubFeature):[120.15,30.28];
+    const lines=geo.features.map(feature=>situationCenter(feature)).filter(Boolean).map(center=>[center,hub]);
+    provinceChart?.dispose();provinceChart=null;map3DHandle?.dispose();map3DHandle=null;
+    try{map3DHandle=window.ZhejiangMap3D.mount(target,geo,items.map(item=>({name:item.name,value:visitsFor(item).hospital})),{showLabels:true,countyLevel:county,flowLines:lines,onHover:name=>{const item=items.find(x=>x.name===name);return item?mapTooltip(item):''},onClick:regionDetail,onZoom:zoom=>{mapZoom=zoom;updateMapZoom()}});updateMapZoom()}catch(error){console.error('就诊流向三维地图加载失败',error);target.textContent='三维地图加载失败'}
+    return;
+  }
   const baseGeo=state.mapScope==='county'?window.ZHEJIANG_COUNTIES_DATAV_GEOJSON:window.ZHEJIANG_DATAV_GEOJSON,element=$('zhejiangMap');
   if(!element||!window.echarts||!baseGeo)return;
   map3DHandle?.dispose();map3DHandle=null;provinceChart?.dispose();provinceChart=echarts.init(element);
@@ -1567,7 +1576,7 @@ function applyDashboardSpacingRevision(html){
   const host=document.createElement('div');host.innerHTML=html;
   const board=host.querySelector('#dashboardBoard');
   const title=board.querySelector('.board-title h1');
-  if(title)title.textContent='基层慢病健康管理服务驾驶舱';
+  if(title)title.textContent='基层慢病健康管理服务平台';
   const view=state.dashboardView||'home';
   if(view==='home'){
     const p=populationData(),metrics=clinicMetrics(currentNode()),kpis=board.querySelectorAll('.board-kpi');

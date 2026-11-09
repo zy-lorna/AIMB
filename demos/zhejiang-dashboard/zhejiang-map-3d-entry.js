@@ -52,6 +52,15 @@ function mount(host, geojson, values, callbacks) {
   orbitArc.position.z = baseZ + depth * .045;
   scene.add(orbitArc);
   const meshes = [];
+  for (const [from, to] of callbacks.flowLines || []) {
+    const [x1, y1] = project(from), [x2, y2] = project(to);
+    const start = new THREE.Vector3(x1, y1, depth + .2);
+    const end = new THREE.Vector3(x2, y2, depth + .2);
+    const midpoint = start.clone().add(end).multiplyScalar(.5);
+    midpoint.z += Math.max(viewSize * .035, start.distanceTo(end) * .2);
+    const curve = new THREE.QuadraticBezierCurve3(start, midpoint, end);
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(32)), new THREE.LineBasicMaterial({ color: '#f1ba66', transparent: true, opacity: .75 })));
+  }
   const hitMeshes = [];
   const labels = [];
   const valid = values.map(item => item.value).filter(Number.isFinite);
