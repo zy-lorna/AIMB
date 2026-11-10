@@ -15,12 +15,11 @@ function mount(host, geojson, values, callbacks) {
   const projectedWidth = (bounds[2] - bounds[0]) * cosLat * 30;
   const projectedHeight = (bounds[3] - bounds[1]) * 30;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#071b32');
   scene.add(new THREE.AmbientLight(0x8dc7ed, 1.5));
   const sun = new THREE.DirectionalLight(0xe1f6ff, 1.7);
   sun.position.set(-45, 50, 110);
   scene.add(sun);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   host.appendChild(renderer.domElement);
@@ -145,6 +144,8 @@ function mount(host, geojson, values, callbacks) {
   camera.position.set(0, -viewSize * 1.15, viewSize * .78);
   camera.lookAt(0, 0, 0);
   resize();
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(host);
   function showAt(event) {
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1);
@@ -198,6 +199,7 @@ function mount(host, geojson, values, callbacks) {
     },
     dispose() {
       disposed = true;
+      resizeObserver.disconnect();
       cancelAnimationFrame(frame);
       controls.dispose();
       scene.traverse(object => {

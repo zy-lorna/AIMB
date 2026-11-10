@@ -2535,5 +2535,201 @@ let ringRotation=0,ringLastInteraction=0;
 function updateRotatingRings(){document.querySelectorAll('.rotating-doughnut').forEach(ring=>{const share=Number(ring.dataset.ringShare),labels=JSON.parse(ring.dataset.ringLabels),active=ringRotation%2;ring.classList.toggle('second-selected',!!active);ring.querySelector('strong').textContent=`${(active?100-share:share).toFixed(2)}%`;ring.querySelector('span').textContent=labels[active];const rows=ring.parentElement.querySelectorAll('.construction-coverage-legend>div');rows.forEach((row,index)=>row.classList.toggle('ring-selected',index===active))})}
 document.addEventListener('click',event=>{const ring=event.target.closest('.rotating-doughnut'),row=event.target.closest('.construction-coverage-legend>div');const target=ring||row?.closest('.construction-coverage')?.querySelector('.rotating-doughnut');if(!target)return;let index;if(row){index=Array.from(row.parentElement.children).indexOf(row);if(index>1)return}else{const rect=ring.getBoundingClientRect(),x=event.clientX-(rect.left+rect.width/2),y=event.clientY-(rect.top+rect.height/2);if(Math.hypot(x,y)<rect.width*.28)return;const angle=(Math.atan2(x,-y)*180/Math.PI+360)%360;index=angle<Number(ring.dataset.ringShare)*3.6?0:1}ringRotation=index;ringLastInteraction=Date.now();updateRotatingRings()});
 setInterval(()=>{if(Date.now()-ringLastInteraction<4000)return;ringRotation++;updateRotatingRings()},2000);
+const dashboardBeforeHomeFunnels=dashboard;
+dashboard=function(){
+  const html=dashboardBeforeHomeFunnels();if(!homeView())return html;
+  const root=document.createElement('div');root.innerHTML=html;
+  const board=root.querySelector('#dashboardBoard'),p=populationData(),node=currentNode(),metrics=clinicMetrics(node),resident=residentForNode(node)?.[0] ?? null;
+  const cards=board.querySelectorAll('.board-kpi');
+  cards[0].querySelector('span').textContent='常住人口';cards[0].querySelector('small')?.remove();
+  cards[0].querySelector('strong').innerHTML=resident===null?'待接入':`${resident.toFixed(1)}<em class="board-kpi-unit">万人</em>`;
+  const entry=[...cards].find(card=>card.querySelector('span')?.textContent.trim()==='医防融合入径率');
+  if(entry){entry.querySelector('span').textContent='基层就诊人次';entry.querySelector('strong').innerHTML=`${visitsForSelection().primary.toFixed(1)}<em class="board-kpi-unit">万人次</em>`;entry.querySelectorAll('small').forEach(el=>el.remove())}
+  const riskRate=homeRisk(node).high/Math.max(1,p.managed);
+  const diseases=[['高血压',p.high,p.managedHigh],['糖尿病',p.diabetes,p.managedDiabetes],['慢阻肺',p.copd,p.managedCopd]];
+  board.querySelectorAll('.board-stack:first-child > .board-panel').forEach((panel,i)=>{
+    const [name,diagnosed,managed]=diseases[i],high=managed*riskRate;
+    const rows=[['确诊',diagnosed,resident,'常住人口'],['专档',managed,diagnosed,'确诊患者'],['高风险',high,managed,'专档患者']];
+    panel.innerHTML=`<h2>${name}患者情况</h2><div class="disease-funnel" aria-label="${name}患者情况，模拟数据">${rows.map(([label,value,base,baseLabel],index)=>`<div class="funnel-row"><div class="funnel-shape funnel-${index}"><span>${label}</span><strong>${value.toFixed(1)} <small>万人</small></strong></div><div class="funnel-ratio"><strong>${base==null?'待接入':formatPct(value/Math.max(.0001,base)*100)}</strong><span>占${baseLabel}</span></div></div>`).join('')}</div>`;
+  });
+  const counts=[...homeTierCounts(node),Math.max(0,metrics.eligible-metrics.built)],names=['基本保障','强化功能','鼓励探索','未建设'],colors=['#37baf2','#4ed5bc','#f2bd65','#536b88'];
+  let start=0;const stops=counts.map((count,i)=>{const from=start;start+=count/Math.max(1,metrics.eligible)*100;return `${colors[i]} ${from}% ${start}%`}).join(',');
+  const capacity=board.querySelector('.board-stack:last-child > .board-panel:first-child');
+  capacity.innerHTML=`<h2>一体化门诊覆盖率</h2><div class="home-coverage-layout"><div class="home-coverage-ring" style="background:conic-gradient(${stops})"><div><strong>${(metrics.built/Math.max(1,metrics.eligible)*100).toFixed(2)}%</strong><span>覆盖率</span></div></div><div class="home-coverage-legend">${counts.map((count,i)=>`<div><i style="background:${colors[i]}"></i><span>${names[i]}</span><strong>${count} <small>家</small></strong></div>`).join('')}<div class="coverage-total">已建设 ${metrics.built} / ${metrics.eligible} 家</div></div></div>`;
+  const weights=Array.from({length:12},(_,i)=>990+i*46+Math.sin(i*.8)*80),annualVisits=visitsForSelection().primary*10000*.6,weightTotal=weights.reduce((a,b)=>a+b,0);
+  const values=weights.map(weight=>Math.round(annualVisits*weight/weightTotal)),data=boardTimeAxis(values),w=464,h=154,left=50,right=18,top=25,bottom=24;
+  const total=values.reduce((a,b)=>a+b,0), serviceCard=[...cards].find(card=>card.querySelector('span')?.textContent.trim()==='基层服务人次');
+  if(serviceCard){serviceCard.querySelector('span').textContent='一体化门诊服务人次';serviceCard.querySelector('strong').innerHTML=`${(total/10000).toFixed(1)}<em class="board-kpi-unit">万人次</em>`;}
+  const rates=data.values.map((v,i)=>i&&data.values[i-1]?(v/data.values[i-1]-1)*100:null),valid=rates.filter(v=>v!==null),min=Math.min(0,Math.floor(Math.min(...valid)/25)*25),max=100,x=i=>left+30+i*(w-left-right-60)/Math.max(1,data.values.length-1),y=v=>h-bottom-(v-min)/(max-min)*(h-top-bottom);
+  const service=board.querySelector('.board-stack:last-child > .board-panel:nth-child(2)');
+  service.innerHTML=`<h2>一体化门诊服务人次增长率</h2><div class="home-service-summary"><span>月均服务人次</span><strong>${(total/12/10000).toFixed(2)} <small class="summary-unit">万人次</small></strong></div><svg class="home-service-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="一体化门诊服务人次增长率，单位百分比"><text class="service-unit" x="42" y="14" text-anchor="end">%</text><g class="construction-grid">${[0,.25,.5,.75,1].map(t=>{const v=min+(max-min)*t;return `<line x1="${left}" x2="${w-right}" y1="${y(v)}" y2="${y(v)}"/><text x="42" y="${y(v)+5}" text-anchor="end">${Number(v.toFixed(1))}</text>`}).join('')}</g><polyline points="${rates.map((v,i)=>v===null?'':`${x(i)},${y(v)}`).filter(Boolean).join(' ')}" fill="none" stroke="#2dc5ff" stroke-width="3"/>${rates.map((v,i)=>`${v===null?'':`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="#68dcff"><title>${data.labels[i]} ${v.toFixed(1)}%</title></circle><text class="service-bar-value" x="${x(i)}" y="${y(v)-10}" text-anchor="middle">${v.toFixed(1)}%</text>`}<text class="construction-month" x="${x(i)}" y="${h-3}" text-anchor="middle">${data.labels[i]}</text>`).join('')}</svg>`;
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+const dashboardBeforeSituationRefresh=dashboard;
+dashboard=function(){
+  const html=dashboardBeforeSituationRefresh();if(!situationActive())return html;
+  const root=document.createElement('div');root.innerHTML=html;
+  const board=root.querySelector('#dashboardBoard'),p=populationData(),risk=homeRisk(currentNode()),parts=diseaseCombinations(p);
+  const groups=[['仅高血压',parts[0].value,'#38a7f2'],['仅糖尿病',parts[1].value,'#f4a664'],['仅慢阻肺',parts[2].value,'#85d1e9'],['2病共患',parts.slice(3,6).reduce((a,x)=>a+x.value,0),'#a78de9'],['3病叠加',parts[6].value,'#f2ce68']];
+  const total=groups.reduce((a,x)=>a+x[1],0),comorbid=groups[3][1]+groups[4][1];
+  function ring(rows,center,label){let offset=0;const sum=rows.reduce((a,x)=>a+x[1],0),stops=rows.map(([,value,color])=>{const start=offset;offset+=value/Math.max(.0001,sum)*100;return `${color} ${start}% ${offset}%`}).join(',');return `<div class="situation-ring-layout"><div class="situation-ring" style="background:conic-gradient(${stops})"><div><strong>${center}</strong><span>${label}</span></div></div><div class="situation-ring-legend">${rows.map(([name,value,color])=>`<div><i style="background:${color}"></i><span>${name}</span><strong>${value.toFixed(1)}<small>万人</small></strong><b>${formatPct(value/Math.max(.0001,sum)*100)}</b></div>`).join('')}</div></div>`}
+  const cards=[['重点慢病人数',total.toFixed(1),'万人'],['慢病专档数',(p.managedHigh+p.managedDiabetes+p.managedCopd).toFixed(1),'万份'],['共病患者数',comorbid.toFixed(1),'万人'],['共病患者占比',(comorbid/Math.max(.0001,total)*100).toFixed(1),'%'],['高风险患者数',risk.high.toFixed(1),'万人'],['并发症发病率','25.97','%']];
+  const kpis=document.createElement('div');kpis.className='board-kpis situation-kpis';kpis.innerHTML=cards.map(([label,value,unit])=>`<div class="board-kpi"><strong>${value}<em class="board-kpi-unit">${unit}</em></strong><span>${label}</span></div>`).join('');board.querySelector('.board-columns').before(kpis);board.classList.remove('board-no-kpis');
+  const left=board.querySelector('.board-stack:first-child'),right=board.querySelector('.board-stack:last-child');
+  left.children[0].innerHTML=`<h2>重点慢病患者分布</h2>${ring(groups,total.toFixed(1),'重点慢病人数（万人）')}`;
+  left.children[1].innerHTML=`<h2>慢病专档情况</h2><div class="situation-filing-cards">${[['高血压专档数',p.managedHigh,'✚'],['糖尿病专档数',p.managedDiabetes,'✦'],['慢阻肺专档数',p.managedCopd,'✚']].map(([name,value,icon])=>`<div><div class="filing-icon">${icon}</div><strong>${value.toFixed(1)}<small>万份</small></strong><span>${name}</span></div>`).join('')}</div>`;
+  const riskRows=[['高风险',risk.high,'#ef8065'],['中风险',risk.middle,'#f4c767'],['低风险',risk.low,'#43cba5']];
+  right.children[0].innerHTML=`<h2>风险分布</h2>${ring(riskRows,p.managed.toFixed(1),'专档患者（万人）')}<p class="situation-risk-note">最近3次血压、糖化、血脂：任一项≥2次不达标为高风险；否则任一项1次不达标为中风险；全部达标为低风险。</p>`;
+  right.querySelector('.situation-complication-head svg')?.remove();
+  [...right.children].forEach(panel=>{const title=panel.querySelector('h2');if(title?.textContent.includes('服务流动与就诊态势'))title.textContent='就诊流向';if(title?.textContent.includes('失管患者情况'))panel.remove()});
+  board.querySelector('.situation-bottom')?.remove();board.querySelector('.board-ticker')?.remove();
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+const dashboardBeforeRequestedAdjustments=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeRequestedAdjustments();
+  const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
+  board.querySelectorAll('.construction-line,.outcome-trend').forEach(svg=>svg.setAttribute('preserveAspectRatio','xMidYMid meet'));
+  if(homeView()){
+    const service=board.querySelector('.home-service-chart')?.closest('.board-panel');
+    service?.querySelector('.home-service-summary')?.remove();
+    service?.insertAdjacentHTML('beforeend','<p class="service-growth-formula">增长率 = 本期服务人次 ÷ 上期服务人次 − 1</p>');
+    board.querySelector('.coverage-total')?.remove();
+    const ring=board.querySelector('.home-coverage-ring>div');
+    if(ring){const metrics=clinicMetrics(currentNode());ring.insertAdjacentHTML('beforeend',`<small>已建设 ${metrics.built} / ${metrics.eligible} 家</small>`)}
+    board.querySelectorAll('.funnel-ratio strong').forEach(el=>{el.innerHTML=el.textContent.replace('%','<small>%</small>')});
+  }
+  if(situationActive()){
+    const cards=board.querySelectorAll('.situation-kpis .board-kpi');
+    cards[2]?.insertAdjacentHTML('beforeend','<small>同时患有两种或三种重点慢病</small>');
+    cards[3]?.insertAdjacentHTML('beforeend','<small>共病患者数 ÷ 重点慢病人数</small>');
+  }
+  if((state.dashboardView||'home')==='construction'){
+    const node=currentNode(),metrics=clinicMetrics(node),base=node||cities[0],left=board.querySelector('.board-stack:first-child'),right=board.querySelector('.board-stack:last-child');
+    const count=homeTierCounts(node),counts=[...count,Math.max(0,metrics.eligible-metrics.built)],names=['基本保障','强化功能','鼓励探索','未建设'],colors=['#37baf2','#4ed5bc','#f2bd65','#536b88'];
+    let offset=0;const stops=counts.map((value,i)=>{const start=offset;offset+=value/Math.max(1,metrics.eligible)*100;return `${colors[i]} ${start}% ${offset}%`}).join(',');
+    left.children[0].innerHTML=`<h2>一体化门诊覆盖情况</h2><div class="home-coverage-layout"><div class="home-coverage-ring" style="background:conic-gradient(${stops})"><div><strong>${(metrics.built/Math.max(1,metrics.eligible)*100).toFixed(2)}%</strong><span>覆盖率</span></div></div><div class="home-coverage-legend">${counts.map((value,i)=>`<div><i style="background:${colors[i]}"></i><span>${names[i]}</span><strong>${value} <small>家</small></strong></div>`).join('')}</div></div>`;
+    left.children[0].querySelector('.home-coverage-ring>div').insertAdjacentHTML('beforeend',`<small>已建设 ${metrics.built} / ${metrics.eligible} 家</small>`);
+    left.children[1].remove();
+    const annualVisits=visitsForSelection().primary*.6*10000,weights=Array.from({length:12},(_,i)=>990+i*46+Math.sin(i*.8)*80),weightSum=weights.reduce((a,b)=>a+b,0);
+    const annualized=weights.map(value=>annualVisits*12*value/weightSum);
+    left.children[1].innerHTML=`<h2>一体化门诊服务人次</h2><div class="home-service-summary"><strong>${Math.round(annualVisits/12).toLocaleString()}</strong><span>月均服务人次</span></div>${constructionBarChart(annualized)}`;
+    const frequencyData=boardTimeAxis([2.2,2.3,2.4,2.4,2.5,2.5,2.6,2.6,2.7,2.7,2.8,2.9]),fx=i=>43+i*289/Math.max(1,frequencyData.values.length-1),fy=v=>136-v/4*124;
+    const frequency=constructionPanel('人均就诊频率',`<div class="construction-key">单位：次 / 人</div><svg class="construction-line" viewBox="0 0 360 166" role="img" aria-label="人均就诊频率趋势，单位次每人"><g class="construction-grid">${[0,1,2,3,4].map(v=>`<line x1="43" x2="332" y1="${fy(v)}" y2="${fy(v)}"/><text x="38" y="${fy(v)+3}" text-anchor="end">${v}</text>`).join('')}</g><polyline points="${frequencyData.values.map((v,i)=>`${fx(i)},${fy(v)}`).join(' ')}" fill="none" stroke="#46c7f0" stroke-width="2.5"/>${frequencyData.values.map((v,i)=>`<circle cx="${fx(i)}" cy="${fy(v)}" r="4" fill="#46c7f0"><title>${frequencyData.labels[i]} ${v.toFixed(1)} 次/人</title></circle><text class="construction-month" x="${fx(i)}" y="161" text-anchor="middle">${frequencyData.labels[i]}</text>`).join('')}</svg>`);
+    left.insertAdjacentHTML('beforeend',frequency);
+    [...right.children].slice(2).forEach(panel=>panel.remove());
+    board.querySelector('.situation-bottom')?.remove();board.querySelector('.board-ticker')?.remove();
+    const cards=[['一体化门诊总数',metrics.built,'家'],['一体化门诊服务人次',(visitsForSelection().primary*.6).toFixed(1),'万人次'],['入径率',formatPct(dashboardRate(node,'entry')),''],['诊间随访率',formatPct(Math.max(0,base.follow-50)),''],['健康监测率',formatPct(constructionValue(node,'monitoring')),'']];
+    const kpis=document.createElement('div');kpis.className='board-kpis construction-kpis';kpis.innerHTML=cards.map(([label,value,unit])=>`<div class="board-kpi"><strong>${value}<em class="board-kpi-unit">${unit}</em></strong><span>${label}</span></div>`).join('');board.querySelector('.board-columns').before(kpis);board.classList.remove('board-no-kpis');
+    [...kpis.querySelectorAll('strong')].forEach(el=>{if(el.firstChild?.nodeType===3 && el.firstChild.textContent.endsWith('%')){el.firstChild.textContent=el.firstChild.textContent.slice(0,-1);el.querySelector('em').textContent='%'}});
+    kpis.children[2].insertAdjacentHTML('beforeend','<small>入径患者数 ÷ 专档患者数</small>');
+    right.children[0].querySelector('.construction-headline,.construction-stat,.construction-summary,.construction-big')?.remove();
+    const entryPanel=right.children[0];
+    [...entryPanel.children].forEach(el=>{if(el!==entryPanel.querySelector('h2') && !el.matches('svg,.construction-key') && !el.querySelector('svg'))el.remove()});
+    board.querySelectorAll('.construction-line').forEach(svg=>svg.setAttribute('preserveAspectRatio','none'));
+  }
+  if(state.dashboardView==='outcomes'){
+    const left=board.querySelector('.board-stack:first-child'),right=board.querySelector('.board-stack:last-child');
+    const metrics=[['血压','Bp',88,67,56],['血糖','Glucose',82,62,52],['糖化血红蛋白','Hba1c',68,55,47],['血脂','Lipid',59,53,44]];
+    left.innerHTML=metrics.map(([name,key,detection,control])=>`<section class="board-panel outcome-metric-panel"><h2>${name}检测情况 <button type="button" class="home-map-link" data-outcome-map-link="outcome${key}Target">⌖ 联动地图</button></h2><div class="outcome-metric-values"><div><span>检测率</span><strong>${detection.toFixed(1)}<small>%</small></strong></div><div><span>控制率</span><strong>${control.toFixed(1)}<small>%</small></strong></div></div></section>`).join('');
+    right.innerHTML=metrics.map(([name,key,,,improvement])=>{const data=boardTimeAxis(Array.from({length:12},(_,i)=>improvement-6+i*6/11)),x=i=>65+i*240/Math.max(1,data.values.length-1),y=v=>90-v*.7;return `<section class="board-panel outcome-metric-panel"><h2>${name}改善率 <button type="button" class="home-map-link" data-outcome-map-link="outcome${key}Improve">⌖ 联动地图</button></h2><svg class="outcome-trend" viewBox="0 0 360 112" preserveAspectRatio="none" role="img" aria-label="${name}改善率趋势，模拟数据"><g class="construction-grid">${[0,50,100].map(v=>`<line x1="40" x2="320" y1="${y(v)}" y2="${y(v)}"/><text x="34" y="${y(v)+4}" text-anchor="end">${v}%</text>`).join('')}</g><polyline points="${data.values.map((v,i)=>`${x(i)},${y(v)}`).join(' ')}" fill="none" stroke="#46c7f0" stroke-width="2"/>${data.values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#46c7f0"><title>${data.labels[i]} ${v.toFixed(1)}%</title></circle><text class="construction-month" x="${x(i)}" y="108" text-anchor="middle">${data.labels[i]}</text>`).join('')}</svg></section>`}).join('');
+    board.querySelector('.situation-bottom')?.remove();
+    board.querySelector('.home-control-tabs')?.remove();
+  }
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+const dashboardBeforeDetailRevision=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeDetailRevision();
+  const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
+  board.querySelector('.situation-complication-head')?.remove();
+  if(situationActive()){
+    const p=populationData();
+    board.querySelectorAll('.situation-filing-cards>div').forEach((card,i)=>{const denominator=[p.high,p.diabetes,p.copd][i],value=[p.managedHigh,p.managedDiabetes,p.managedCopd][i];card.insertAdjacentHTML('beforeend',`<small class="filing-percentage">${formatPct(value/Math.max(.0001,denominator)*100)} <span>占确诊患者</span></small>`)});
+    const riskPanel=[...board.querySelectorAll('.situation-panel')].find(panel=>panel.querySelector('h2')?.textContent==='风险分布'),riskCenter=riskPanel?.querySelector('.situation-ring>div'),riskRow=riskPanel?.querySelector('.situation-ring-legend>div');
+    if(riskCenter&&riskRow){riskCenter.querySelector('strong').innerHTML=riskRow.querySelector('b').textContent.replace('%','<small>%</small>');riskCenter.querySelector('span').textContent='高风险占比';riskRow.classList.add('ring-active')}
+  }
+  board.querySelectorAll('.home-coverage-layout').forEach(layout=>{
+    const metrics=clinicMetrics(currentNode()),center=layout.querySelector('.home-coverage-ring>div');
+    if(!center)return;
+    const value=center.querySelector('strong');value.innerHTML=value.textContent.replace('%','<small>%</small>');
+    const note=center.querySelector(':scope>small');if(note)note.textContent=`已建成 ${metrics.built} / 机构总数 ${metrics.eligible} 家`;
+    layout.querySelectorAll('.home-coverage-legend>div').forEach(row=>{const count=parseFloat(row.querySelector('strong')?.textContent);if(Number.isFinite(count))row.insertAdjacentHTML('beforeend',`<b>${formatPct(count/Math.max(1,metrics.eligible)*100)}</b>`)});
+  });
+  board.querySelectorAll('.funnel-shape strong,.funnel-ratio strong,.board-kpi strong,.situation-ring-legend strong,.situation-ring-legend b,.situation-filing-cards strong,.filing-percentage,.construction-coverage-legend strong,.home-coverage-legend strong,.home-coverage-legend b,.home-coverage-ring strong,.situation-ring strong,.situation-complication-list strong,.outcome-rings b,.outcome-metric-values strong,.construction-nodes strong,.construction-total strong,.construction-node-head strong,.home-service-summary strong,.outcome-trend circle,.construction-line circle,.home-service-chart circle,.home-service-chart .service-bar-value').forEach(el=>{el.classList.add('metric-detail-trigger');el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label',`${el.textContent.trim()||el.querySelector('title')?.textContent||'指标'}，点击查看区域明细`);el.setAttribute('title',`${el.textContent.trim()}，点击查看区域明细`)});
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+
+const dashboardBeforeChartPolish=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeChartPolish();
+  const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
+  if(state.dashboardView==='outcomes')board.querySelector('.board-map .board-ticker')?.remove();
+  board.querySelectorAll('.situation-ring-layout,.home-coverage-layout').forEach(layout=>{
+    const ring=layout.querySelector('.situation-ring,.home-coverage-ring');
+    const rows=[...layout.querySelectorAll('.situation-ring-legend>div,.home-coverage-legend>div')].filter(row=>row.querySelector('b'));
+    if(!ring||!rows.length)return;
+    ring.dataset.boardTip=rows.map(row=>row.textContent.replace(/\s+/g,' ').trim()).join('\n');
+    rows.forEach(row=>row.dataset.boardTip=row.textContent.replace(/\s+/g,' ').trim());
+  });
+  board.querySelectorAll('svg.construction-line:not(.construction-bar-chart),svg.outcome-trend,svg.home-service-chart,svg.home-rate-chart').forEach(svg=>{
+    if(!svg.querySelector('polyline'))return;
+    svg.querySelectorAll('circle').forEach(circle=>{
+      if(circle.nextElementSibling?.classList.contains('service-bar-value'))return;
+      const title=circle.querySelector('title')?.textContent||circle.parentElement?.querySelectorAll('[data-board-tip]')[Array.from(circle.parentElement.querySelectorAll('circle')).indexOf(circle)]?.dataset.boardTip||'';
+      const value=title.match(/(-?\d[\d,.]*(?:%|\s*次\/人|\s*人次))\s*$/)?.[1];
+      if(!value)return;
+      const label=document.createElementNS('http://www.w3.org/2000/svg','text');
+      label.setAttribute('class','chart-point-value');label.setAttribute('x',circle.getAttribute('cx'));label.setAttribute('y',Number(circle.getAttribute('cy'))-8);label.setAttribute('text-anchor','middle');label.textContent=value;
+      circle.parentNode.insertBefore(label,circle.nextSibling);
+    });
+    svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  });
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+
+// Resolve the segment under the pointer instead of showing the entire legend.
+document.addEventListener('pointermove',event=>{
+  const ring=event.target.closest('.situation-ring,.home-coverage-ring');
+  if(!ring)return;
+  const rows=[...ring.parentElement.querySelectorAll('.situation-ring-legend>div,.home-coverage-legend>div')].filter(row=>row.querySelector('b'));
+  const rect=ring.getBoundingClientRect(),x=event.clientX-(rect.left+rect.width/2),y=event.clientY-(rect.top+rect.height/2);
+  let angle=(Math.atan2(x,-y)*180/Math.PI+360)%360, cumulative=0;
+  const row=rows.find(item=>{cumulative+=(parseFloat(item.querySelector('b')?.textContent)||0)*3.6;return angle<cumulative});
+  ring.dataset.boardTip=row?row.textContent.replace(/\s+/g,' ').trim():rows.map(item=>item.textContent.replace(/\s+/g,' ').trim()).join('\n');
+},true);
+
+function residentForNode(node){if(!node)return window.RESIDENT_POPULATION.province;const data=window.RESIDENT_POPULATION;if(node.cityName)return data.counties[`${node.cityName}/${node.name}`]||null;return data.cities[node.name]||null}
+function showMetricDetail(el){
+  const panel=el.closest('.board-panel,.board-kpi'),label=el.closest('.outcome-ring-item')?.querySelector('span')?.textContent||el.closest('.funnel-row')?.querySelector('.funnel-shape span')?.textContent||el.closest('.situation-ring-legend>div')?.querySelector('span')?.textContent||el.closest('.situation-filing-cards>div')?.querySelector('span')?.textContent||panel?.querySelector('h2,span')?.textContent||'指标';
+  const text=(el.querySelector('title')?.textContent||el.textContent).trim().replace(/\s+/g,''),match=text.replace(/,/g,'').match(/-?\d+(?:\.\d+)?(?=\s*(?:%|万|家|次|人)|$)/),num=match?Number(match[0]):NaN;if(!Number.isFinite(num))return;
+  const unit=text.includes('%')?'%':text.includes('万份')?'万份':text.includes('万人')?'万人':text.includes('万次')?'万次':text.includes('家')?'家':'';
+  const dialog=document.createElement('dialog');dialog.className='metric-detail-dialog';document.body.append(dialog);
+  let path=[],items=cities;const isResident=label==='常住人口';
+  function draw(){
+    const weightOf=item=>item.members?item.members.reduce((sum,x)=>sum+(populationFor(x).diagnosed||0),0):Math.max(0,populationFor(item).diagnosed||0),total=items.reduce((sum,item)=>sum+weightOf(item),0)||1,base=path.length?path[path.length-1].value:num;
+    dialog.innerHTML=`<header><h2>${esc(label)} · 区域明细</h2><button type="button" data-detail-close aria-label="关闭">×</button></header><p>${isResident?'来源：用户提供的常住人口表；各层级年份不同':'模拟数据：数量按示例权重分配，比例为统一示例值'} · 点击名称查看下级</p><nav><button type="button" data-detail-back="-1">浙江省</button>${path.map((x,i)=>`<span> / </span><button type="button" data-detail-back="${i}">${esc(x.name)}</button>`).join('')}</nav><div class="metric-detail-table"><div class="metric-detail-row metric-detail-heading"><span>地区 / 机构</span><span>对应数值</span></div>${items.map((item,i)=>{let record=null;if(isResident){if(cities.includes(item))record=window.RESIDENT_POPULATION.cities[item.name];else if(counties.includes(item))record=window.RESIDENT_POPULATION.counties[`${path[0]?.name}/${item.name}`];else if(item.members)record=window.RESIDENT_POPULATION.towns[`${path[0]?.name}/${path[1]?.name}/${item.name}`]}const value=unit==='%'?num:base*weightOf(item)/total;const display=isResident?(record?`${record[0]} ${item.members?'人':'万人'}（${record[1]}）`:'待接入'):`${value.toFixed(unit==='家'?0:1)} ${unit}`;return `<button class="metric-detail-row" type="button" data-detail-index="${i}" data-detail-value="${value}"><span>${esc(item.name)}</span><strong>${esc(display)}</strong></button>`}).join('')}</div>`;
+  }
+  dialog.addEventListener('click',event=>{if(event.target.closest('[data-detail-close]'))return dialog.close();const back=event.target.closest('[data-detail-back]');if(back){const index=Number(back.dataset.detailBack);path=path.slice(0,index+1);items=path.length?path[path.length-1].children:cities;draw();return}const row=event.target.closest('[data-detail-index]');if(!row)return;const item=items[Number(row.dataset.detailIndex)];let children=[];if(cities.includes(item))children=counties.filter(x=>x.cityName===item.name);else if(counties.includes(item)){const groups=new Map();clinics.filter(x=>x.adcode===item.adcode).forEach(x=>{const name=x.name.match(/^.*?(?:街道|镇|乡)/)?.[0]||'街道待确认';if(!groups.has(name))groups.set(name,[]);groups.get(name).push(x)});if(isResident){const prefix=`${path[0]?.name}/${item.name}/`;Object.keys(window.RESIDENT_POPULATION.towns).filter(key=>key.startsWith(prefix)).forEach(key=>{const name=key.slice(prefix.length);if(!groups.has(name))groups.set(name,[])})}children=[...groups].map(([name,members])=>({name,members}))}else if(item.members)children=item.members;if(children.length){path.push({name:item.name,children,value:Number(row.dataset.detailValue)});items=children;draw()}});
+  dialog.addEventListener('close',()=>dialog.remove());draw();dialog.showModal();
+}
+document.addEventListener('click',event=>{const el=event.target.closest('.metric-detail-trigger');if(el){event.stopPropagation();showMetricDetail(el)}});
+document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('.metric-detail-trigger')){event.preventDefault();showMetricDetail(event.target)}});
+
+let detailRingTick=0;
+setInterval(()=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  document.querySelectorAll('.situation-complication-list').forEach(list=>{
+    if(list.matches(':hover,:focus-within')||list.scrollHeight<=list.clientHeight)return;
+    const halfway=list.scrollHeight/2;
+    list.scrollTop=list.scrollTop+1>=halfway?0:list.scrollTop+1;
+  });
+},60);
+setInterval(()=>{if(document.querySelector('.metric-detail-dialog[open]'))return;detailRingTick++;document.querySelectorAll('.situation-ring-layout,.home-coverage-layout').forEach(layout=>{const rows=[...layout.querySelectorAll('.situation-ring-legend>div,.home-coverage-legend>div')].filter(row=>row.querySelector('b'));const ring=layout.querySelector('.situation-ring,.home-coverage-ring');if(!rows.length||!ring)return;const risk=layout.closest('.board-panel')?.querySelector('h2')?.textContent.includes('风险分布');const index=risk?(detailRingTick-1)%rows.length:(detailRingTick-1)%(rows.length+1)-1;rows.forEach((row,i)=>row.classList.toggle('ring-active',i===index));const center=ring.querySelector(':scope>div'),strong=center?.querySelector('strong'),label=center?.querySelector('span');if(!center||!strong||!label)return;if(!center.dataset.defaultValue){center.dataset.defaultValue=strong.innerHTML;center.dataset.defaultLabel=label.textContent}ring.classList.toggle('segment-selected',index>=0);if(index<0){strong.innerHTML=center.dataset.defaultValue;label.textContent=center.dataset.defaultLabel}else{const row=rows[index],percent=row.querySelector('b')?.textContent;strong.innerHTML=percent?percent.replace('%','<small>%</small>'):row.querySelector('strong')?.innerHTML||'';label.textContent=(row.querySelector('span')?.textContent||'')+(risk?'占比':'');const start=rows.slice(0,index).reduce((sum,item)=>sum+(parseFloat(item.querySelector('b')?.textContent)||0),0),end=start+(parseFloat(percent)||0),color=row.querySelector('i')?.style.backgroundColor||'#46c7f0';ring.style.setProperty('--segment-start',`${start}%`);ring.style.setProperty('--segment-end',`${end}%`);ring.style.setProperty('--segment-color',color)}})},4000);
 render();
 document.body.classList.remove('dashboard-booting');
