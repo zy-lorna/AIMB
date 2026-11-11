@@ -73,7 +73,7 @@ let orgBrowseCity=null,orgBrowseCounty=null,orgBrowseConsortium=null;
 const baseRenderOrgPicker=renderOrgPicker;
 renderOrgPicker=function(){baseRenderOrgPicker();if(state.role==='province')return;document.querySelectorAll('#orgPanel [data-org]').forEach(button=>{let [level,name]=button.dataset.org.split(':'),item=(level==='county'?counties:level==='consortium'?consortia:level==='clinic'?clinics:cities).find(x=>x.name===name),allowed=state.role==='city'?level!=='all'&&(level==='city'?name==='杭州市':item?.cityName==='杭州市'):state.role==='county'?['county','consortium','clinic'].includes(level)&&(level==='county'?name==='余杭区':item?.county==='余杭区'&&item?.cityName==='杭州市'):level==='clinic'&&button.dataset.org===state.city;button.hidden=!allowed})};
 function positionOrgPanel(){let panel=$('orgPanel');panel.style.left='0px';let overflow=panel.getBoundingClientRect().right-window.innerWidth+12;if(overflow>0)panel.style.left=-Math.min(overflow,$('orgPicker').getBoundingClientRect().left-12)+'px'}
-const regionLabel=()=>state.city==='all'?'浙江省卫健委':state.city.split(':')[1];
+const regionLabel=()=>state.city==='all'?'浙江省':state.city.split(':')[1];
 const periodText=()=>state.periodMode==='year'?`${state.year} 年自然年（截至 9 月 30 日）`:state.periodMode==='quarter'?`${state.year} 年第 ${state.quarter} 季度`:`${state.year} 年 ${state.month} 月`;
 const periodHasSample=()=>state.page==='dashboard'||state.year==='2026'&&(state.periodMode==='year'||state.periodMode==='quarter'&&state.quarter==='3'||state.periodMode==='month'&&state.month==='9');
 const managementWeights=[1.09,1.05,.88,1.12,1.08,.94,.97,.83,.84,1.03,.79],seniorRates=[.36,.38,.34,.41,.43,.39,.35,.45,.37,.40,.47];
