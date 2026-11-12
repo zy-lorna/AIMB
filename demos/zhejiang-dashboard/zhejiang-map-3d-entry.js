@@ -50,7 +50,7 @@ function mount(host, geojson, values, callbacks) {
   const valid = values.map(item => item.value).filter(Number.isFinite);
   const min = Math.min(...valid);
   const max = Math.max(...valid);
-  const heatColors = ['#218ed0', '#29c3e6', '#f4d467', '#fb9a53', '#f15c55'].map(color => new THREE.Color(color));
+  const heatColors = ['#2186d0', '#55a8df', '#f2a54a', '#ed7b46', '#e65c58'].map(color => new THREE.Color(color));
   const heatPoints = geojson.features.map(feature => {
     const value = valueByName.get(feature.properties.name)?.value;
     const position = feature.properties.centroid || feature.properties.center;
@@ -93,7 +93,7 @@ function mount(host, geojson, values, callbacks) {
     const ratio = Number.isFinite(item?.value) && max > min ? (item.value - min) / (max - min) : .15;
     const scaled = Math.min(heatColors.length - 1.001, Math.max(0, ratio * (heatColors.length - 1)));
     const index = Math.floor(scaled);
-    const topColor = Number.isFinite(item?.value) ? heatColors[index].clone().lerp(heatColors[index + 1], scaled - index) : new THREE.Color('#1c5279');
+    const topColor = Number.isFinite(item?.value) ? heatColors[index].clone().lerp(heatColors[index + 1], scaled - index) : new THREE.Color('#758393');
     const sideColor = topColor.clone().multiplyScalar(.47);
     const polygons = feature.geometry.type === 'MultiPolygon' ? feature.geometry.coordinates : [feature.geometry.coordinates];
     for (const polygon of polygons) {
@@ -156,7 +156,7 @@ function mount(host, geojson, values, callbacks) {
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
   }
-  camera.position.set(0, -viewSize * 1.15, viewSize * .78);
+  camera.position.set(0, -viewSize * .65, viewSize * 1.25);
   camera.lookAt(0, 0, 0);
   resize();
   const resizeObserver = new ResizeObserver(resize);
@@ -201,7 +201,7 @@ function mount(host, geojson, values, callbacks) {
     resize,
     zoom(action) {
       if (action === 'reset') {
-        camera.position.set(0, -viewSize * 1.15, viewSize * .78);
+        camera.position.set(0, -viewSize * .65, viewSize * 1.25);
         controls.target.set(0, 0, 0);
         camera.zoom = 1;
       } else camera.zoom = THREE.MathUtils.clamp(camera.zoom * (action === 'in' ? 1.5 : 1 / 1.5), 1, 8);

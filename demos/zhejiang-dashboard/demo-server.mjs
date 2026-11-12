@@ -29,7 +29,8 @@ http.createServer(async(req,res)=>{
   }
   if(req.method!=='GET'){res.writeHead(405).end();return}
   const name=decodeURIComponent(url.pathname==='/'?'/demo.html':url.pathname).slice(1);
-  if(!name||name.includes('/')||name.includes('\\')||name==='.'||name==='..'){res.writeHead(404).end();return}
-  try{const file=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)]||'application/octet-stream','Cache-Control':'no-store'}).end(file)}
+  const filePath=path.resolve(root,name);
+  if(!name||name.includes('\\')||!filePath.startsWith(root+path.sep)){res.writeHead(404).end();return}
+  try{const file=await readFile(filePath);res.writeHead(200,{'Content-Type':types[path.extname(name)]||'application/octet-stream','Cache-Control':'no-store'}).end(file)}
   catch{res.writeHead(404).end()}
 }).listen(port,'127.0.0.1',()=>console.log(`Demo: http://127.0.0.1:${port}/`));

@@ -2192,3 +2192,392 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .clinic-scatter-body{padding:8px 12px 0}
 .clinic-scatter-details{overflow:auto}
 .clinic-scatter-group{flex:1 0 auto}
+
+.dashboard-board .board-title>.filters{display:none!important}
+.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{left:12px;right:auto}
+.dashboard-board:has(.home-disease-panel) .board-fullscreen,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-fullscreen{left:auto;right:18px}
+.dashboard-board .map-scale.home-benchmark-scale{display:flex;flex-direction:column;align-items:stretch;gap:5px;width:210px}
+.dashboard-board .map-scale.home-benchmark-scale small{font-size:13px;color:#d4e9f7;white-space:nowrap}
+.dashboard-board .benchmark-gradient{width:100%;height:9px;border-radius:2px;background:linear-gradient(90deg,#35b985,#b5d96f,#f4d467,#f5a259,#e65c58)}
+.dashboard-board .benchmark-labels{display:flex;justify-content:space-between;color:#c5dbe9;font-size:11px;white-space:nowrap}
+.dashboard-board .benchmark-gradient{background:linear-gradient(90deg,#35b985,#59bdab,#2e86d9,#d48986,#e65c58)}
+.dashboard-board .benchmark-unknown{display:flex;align-items:center;gap:6px;color:#c5dbe9;font-size:11px}
+.dashboard-board .benchmark-unknown i{width:12px;height:9px;background:#758393}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(-n+4){clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);padding-right:18px}
+.dashboard-board:has(.home-disease-combined) .board-stack:first-child{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+.situation-board .board-stack:first-child:has(.home-risk-composition){grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+.home-risk-labels{flex-wrap:wrap;column-gap:8px;row-gap:2px}
+.home-risk-labels>span{color:#aebdca;font-size:12px;white-space:nowrap}
+
+/* Overview navigation, population flow and scope. */
+.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{gap:8px;top:28px}
+.dashboard-board .board-title .board-tabs button,.dashboard-board .board-title .board-tabs button:nth-child(n){width:112px;height:40px;margin:0;padding:0 10px;clip-path:none;border:1px solid transparent;border-radius:22px;background:transparent;box-shadow:none;filter:none;color:#a8bdd1;font-size:16px}
+.dashboard-board .board-title .board-tabs button.active,.dashboard-board .board-title .board-tabs button:nth-child(n).active{border-color:#388aca;background:linear-gradient(180deg,#173f70,#0a1a35);box-shadow:inset 0 0 10px #2e87c466,0 0 8px #1d8ce64d;color:#fff}
+.dashboard-board:has(.home-disease-combined) .board-kpis{gap:3px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(-n+5){border:0;clip-path:polygon(0 0,calc(100% - 17px) 0,100% 50%,calc(100% - 17px) 100%,0 100%,17px 50%);padding-left:22px;padding-right:21px;background:linear-gradient(120deg,#174d85,#0a244b)}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:first-child{clip-path:polygon(0 0,calc(100% - 17px) 0,100% 50%,calc(100% - 17px) 100%,0 100%);padding-left:8px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(5){clip-path:polygon(0 0,100% 0,100% 100%,0 100%,17px 50%);padding-right:8px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(n+2):nth-child(-n+5)::before{left:21px}
+.dashboard-board:has(.home-disease-combined) .board-kpi .metric-scope-tag{display:inline-block;padding:0 4px;border:1px solid #4a9bca;color:#a7e2ff;background:#143c60;font-size:12px;line-height:16px;vertical-align:middle}
+.dashboard-board .board-title .board-scope-legend{position:absolute;left:auto;right:54px;bottom:2px;z-index:2;display:flex;align-items:center;gap:10px;width:auto;transform:none;color:#a7c1d3;font-size:12px;white-space:nowrap;pointer-events:auto}
+.board-scope-legend span{display:inline-flex;align-items:center;gap:4px}.board-scope-legend b{padding:2px 5px;border:1px solid #287ba6;color:#7dd5f6;font-weight:400}.board-scope-legend span:nth-child(2) b{border-color:#a97529;color:#eab45a}.board-scope-legend span:nth-child(3) b{border-color:#268b89;color:#62d7cb}
+.home-population-distribution{display:flex;flex-direction:column;min-width:0;min-height:0}
+.home-population-distribution .situation-bars{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:space-evenly;box-sizing:border-box;width:100%;padding:4px 12px 6px;gap:3px}
+.home-population-distribution .situation-bars>div{flex:none;min-width:0}
+.home-population-distribution>h2{justify-content:flex-start!important;gap:4px}
+.home-population-distribution>h2 .scope-tag{margin-left:0}
+.home-disease-combined .home-grouped-chart{box-sizing:border-box;width:100%;padding:4px 12px 0}
+.home-grouped-chart svg{display:block;flex:1;width:100%;min-width:0;min-height:0}
+
+/* Rectangular metrics and overview detail presentation. */
+.dashboard-board:has(.home-disease-combined) .board-kpis{gap:16px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(-n+5){clip-path:none;padding:0 8px 4px;background:rgba(15,132,255,.15);border:1px solid rgba(15,132,255,.5);border-top:2px solid #0f84ff}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(-n+5)::before{left:8px}
+.home-population-distribution .situation-bars>div{display:grid;grid-template-columns:72px 82px minmax(0,1fr) 48px;gap:6px;align-items:center;padding:4px 5px;background:linear-gradient(90deg,rgba(20,55,91,.36),rgba(14,40,74,.1));border-bottom:1px solid rgba(39,104,160,.25)}
+.home-population-distribution .situation-bars>div>span{grid-column:1;grid-row:1}
+.home-population-distribution .situation-bars>div>strong{grid-column:2;grid-row:1;text-align:left;font-size:14px}
+.home-population-distribution .situation-bars>div>i{grid-column:3;grid-row:1;height:6px;background:#173a60;overflow:visible}
+.home-population-distribution .situation-bars>div>i>b{position:relative;height:100%;box-shadow:0 0 7px currentColor}
+.home-population-distribution .situation-bars>div>i>b::after{content:'';position:absolute;right:-3px;top:50%;width:7px;height:7px;border:1px solid #a5ddff;border-radius:50%;background:#bdeaff;box-shadow:0 0 6px #61bdff;transform:translateY(-50%)}
+.home-population-distribution .situation-bars>div>em{grid-column:4;grid-row:1;color:#f3ad55;font-weight:700}
+.home-population-distribution .situation-bars p{color:#f3c966}
+.dashboard-board .map-scale.home-benchmark-scale{width:210px;gap:5px!important}
+.dashboard-board .benchmark-gradient{position:relative;height:10px;border-radius:0}
+.dashboard-board .benchmark-gradient::after{content:'';position:absolute;left:50%;top:-4px;height:18px;border-left:1px solid #e1f1ff}
+.dashboard-board .benchmark-labels{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start}
+.dashboard-board .benchmark-labels span,.dashboard-board .benchmark-labels span:last-child{display:block!important;grid-column:auto!important;grid-row:auto!important;font-size:11px!important;writing-mode:initial!important;color:#c5dbe9}
+.dashboard-board .benchmark-labels span:nth-child(2){text-align:center}.dashboard-board .benchmark-labels span:last-child{text-align:right}
+.dashboard-board .benchmark-labels span::before,.dashboard-board .benchmark-labels span::after{content:none!important}
+.dashboard-board .benchmark-unknown{display:flex;align-items:center;gap:6px;color:#c5dbe9;font-size:11px}
+.dashboard-board .benchmark-unknown b{display:block;width:12px;height:9px;background:#758393}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition{display:grid;grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:8px;align-items:stretch;padding:8px 12px}
+.home-coverage-total{display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:#a9c7dc;font-size:15px}
+.home-coverage-total strong{font:700 30px DashboardDIN,sans-serif;color:#f4faff}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:8px 12px}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend>div{display:grid;grid-template-columns:10px minmax(0,1fr) auto;grid-template-rows:auto auto;align-content:center;gap:3px 5px;padding:3px 6px;background:rgba(15,51,88,.35)}
+.home-coverage-composition .unified-coverage-legend i{grid-column:1;grid-row:1;margin:0}
+.home-coverage-composition .coverage-name{grid-column:2 / 4;grid-row:1}
+.dashboard-board .home-coverage-composition .coverage-count{grid-column:2;grid-row:2;margin:0;white-space:nowrap}
+.dashboard-board .home-coverage-composition .coverage-count strong{font-size:23px;color:#fff}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend small{grid-column:3;grid-row:2;margin:0;align-self:end;color:#88b9d8;font-size:14px}
+
+/* Overview refinements. */
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition{display:flex;flex:1;padding:8px 18px}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:3px;width:100%}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend>div{display:flex;align-items:center;gap:10px;padding:0;background:none}
+.home-coverage-composition .unified-coverage-legend i{display:none}
+.dashboard-board .home-coverage-composition .coverage-count{order:-1;margin:0;min-width:82px;color:#63baff}
+.dashboard-board .home-coverage-composition .coverage-count strong{color:#63baff;font-size:23px}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend small{margin-left:auto;align-self:center}
+.home-population-distribution .situation-bars{justify-content:space-evenly}
+.home-population-distribution .situation-bars>div{background:none;border:0;padding:4px 5px}
+.home-population-distribution .situation-bars>div>i{height:8px;background:#15283d;overflow:hidden}
+.home-population-distribution .situation-bars>div>i>b{box-shadow:none}
+.home-population-distribution .situation-bars>div>i>b::after{content:none}
+.home-population-distribution .situation-bars p{margin:12px 0 0;flex:none}
+.dashboard-board:has(.home-disease-panel) .board-stack:first-child>.board-panel::before,.dashboard-board:has(.home-disease-panel) .board-stack:first-child>.board-panel::after{width:100%;left:0;right:0;background-size:100% 7px}
+.dashboard-board:has(.home-disease-panel) .map-scale.home-benchmark-scale{width:210px;position:absolute}
+.dashboard-board:has(.home-disease-panel) .benchmark-unknown{position:absolute;left:calc(100% + 12px);bottom:0;white-space:nowrap}
+
+.dashboard-board .board-title .board-scope-legend{left:12px;right:auto;bottom:-7px;font-size:12px}
+.dashboard-board:has(.home-disease-panel) .board-kpi>span{display:flex;justify-content:flex-end;align-items:center;gap:4px}
+.dashboard-board:has(.home-disease-panel) .board-kpi>small{margin-top:4px}
+.dashboard-board .metric-scope-tag{margin-left:0}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .coverage-bar{display:block;flex:1;min-width:25px;height:7px;margin:0;background:#183454}
+.home-coverage-composition .coverage-bar b{display:block;height:100%;background:linear-gradient(90deg,#2671b6,#51c8ef)}
+.dashboard-board .home-coverage-composition .coverage-count strong{margin-right:4px}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend small{font-size:17px}
+.home-population-distribution .situation-bars>div>span{font-size:14px}
+.home-population-distribution .situation-bars>div>strong,.home-population-distribution .situation-bars>div>em{font-size:16px}
+.home-population-distribution .situation-bars>div{grid-template-columns:76px 90px minmax(0,1fr) 50px}
+.dashboard-board:has(.home-disease-panel) .benchmark-unknown{bottom:auto;top:calc(13px + 5px);height:10px}
+.situation-board .situation-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.situation-board .situation-scope{display:flex;gap:10px;align-items:center;color:#a7c1d3;font-size:12px}
+.situation-scope span{display:inline-flex;align-items:center;gap:4px}.situation-scope b{padding:2px 5px;border:1px solid #287ba6;color:#7dd5f6;font-weight:400}
+.situation-board .board-stack:last-child{grid-template-rows:repeat(3,minmax(0,1fr))}
+.situation-board .board-stack:first-child{grid-template-rows:minmax(0,1fr)}
+.home-disease-table{display:flex;flex:1;min-height:0;flex-direction:column;padding:4px 12px 0;color:#bdd5e8}
+.disease-table-head,.disease-table-row{display:grid;grid-template-columns:1.2fr repeat(3,1fr);align-items:center;text-align:center;gap:4px}
+.disease-table-head{height:23px;color:#8db4d0;font-size:13px;border-bottom:1px dashed #284a6a}
+.disease-table-head span:first-child,.disease-table-row>span{text-align:left}
+.disease-table-row{flex:1;min-height:0;font-size:13px}.disease-table-row:nth-child(odd){background:rgba(35,89,128,.16)}
+.disease-table-row strong{font-size:21px;color:#e8f5ff}.disease-table-row small{font-size:12px}.disease-table-row em{display:block;font-size:11px;font-style:normal;color:#91b4d1}
+.disease-table-row.row-2 strong{color:#6ce2ce}.disease-table-row.row-3 strong{color:#ffb080}
+
+/* Shared scope labels and November dashboard layout. */
+.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{top:15px}
+.dashboard-board .board-title .board-scope-legend{bottom:-7px}
+.dashboard-board .metric-scope-tag,.dashboard-board .scope-tag{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid #4a9bca;background:#143c60;color:#a7e2ff;font-size:12px;line-height:16px;font-weight:400;vertical-align:middle}
+.dashboard-board .board-scope-legend b{padding:2px 5px;border:1px solid #287ba6;color:#7dd5f6;font-weight:400}
+.dashboard-board .board-scope-legend span:nth-child(2) b{border-color:#a97529;color:#eab45a}
+.dashboard-board .board-scope-legend span:nth-child(3) b{border-color:#268b89;color:#62d7cb}
+.situation-board .board-stack:first-child:has(.home-risk-composition),.situation-board .board-stack:last-child{grid-template-rows:repeat(2,minmax(0,1fr))}
+.risk-disease-panel,.risk-disease-content{display:flex;flex-direction:column;min-height:0}
+.risk-disease-content{flex:1;justify-content:space-evenly;gap:6px;padding:5px 12px}
+.risk-disease-content .home-risk-bars{position:static;flex:none;margin:0;padding:0}
+.dashboard-board .map-scale.home-benchmark-scale{width:240px}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-explanation{white-space:normal;line-height:1.45;font-size:12px;max-width:240px}
+.dashboard-board .benchmark-unknown,.dashboard-board:has(.home-disease-panel) .benchmark-unknown{position:absolute;left:calc(100% + 12px);top:0;bottom:auto;white-space:nowrap}
+.construction-board .clinic-tier-chart{display:flex;flex:1;padding:8px 18px}
+.construction-board .clinic-tier-chart .unified-coverage-legend{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:3px;width:100%}
+.construction-board .clinic-tier-chart .unified-coverage-legend>div{display:flex;align-items:center;gap:10px;background:none}
+.construction-board .clinic-tier-chart .unified-coverage-legend>div>i:not(.coverage-bar){display:none}
+.construction-board .clinic-tier-chart .coverage-count{order:-1;min-width:82px;color:#63baff;white-space:nowrap}
+.construction-board .clinic-tier-chart .coverage-count strong{font-size:23px;margin-right:4px;color:#63baff}
+.construction-board .clinic-tier-chart .coverage-bar{display:block;flex:1;min-width:25px;height:7px;background:#183454}
+.construction-board .clinic-tier-chart .coverage-bar b{display:block;height:100%;background:linear-gradient(90deg,#2671b6,#51c8ef)}
+.construction-board .clinic-tier-chart small{font-size:17px;margin-left:auto}
+.clinic-scatter-details{overflow:auto}
+.clinic-scatter-group{flex:1 0 auto}
+.clinic-scatter .scatter-axis-label{font-size:13px;fill:#b9d7e8}
+.clinic-scatter-details{gap:2px}
+.clinic-scatter-details .clinic-scatter-group{flex:1 1 0;padding:2px 6px;overflow:auto}
+
+/* Shared scope colors and responsive risk charts. */
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b){display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid #287ba6;background:#102c4b;color:#7dd5f6;font-size:12px;line-height:16px;font-weight:400}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-record{border-color:#a97529!important;color:#eab45a!important;background:#102c4b!important}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-integrated{border-color:#268b89!important;color:#62d7cb!important;background:#102c4b!important}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-explanation{white-space:nowrap;width:max-content;max-width:none;font-size:10px}
+.dashboard-board:has(.risk-disease-panel) .board-stack:last-child{grid-template-rows:minmax(220px,1fr) minmax(220px,1fr);overflow:auto}
+.dashboard-board:has(.risk-disease-panel) .board-stack:last-child>.board-panel{min-height:220px}
+.dashboard-board .home-risk-composition .home-risk-content{display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;gap:6px;overflow:auto}
+.risk-donut{width:min(105px,32%);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;flex:none}
+.risk-donut div{width:62%;height:62%;border-radius:50%;background:#071630;display:grid;place-items:center;color:#b7d4e9;font-size:12px}
+.risk-legend{width:100%;display:grid;gap:5px;padding:0 10px;color:#c5ddec;font-size:12px}
+.risk-legend>div{display:grid;grid-template-columns:9px 1fr auto 48px;align-items:center;gap:6px}.risk-legend i,.risk-chart-legend i{width:8px;height:8px;display:inline-block}.risk-legend strong,.risk-legend b{font-weight:400;text-align:right}
+.risk-chart-legend{display:flex;justify-content:center;gap:12px;color:#c5ddec;font-size:12px}.risk-chart-legend span{display:flex;align-items:center;gap:4px}
+.risk-stacked-chart{display:block;width:100%;height:calc(100% - 55px);min-height:100px}.risk-stacked-chart text{fill:#c5ddec;font-size:12px}.risk-stacked-chart rect{cursor:help}
+.construction-board .clinic-frequency,.construction-board .board-stack:last-child .construction-panel:first-child .construction-line{object-fit:contain}
+.clinic-scatter-details{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:4px}
+.clinic-scatter-details .clinic-scatter-group{min-width:0;overflow:auto}.clinic-group-cities{display:block}.clinic-group-cities>div{display:flex;flex-wrap:wrap;gap:2px}
+.disease-table-note{font-size:10px;color:#93afc4}
+.situation-board .board-stack:last-child:has(.situation-complication-panel){grid-template-rows:minmax(0,1.05fr) minmax(0,1.25fr) minmax(0,.7fr)}
+.dashboard-board.situation-board .board-kpis.situation-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+/* Risk, clinic and outcome layout. */
+.dashboard-board .board-panel h2 .metric-scope-tag{margin-left:8px}
+.dashboard-board .home-risk-composition .home-risk-content{align-items:stretch;justify-content:flex-start;padding:8px 12px;overflow:auto;gap:8px}
+.risk-composition-strip{display:flex;height:30px;flex:none;width:100%}.risk-composition-strip>div{display:grid;place-items:center;color:#fff;font-size:12px;min-width:0;overflow:hidden}
+.risk-composition-rows{display:flex;flex:1;flex-direction:column;justify-content:space-evenly;gap:5px}.risk-composition-row{display:grid;grid-template-columns:58px minmax(0,1fr) 42px;gap:8px;align-items:center}.risk-composition-row strong{font-size:19px;color:#f1f7ff;text-align:right}.risk-composition-row span{display:block;color:#c4dbed;font-size:12px;white-space:nowrap}.risk-composition-row i{display:inline-block;width:8px;height:8px;margin-right:5px}.risk-composition-row em{font-size:12px;color:#a8cff9;text-align:right;font-style:normal}.risk-composition-track{height:6px;background:#172b43;margin-top:4px}.risk-composition-track b{display:block;height:100%}.risk-composition-note{color:#83a2be;font-size:10px}
+.responsive-risk-chart{display:flex;flex:1;min-height:100px;padding:8px 12px 8px;gap:8px;color:#c5ddec;font-size:12px}.risk-chart-axis{display:flex;flex-direction:column;justify-content:space-between;text-align:right}.risk-chart-plot{display:flex;flex:1;justify-content:space-around;min-width:0;border-bottom:1px solid #285675;background:repeating-linear-gradient(to top,transparent 0,transparent calc(50% - 1px),#285675 50%)}.risk-chart-column{display:flex;flex:1;min-width:0;flex-direction:column;align-items:center}.risk-chart-stack{display:flex;flex:1;width:36%;min-width:18px;max-width:45px;flex-direction:column;justify-content:flex-end}.risk-chart-stack>div{flex:none;cursor:help}.risk-chart-column>span{height:19px;white-space:nowrap}.risk-pending{font-size:11px;white-space:nowrap}
+.situation-summary{position:absolute;bottom:8px;left:12px;right:12px;display:flex;align-items:center;gap:8px;padding:7px 10px;background:#102d4ce8;color:#d4eaff;font-size:12px}.situation-summary b{color:#ffb167;white-space:nowrap}
+.construction-board .construction-kpis{grid-template-columns:repeat(6,minmax(0,1fr))}.frequency-responsive{display:flex;flex:1;min-height:90px;padding:6px 18px 10px;color:#bed8e9;font-size:12px;gap:8px}.frequency-scale{display:flex;flex-direction:column;justify-content:space-between;padding-bottom:20px}.frequency-plot{display:flex;flex:1;min-width:0;background:repeating-linear-gradient(to top,transparent 0,transparent calc(25% - 1px),#285675 25%);padding-top:12px}.frequency-plot>div{display:flex;flex:1;flex-direction:column;align-items:center}.frequency-plot section{display:flex;align-items:flex-end;justify-content:center;width:100%;flex:1}.frequency-plot b{position:relative;display:block;width:28%;min-width:15px;max-width:36px}.frequency-plot b span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-weight:400}.frequency-plot>div>span{height:20px;white-space:nowrap}
+.construction-board .board-columns>.clinic-scatter{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:auto}.construction-board .clinic-scatter-body{display:flex;flex:1;min-height:0;flex-direction:column}.construction-board .clinic-scatter-body svg{width:100%;flex:1;min-height:140px}.construction-board .clinic-scatter-details{flex:none}.construction-board .clinic-scatter{grid-area:auto}
+.outcome-layout.outcome-four-columns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:minmax(0,1fr);gap:10px}.outcome-four-columns>.outcome-comparison-row{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:auto}.outcome-four-columns .outcome-bar-chart{width:100%;flex:1;min-height:180px}.outcome-four-columns .outcome-risk,.outcome-four-columns .outcome-regions{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));min-width:0;min-height:0;gap:10px}.outcome-four-columns .outcome-detail-panel{min-height:0;overflow:auto}.outcome-four-columns .outcome-region-tabs{flex-wrap:wrap}
+.dashboard-board.outcome-board .board-columns.outcome-layout.outcome-four-columns{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:minmax(0,1fr);gap:10px}.outcome-four-columns>.outcome-regions{grid-column:auto;grid-template-columns:minmax(0,1fr)}
+
+.dashboard-board.situation-board .board-panel h2:has(.metric-scope-tag){justify-content:flex-start;gap:4px}
+.dashboard-board.situation-board .board-panel h2 .metric-scope-tag{margin-left:0}
+.risk-composition-row{grid-template-columns:85px minmax(0,1fr) 42px;cursor:help}
+.risk-composition-row strong{white-space:nowrap}.risk-composition-row strong small{font-size:11px;font-weight:400;margin-left:4px}
+.situation-board .board-map:has(.situation-summary){grid-template-rows:minmax(0,1fr) auto!important;gap:6px}
+.situation-summary{position:static;min-width:0}
+.dashboard-board.construction-board:has(.clinic-scatter){grid-template-rows:102px 104px minmax(0,1fr)}
+.dashboard-board.construction-board .construction-kpis{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px}
+.construction-board .board-columns{min-height:0;align-items:stretch}
+.dashboard-board.construction-board .board-stack:first-child,.dashboard-board.construction-board .board-stack:last-child{height:100%;grid-template-rows:repeat(2,minmax(0,1fr))}
+.construction-board .board-columns>.clinic-scatter{height:100%;box-sizing:border-box}
+.outcome-metric-column{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:8px;min-height:0;min-width:0}
+.dashboard-board.outcome-board .outcome-mini-panel{display:flex;flex-direction:column;min-width:0;min-height:0;padding:10px 16px 14px}
+.outcome-mini-bars{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:space-evenly;gap:4px}
+.outcome-mini-bars>div{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:6px;font-size:12px}
+.outcome-mini-bars .metric-scope-tag{justify-self:start;margin:0}
+.outcome-mini-track{height:8px;background:#183b5a}.outcome-mini-track i{display:block;height:100%}
+.outcome-mini-bars strong{font-size:12px;color:#e8f6ff;text-align:right}
+.outcome-regions .outcome-rank-chart{overflow-y:auto}.outcome-regions .scroll-track{animation:none;transform:none}
+.outcome-regions .outcome-rank-chart-row{height:auto;min-height:20px}
+
+/* Follow-up dashboard layout */
+.dashboard-board.construction-board{row-gap:16px}
+.construction-board .board-columns,.construction-board .board-stack{gap:16px}
+.frequency-plot{position:relative;background:none;padding-top:12px;padding-bottom:20px}
+.frequency-plot:after{content:'';position:absolute;left:0;right:0;bottom:20px;border-bottom:1px solid #397091;pointer-events:none}
+.frequency-plot>div>span{position:absolute;bottom:0;height:20px}
+.construction-board .board-stack:last-child .construction-panel:first-child .construction-line{display:block;width:100%;height:calc(100% - 48px);max-height:none;object-fit:contain}
+.construction-board .construction-nodes span{font-size:14px!important}.construction-board .construction-nodes strong{font-size:18px!important}
+.home-population-distribution .situation-bars p{border:0!important}
+.situation-summary{gap:17px;padding:7px 14px;border:1px solid #f06b20;background:rgba(45,25,25,.7);color:#d8eff9;font-size:16px;overflow:hidden}
+.situation-summary b{color:#ff792e;font-size:16px}.situation-summary span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.outcome-mini-bars>div{grid-template-columns:66px minmax(0,1fr) 56px;font-size:14px}
+.outcome-mini-bars .metric-scope-tag{font-size:14px;white-space:nowrap}
+.outcome-mini-bars strong{font-size:18px}
+.outcome-regions .scroll-track{height:100%;display:flex;flex-direction:column;justify-content:space-evenly}
+.outcome-regions .outcome-rank-chart-row{flex:1;min-height:18px}
+.clinic-scatter-details .clinic-scatter-group{overflow:auto}
+
+/* Clinic charts expand with their panels while keeping labels undistorted. */
+.dashboard-board.construction-board .construction-kpis{gap:12px}
+.construction-board .clinic-scatter-body{gap:8px;overflow:hidden}
+.construction-board .clinic-scatter-body svg{display:block;width:100%;height:0;flex:1 1 0;min-height:100px}
+.construction-board .clinic-scatter-details{display:flex;flex:none;flex-direction:column;gap:5px;overflow:visible;color:#a8c8df;font-size:13px;line-height:1.35}
+.clinic-scatter-hint{padding:7px 10px;border:1px solid #75402d;background:rgba(48,31,30,.45);color:#d8c9bf}
+.clinic-scatter-hint b{display:inline-block;margin-right:8px;padding:2px 6px;border:1px solid #ad612d;color:#ffac66;font-weight:400}
+.clinic-scatter-explanation{display:flex;align-items:baseline;min-width:0;white-space:nowrap}
+.clinic-scatter-explanation i{width:10px;height:10px;flex:none;margin-right:9px;background:var(--group-color)}
+.clinic-scatter-explanation strong{color:#d2e6f3}
+.clinic-scatter-explanation span{overflow:hidden;text-overflow:ellipsis}
+.construction-board .board-stack:last-child .construction-panel:first-child{display:flex;flex-direction:column;min-height:0}
+.construction-board .board-stack:last-child .construction-panel:first-child .construction-line{height:0;flex:1 1 0;min-height:0;object-fit:fill}
+
+/* Integrated clinic panel alignment. */
+.dashboard-board.construction-board:has(.clinic-scatter){grid-template-rows:102px 120px minmax(0,1fr)}
+.dashboard-board.construction-board .clinic-scatter{border:1px solid #20517e;background:#0b1b33;box-shadow:inset 0 0 0 1px rgba(52,120,177,.14);padding:0 0 8px;overflow:hidden}
+.dashboard-board.construction-board .clinic-scatter h2{justify-content:space-between;align-items:center;padding-right:12px;gap:8px}
+.dashboard-board.construction-board .clinic-scatter h2 .clinic-scatter-tabs{margin-left:auto;flex:none}
+.construction-board .clinic-scatter-body{padding:8px 12px 0;gap:6px}
+.construction-board .clinic-scatter-details{gap:3px}
+
+/* Shared dashboard module frame. */
+.dashboard-board :is(.board-panel,.outcome-detail-panel){
+  position:relative;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background-color:transparent!important;
+  background-image:linear-gradient(to bottom,transparent 45px,rgba(16,53,156,.1) 45px)!important;
+  background-position:center!important;
+  background-size:100% 100%!important;
+}
+.dashboard-board :is(.board-panel,.outcome-detail-panel)::before,
+.dashboard-board :is(.board-panel,.outcome-detail-panel)::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  height:7px;
+  border:0;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:100% 100%!important;
+  pointer-events:none;
+  z-index:2;
+}
+.dashboard-board :is(.board-panel,.outcome-detail-panel)::before{top:45px!important;background-image:url('dashboard-assets/上.svg')!important}
+.dashboard-board :is(.board-panel,.outcome-detail-panel)::after{bottom:0;background-image:url('dashboard-assets/下.svg')!important}
+.dashboard-board :is(.board-panel,.outcome-detail-panel)>h2,
+.dashboard-board :is(.situation-panel-title,.node-region-head){
+  background-image:url('dashboard-assets/标题.svg')!important;
+  background-position:left center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  border:0;
+}
+.dashboard-board.construction-board .clinic-scatter{
+  border:0;
+  box-shadow:none;
+  background-color:transparent;
+  background-image:linear-gradient(to bottom,transparent 45px,rgba(16,53,156,.1) 45px);
+}
+
+/* Chart labels and integrated-clinic readability. */
+.risk-stack-total{flex:none;align-self:center;color:#e8f6ff;font-size:12px;line-height:16px;white-space:nowrap}
+.frequency-plot{position:relative;background:none}
+.frequency-plot::before{content:'';position:absolute;inset:12px 0 20px;pointer-events:none;background:repeating-linear-gradient(to top,#285675 0 1px,transparent 1px 25%);border-top:1px solid #285675}
+.frequency-plot>div{position:relative}
+.dashboard-board.construction-board .clinic-scatter{background-image:linear-gradient(to bottom,transparent 45px,rgba(16,53,156,.6) 45px)!important}
+.dashboard-board.construction-board .clinic-scatter h2{padding-left:16px}
+.construction-board .clinic-scatter-body{gap:20px;overflow:auto}
+.construction-board .clinic-scatter-details{gap:8px;font-size:16px;line-height:1.35}
+.clinic-scatter-hint{margin-bottom:12px;border:1px solid #ed7d32;background:rgba(12,28,53,.7);padding:8px 12px;color:#e8f1fb}
+.clinic-scatter-hint b{border:0;padding:0;color:#ff8738;font-weight:600}
+.clinic-scatter-explanation{white-space:normal}
+.clinic-scatter-explanation span{overflow:visible;text-overflow:clip}
+.construction-board .construction-nodes span{font-size:16px!important}
+.construction-board .construction-nodes strong{font-size:18px!important}
+.construction-board .clinic-tier-chart .unified-coverage-legend>div>span:not(.coverage-count){font-size:16px}
+.construction-board .clinic-tier-chart small{font-size:18px}
+.outcome-mini-bars>div{grid-template-columns:minmax(100px,auto) minmax(0,1fr) 56px}
+.outcome-mini-bars .outcome-population-label{border:0!important;background:none!important;padding:0!important;color:#c0d9e9!important;font-size:14px;white-space:nowrap}
+.outcome-mini-track{position:relative}
+.outcome-mini-track::after{content:'';position:absolute;left:80%;top:-5px;bottom:-5px;width:2px;background:#f1ba47}
+.outcome-regions .outcome-rank-chart-row{grid-template-columns:40px minmax(0,1fr) 40px 48px;gap:5px}
+.outcome-rank-track{background:rgba(50,81,108,.24)}
+.outcome-rank-track i.positive{background:#55dfc8}
+.rank-delta{text-align:right;color:#65e4cb;font-size:12px;font-weight:500}
+.rank-delta.negative{color:#ffa569}
+
+/* Dashboard typography and clinic panel refinements. */
+.home-disease-table .disease-table-head,.home-disease-table .disease-table-row>span{font-size:16px}
+.home-population-distribution .situation-bars>div>span{font-size:16px}
+.home-population-distribution .situation-bars>div>strong,.home-population-distribution .situation-bars>div>em{font-size:20px}
+.home-coverage-composition .coverage-name,.clinic-tier-chart .coverage-name{font-size:16px!important}
+.home-control-strip .home-target-label span,.home-control-strip .home-target-label small{font-size:16px!important}
+.home-control-strip .home-target-track i b{font-size:24px}
+.home-control-strip .home-target-goal-label{font-size:20px}
+.risk-composition-row span,.risk-ranking-row>span,.risk-ranking-value,.situation-risk-matrix>b,.situation-risk-matrix>span{font-size:16px}
+.risk-chart-stack>div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;line-height:1;overflow:visible}
+.dashboard-board.construction-board .clinic-scatter{background-image:linear-gradient(to bottom,transparent 45px,#051633 45px)!important}
+.dashboard-board.construction-board .clinic-scatter h2{box-sizing:border-box;width:100%;margin:0;padding-left:32px;background-position:left center}
+.construction-board .clinic-scatter-body{gap:20px}
+.construction-board .clinic-scatter-body svg{min-height:0}
+
+/* Align chart axes and labels with their actual plotting areas. */
+.home-control-strip .home-target-item{grid-template-columns:minmax(176px,auto) minmax(0,1fr);column-gap:4px}
+.home-control-strip .home-target-label span{white-space:nowrap}
+.dashboard-board .home-control-strip>h2{justify-content:flex-start;gap:4px}
+.dashboard-board .home-control-strip>h2 .metric-scope-tag{margin-left:0}
+.risk-composition-strip>div{font-size:20px;font-weight:600}
+.risk-composition-row em{font-size:24px}
+.responsive-risk-chart{padding-top:22px}
+.risk-chart-axis{position:relative;padding-bottom:19px}
+.risk-chart-axis>span:first-child{position:absolute;bottom:calc(100% + 2px);right:0;white-space:nowrap}
+.risk-chart-plot{position:relative;border:0;background:none}
+.risk-chart-plot::before{content:'';position:absolute;inset:0 0 19px;pointer-events:none;border-top:1px solid #285675;border-bottom:1px solid #397091;background:linear-gradient(to bottom,transparent calc(50% - .5px),#285675 50%,transparent calc(50% + .5px))}
+.risk-chart-column{position:relative}
+.risk-chart-stack>div{font-size:20px;font-weight:700;text-shadow:0 1px 3px #00172e,0 0 4px #00172e;z-index:1}
+.frequency-plot>div>span{bottom:-20px}
+.frequency-plot b span{font-size:20px}
+.dashboard-board .map-scale.home-benchmark-scale :is(small,span,.benchmark-explanation){font-size:16px;line-height:1.35}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-explanation{white-space:normal;max-width:340px;width:340px}
+.situation-risk-matrix>span{font-size:16px}
+.construction-board .clinic-tier-chart .unified-coverage-legend small{font-size:20px}
+.dashboard-board.construction-board .clinic-scatter h2{background-size:484px 46px!important;background-position:left center!important;padding-left:32px}
+.construction-board .clinic-scatter-body{padding-top:0;gap:12px}
+.construction-board .clinic-scatter-body svg{overflow:visible}
+.clinic-scatter svg text,.clinic-scatter .clinic-point-number,.clinic-scatter .scatter-axis-label{font-size:16px}
+.clinic-scatter-hint{margin-bottom:8px}
+.dashboard-board:has(.home-disease-combined) .home-control-strip>h2{justify-content:flex-start;gap:4px}
+.dashboard-board:has(.home-disease-combined) .home-control-strip>h2 .scope-tag{margin-left:0}
+
+.home-disease-combined .home-disease-summary,.home-population-distribution .situation-bars p{font-size:14px}
+.dashboard-board .map-scale.home-benchmark-scale :is(small,span,.benchmark-explanation){font-size:14px;line-height:1.35}
+.dashboard-board .benchmark-gradient{background:linear-gradient(90deg,#2186d0,#55a8df,#f2a54a,#ed7b46,#e65c58)}
+.dashboard-board:has(.home-disease-combined) .board-stack .home-control-strip{padding-left:8px;padding-right:8px}
+.home-control-strip .home-target-item{grid-template-columns:176px minmax(0,1fr)}
+.dashboard-board:has(.home-disease-combined) .home-control-strip>h2{justify-content:flex-start!important;gap:4px!important}
+.dashboard-board:has(.home-disease-combined) .home-control-strip>h2 .scope-tag{position:static!important;margin:0!important;flex:none}
+.risk-composition-row{grid-template-columns:85px minmax(0,1fr) 68px}
+.risk-chart-stack>div:first-child span{transform:translateY(-8px)}
+.risk-chart-column:last-child .risk-chart-stack>div:last-child span{transform:translateY(8px)}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-labels span{font-size:14px!important}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-unknown{top:15px;display:block;width:42px;text-align:center;font-size:14px;line-height:1.35}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-unknown b{position:absolute;left:0;top:-15px;width:100%;height:10px}
+.dashboard-board .map-scale.home-benchmark-scale .benchmark-explanation{white-space:nowrap;width:max-content;max-width:none}
+
+/* Management outcome panels and ranking chart */
+.dashboard-board.outcome-board .outcome-metric-column:nth-child(2) .outcome-detail-panel,
+.dashboard-board.outcome-board .outcome-risk .outcome-detail-panel{background-color:rgba(3,16,38,.9)!important}
+.outcome-mini-panel h2{display:flex;align-items:center;gap:8px}
+.outcome-goal-caption{margin-left:auto;color:#f1ba47;font-size:12px;font-weight:400;white-space:nowrap}
+.outcome-rank-heading{display:grid;grid-template-columns:40px minmax(0,1fr) 93px;gap:5px;align-items:center;margin:4px 10px 0;padding-bottom:5px;border-bottom:1px dashed #27445e;color:#8eabc2;font-size:12px;white-space:nowrap}
+.outcome-rank-heading span:nth-child(2){text-align:center}.outcome-rank-heading span:last-child{text-align:right}
+.outcome-regions .outcome-rank-track{height:12px;background:rgba(50,81,108,.24)}
+.outcome-regions .outcome-rank-track:before{border-left:1px solid #64859b}
+
+/* Keep the title treatment separate from the darker chart surface. */
+.dashboard-board.outcome-board .outcome-metric-column:nth-child(2) .outcome-detail-panel,
+.dashboard-board.outcome-board .outcome-risk .outcome-detail-panel{background-color:transparent!important;background-image:linear-gradient(to bottom,transparent 42px,rgba(3,16,38,.9) 42px)!important}
+.outcome-risk .risk-legend{display:flex;flex-wrap:wrap;gap:4px 10px}
+.outcome-risk .risk-legend span:nth-child(1){color:#388bb2}.outcome-risk .risk-legend span:nth-child(2){color:#a57bf4}.outcome-risk .risk-legend span:nth-child(3){color:#55daf0}
+.outcome-risk .risk-bar-line.recorded i{background:#a57bf4}
+.situation-risk-ranking .risk-ranking-heading{display:grid;grid-template-columns:48px minmax(0,1fr) 92px;gap:4px;margin:3px 8px;color:#8eabc2;font-size:12px;white-space:nowrap}
+.situation-risk-ranking .risk-ranking-heading span:nth-child(2){text-align:center}.situation-risk-ranking .risk-ranking-heading span:last-child{text-align:right}
+.situation-risk-ranking .risk-ranking-row{grid-template-columns:48px minmax(0,1fr) 42px 52px}
+.situation-risk-ranking .risk-ranking-rows:before{display:none}
+.situation-risk-ranking .risk-ranking-track{height:10px;background:rgba(50,81,108,.24)}
+.situation-risk-ranking .risk-ranking-track:before{border-left:1px solid #64859b}
+.situation-risk-ranking .risk-ranking-track i{top:0;height:100%}
+.situation-risk-ranking .risk-ranking-track i:after{display:none}
+.situation-risk-ranking .risk-ranking-track i.above{background:#ff994e}.situation-risk-ranking .risk-ranking-track i.below{background:#55dfc8}
+.dashboard-board.construction-board .construction-panel h2 .metric-scope-tag,
+.dashboard-board.construction-board .clinic-scatter-title .metric-scope-tag{margin-left:4px}
