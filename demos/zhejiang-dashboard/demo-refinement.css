@@ -2044,7 +2044,7 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .outcome-map-ranking div{gap:5px;white-space:nowrap;line-height:1.4}
 
 /* Preserve a readable dashboard size in narrow preview panes. */
-.dashboard-viewport{overflow:auto}
+.dashboard-viewport{overflow:hidden}
 .dashboard-board.outcome-board .outcome-chart-legend{font-size:14px;gap:8px;flex-wrap:wrap;justify-content:flex-start}
 .dashboard-board.outcome-board .outcome-bar-chart text{font-size:13px}
 .dashboard-board.outcome-board .outcome-bar-chart .bar-value{font-size:13px;font-weight:700}
