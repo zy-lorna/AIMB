@@ -2010,6 +2010,8 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .situation-bars>div>i{height:10px;background:#142d4c}.situation-bars>div>i>b{display:block;height:100%}.situation-bars strong,.situation-bars em{text-align:right;font-style:normal;font-size:12px;color:#e3f2ff}.situation-bars p{margin:0;padding-top:4px;border-top:1px dashed #284564;color:#a8c4dc;font-size:12px}
 .situation-age-chart{height:calc(100% - 45px);display:flex;flex-direction:column;padding:0 12px 6px;box-sizing:border-box}.situation-age-legend{display:flex;justify-content:space-between;gap:3px;color:#b5cde0;font-size:11px;white-space:nowrap}.situation-age-legend i{display:inline-block;width:8px;height:8px;margin-right:3px}.situation-age-columns{flex:1;min-height:0;display:flex;align-items:stretch;justify-content:space-around;border-bottom:1px solid #27415d;background:repeating-linear-gradient(to top,transparent 0,transparent 24%,rgba(82,125,164,.15) 25%)}.situation-age-columns>div{width:14%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-height:0;color:#b4cee4;font-size:11px}.situation-age-columns span,.situation-age-columns small{white-space:nowrap}.situation-age-stack{width:45%;display:flex;flex-direction:column-reverse;min-height:2px}.situation-age-stack i{display:block;width:100%}.situation-age-columns small{padding-top:3px;font-size:11px}
 .situation-risk-matrix{height:calc(100% - 45px);box-sizing:border-box;padding:4px 12px 8px;display:grid;grid-template-columns:70px repeat(3,1fr);grid-template-rows:22px repeat(3,1fr);gap:4px;align-items:stretch;color:#bcd4e9;font-size:12px}.situation-risk-matrix>b,.situation-risk-matrix>span{align-self:center;text-align:center}.situation-risk-matrix>b:nth-child(2){color:#53d3b0}.situation-risk-matrix>b:nth-child(3){color:#f7c657}.situation-risk-matrix>b:nth-child(4){color:#f08073}.risk-cell{display:flex;align-items:center;justify-content:center;color:#e5f2fa}.risk-cell-0{background:#164c43}.risk-cell-1{background:#5b481d}.risk-cell-2{background:#6e302d}
+.situation-board .board-stack:first-child:has(.disease-distribution-panel){grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+.situation-board .situation-complication-panel .situation-complication-list{display:grid;grid-template-rows:repeat(5,minmax(0,1fr));overflow:hidden!important}
 .risk-ranking-rows{position:relative}.risk-ranking-rows:before{content:'';position:absolute;top:0;bottom:3px;left:60px;right:58px;pointer-events:none;background:repeating-linear-gradient(to right,rgba(113,154,192,.25) 0 1px,transparent 1px 25%);mask:repeating-linear-gradient(to bottom,#000 0 4px,transparent 4px 8px)}
 .situation-board .map-scale.home-benchmark-scale{position:absolute;display:grid;grid-template-columns:15px auto;grid-template-rows:1fr 1fr 1fr auto;gap:0 6px;align-items:center}.situation-board .home-benchmark-scale i{grid-column:1;grid-row:1 / 4;width:15px;height:120px;background:linear-gradient(to bottom,#f15c55,#fb9a53,#f4d467,#29c3e6,#218ed0)}.situation-board .home-benchmark-scale span,.situation-board .home-benchmark-scale small{grid-column:2;font-size:11px;color:#c2d9eb;white-space:nowrap}.situation-board .home-benchmark-scale span:last-child:before,.situation-board .home-benchmark-scale span:last-child:after{content:none}
 
@@ -2081,9 +2083,76 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .construction-board .board-stack:last-child .construction-panel:first-child .construction-line{object-fit:fill}
 .clinic-scatter .clinic-point-number{fill:#fff;font-size:12px;font-weight:bold;pointer-events:none}
 .clinic-scatter-values em{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#087fae;color:#fff;font-size:12px;font-style:normal}
+.outcome-regions h2{gap:8px;white-space:nowrap}
+.outcome-region-tabs{display:flex;margin-left:auto;gap:3px}
+.outcome-region-tabs button{border:1px solid #286589;background:#0b2946;color:#bad7e8;font:14px DashboardChinese,sans-serif;padding:3px 7px;cursor:pointer}
+.outcome-region-tabs button[aria-pressed=true]{background:#1265a3;color:#fff}
+.outcome-region-benchmark{position:relative;flex:none;margin:2px 0 0 50px;text-align:center;color:#d5eafa;font-size:13px;line-height:18px}
+.outcome-regions .outcome-region-list{margin-top:2px}
 .dashboard-board.outcome-board .outcome-bar-chart .bar-value{font-size:17px}
 .dashboard-board.outcome-board .outcome-bar-chart .bar-label{font-size:16px}
 .dashboard-board.outcome-board .outcome-map-tabs{justify-content:flex-start;margin:0 0 6px}
 .dashboard-board.outcome-board .map-scale.home-benchmark-scale{bottom:65px}
 .home-disease-combined .funnel-shape strong{font-size:18px}
 .home-disease-combined .funnel-ratio strong{font-size:18px}
+
+.home-disease-combined .home-grouped-chart{display:flex;flex:1;min-height:0;flex-direction:column;padding:4px 12px 0}
+.home-chart-legend{display:flex;align-items:center;justify-content:center;gap:14px;color:#d7eaf8;font-size:13px}
+.home-chart-legend span{white-space:nowrap}.home-chart-legend i{display:inline-block;width:10px;height:10px;margin-right:4px}.home-chart-legend small{color:#a6c6db}
+.home-grouped-chart svg{width:100%;height:100%;min-height:0}.home-grouped-chart svg text{fill:#c2d9ea;font-size:13px}
+.home-disease-combined .home-disease-summary{flex:none;margin:2px 12px 9px}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition,.clinic-tier-chart{display:grid;grid-template-columns:minmax(100px, .9fr) minmax(0,1.3fr);align-items:center;gap:12px;min-height:0;flex:1;padding:8px 12px}
+.chart-coverage-ring{width:min(100%,180px);aspect-ratio:1;max-height:100%;border-radius:50%;display:grid;place-items:center;justify-self:center}
+.chart-coverage-ring>div{width:68%;height:68%;border-radius:50%;background:#071b36;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#b9d6e8}.chart-coverage-ring strong{font-size:22px;color:white}.chart-coverage-ring span{font-size:12px}
+.dashboard-board:has(.home-disease-panel) .coverage-composition-legend,.clinic-tier-legend{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:4px;align-self:stretch;min-height:0}.dashboard-board:has(.home-disease-panel) .coverage-composition-legend div{justify-content:center;font-size:13px}.dashboard-board:has(.home-disease-panel) .coverage-composition-legend strong{font-size:15px}
+.risk-matrix-caption{text-align:right;padding:0 12px;color:#a8c7db;font-size:11px}.situation-risk-matrix{height:calc(100% - 62px)}.risk-cell{flex-direction:column;gap:3px}.risk-cell strong{font-size:17px;color:#fff}.risk-cell small{font-size:13px;color:#d1e5ef}
+
+.dashboard-board:has(.home-disease-panel) .board-columns{grid-template-columns:540px minmax(0,1fr) 480px}
+.home-grouped-chart svg .home-bar-value{fill:#e7f4ff;font-size:11px;font-weight:600}
+.dashboard-board:has(.home-disease-panel) .coverage-composition-legend div span{display:flex;align-items:baseline;white-space:nowrap}
+.dashboard-board:has(.home-disease-panel) .coverage-composition-legend small{padding:0;margin-left:8px;color:#a8c8dc}
+.situation-risk-matrix>b:nth-child(2){color:#70adfa}.situation-risk-matrix>b:nth-child(3){color:#e8c27c}.situation-risk-matrix>b:nth-child(4){color:#e68ca5}
+.risk-cell-0{background:#275fae}.risk-cell-1{background:#967949}.risk-cell-2{background:#75344c}
+.situation-board .board-stack:last-child:has(.situation-complication-panel){grid-template-rows:minmax(0,1.65fr) minmax(0,.72fr) minmax(0,.75fr)}
+.situation-board .situation-complication-panel .situation-complication-list{grid-template-rows:repeat(3,minmax(0,1fr))}
+.risk-ranking-row{grid-template-columns:48px 52px minmax(0,1fr) 42px;gap:4px}
+.risk-ranking-value{color:#8caec5;text-align:right;font-size:11px}
+.risk-ranking-rows:before{left:112px}
+.risk-ranking-track i{top:50%;height:1px;min-width:0}
+.risk-ranking-track i.above{background:#ef6c72}.risk-ranking-track i.below{background:#48cfbf}
+.risk-ranking-track i:after{content:'';position:absolute;top:50%;width:8px;height:8px;border-radius:50%;transform:translateY(-50%);background:inherit;box-shadow:0 0 8px currentColor}
+.risk-ranking-track i.above:after{right:-4px;color:#ef6c72}.risk-ranking-track i.below:after{left:-4px;color:#48cfbf}
+
+.dashboard-board.construction-board:has(.clinic-scatter){grid-template-rows:102px 104px minmax(0,1fr) 350px}
+.clinic-scatter{padding:0 20px 8px}
+.clinic-scatter h2{justify-content:space-between;gap:16px}
+.clinic-scatter h2 small{font-size:12px;color:#83a9c8}
+.clinic-scatter-tabs{margin:4px 0 8px}
+.clinic-scatter-tabs button{padding:6px 14px}
+.clinic-scatter-body{grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:30px}
+.clinic-scatter-values{height:100%;grid-auto-flow:row;align-content:space-evenly;gap:3px 20px}
+.clinic-scatter-values>div{align-items:center;color:#a7c9e0}
+.clinic-scatter-values b{color:#d9edfa;font-size:14px}
+.clinic-scatter-values b small{font-size:13px;color:#85a8c2;font-weight:normal}
+.clinic-scatter-insights{display:grid;grid-template-columns:1fr 1fr 1fr 1.1fr;gap:16px;flex:none;border-top:1px solid #264765;padding-top:7px;color:#a4c2d7;font-size:12px;line-height:1.5}
+.clinic-scatter-insights p{margin:0;min-width:0}
+.clinic-scatter-insights p i{display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:#38b9f0}
+.clinic-scatter-insights p:nth-child(2) i{background:#f6a62f}.clinic-scatter-insights p:nth-child(3) i{background:#ef6979}
+.clinic-scatter-insights strong{color:#d8e9f6}.clinic-scatter-note{text-align:right;color:#7f9fb8}
+.dashboard-board.construction-board:has(.clinic-scatter){height:1080px;grid-template-rows:102px 104px minmax(0,1fr) 280px}
+.outcome-regions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.outcome-rank-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:column;grid-template-rows:repeat(6,minmax(0,1fr));column-gap:24px;flex:1;min-height:0;padding:4px 10px}
+.outcome-rank-grid>div{display:grid;grid-template-columns:24px 1fr auto auto;gap:8px;align-items:center;color:#c0d9e9;font-size:13px;border-bottom:1px solid #173b59}
+.outcome-rank-grid strong{color:#fff;font-size:15px}.outcome-rank-grid small{min-width:74px;text-align:right;color:#8bd7e9}.outcome-rank-grid small.negative{color:#f1ae78}
+.outcome-rank-number{color:#70a8c6}.outcome-regions .outcome-region-benchmark{margin-left:10px;text-align:left}
+.dashboard-board.outcome-board .outcome-regions .outcome-detail-panel>h2{background:url('dashboard-assets/标题.svg') left center / auto 46px no-repeat;padding-left:32px}
+.outcome-region-title{position:relative;z-index:1;white-space:nowrap}
+.outcome-region-benchmark span{margin-left:16px;color:#86a9c1}
+.outcome-rank-chart{flex:1;min-height:0;overflow:hidden;margin:3px 10px 6px}
+.outcome-rank-chart-row{display:grid;grid-template-columns:48px minmax(0,1fr) 50px;gap:7px;align-items:center;color:#c0d9e9;font-size:13px;height:30px}
+.outcome-rank-chart-row strong{font:14px DashboardDIN,sans-serif;color:#eaf6ff;text-align:right}
+.outcome-rank-track{position:relative;height:100%}
+.outcome-rank-track:before{content:'';position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed #66849a}
+.outcome-rank-track i{position:absolute;top:30%;height:40%;min-width:2px}
+.outcome-rank-track i.positive{left:50%;background:#43c9ee}
+.outcome-rank-track i.negative{right:50%;background:#efa25f}

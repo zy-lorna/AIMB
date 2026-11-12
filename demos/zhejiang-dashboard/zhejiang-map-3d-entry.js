@@ -35,21 +35,6 @@ function mount(host, geojson, values, callbacks) {
   controls.target.set(0, 0, 0);
   const viewSize = Math.max(projectedWidth, projectedHeight) * 1.18;
   const depth = callbacks.townLevel ? Math.max(projectedWidth, projectedHeight) * .055 : 10;
-  const baseZ = callbacks.townLevel ? -depth * .8 : -8;
-  const pedestalRadius = Math.max(projectedWidth, projectedHeight) * .64;
-  const ringWidth = callbacks.townLevel ? pedestalRadius * .012 : .55;
-  const pedestal = new THREE.Mesh(new THREE.CircleGeometry(pedestalRadius, 96), new THREE.MeshBasicMaterial({ color: '#08294d', transparent: true, opacity: .72, depthWrite: false }));
-  pedestal.position.z = baseZ;
-  scene.add(pedestal);
-  const pedestalRings = [1, .87].map((scale, index) => {
-    const ring = new THREE.Mesh(new THREE.RingGeometry(pedestalRadius * scale - ringWidth, pedestalRadius * scale, 128), new THREE.MeshBasicMaterial({ color: index ? '#1c7dbb' : '#39bffc', transparent: true, opacity: index ? .2 : .48, side: THREE.DoubleSide, depthWrite: false }));
-    ring.position.z = baseZ + depth * (.02 + index * .01);
-    scene.add(ring);
-    return ring;
-  });
-  const orbitArc = new THREE.Mesh(new THREE.RingGeometry(pedestalRadius - (callbacks.townLevel ? ringWidth * 1.5 : .8), pedestalRadius + (callbacks.townLevel ? ringWidth * .4 : .2), 48, 1, 0, Math.PI * .32), new THREE.MeshBasicMaterial({ color: '#79e6ff', transparent: true, opacity: .85, side: THREE.DoubleSide, depthWrite: false }));
-  orbitArc.position.z = baseZ + depth * .045;
-  scene.add(orbitArc);
   const meshes = [];
   for (const [from, to] of callbacks.flowLines || []) {
     const [x1, y1] = project(from), [x2, y2] = project(to);
@@ -173,9 +158,6 @@ function mount(host, geojson, values, callbacks) {
     if (disposed) return;
     frame = requestAnimationFrame(animate);
     controls.update();
-    pedestalRings[0].rotation.z += .0007;
-    pedestalRings[1].rotation.z -= .0004;
-    orbitArc.rotation.z += .003;
     for (const label of labels) {
       const projected = label.position.clone().project(camera);
       const visible = (callbacks.showLabels !== false || geojson.features.length <= 11) && projected.z < 1 && Math.abs(projected.x) < .97 && Math.abs(projected.y) < .97 && (!label.county || geojson.features.length <= 20 || camera.zoom >= 2.5);
