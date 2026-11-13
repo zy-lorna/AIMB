@@ -1490,6 +1490,10 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .dashboard-board .map-3d-tooltip:has(.home-map-tooltip){max-width:none;padding:0;background:transparent;box-shadow:none;filter:none}
 .dashboard-board .home-map-tooltip .home-map-tooltip-body p{max-width:none;margin:4px 0 0;color:#b6c2d1;font:14px DashboardChinese,sans-serif;white-space:normal}
 
+/* Keep a readable card around map details in both map renderers. */
+.dashboard-board .map-tooltip:not(.home-map-tooltip){min-width:220px;max-width:300px;padding:12px;border:1px solid #388fe7;background:rgba(5,22,40,.94);box-shadow:0 4px 12px #0008;color:#fff;white-space:normal}
+.dashboard-board .map-tooltip:not(.home-map-tooltip)>strong{display:block;margin:-12px -12px 10px;padding:8px 12px;border-bottom:2px solid #e0c522;background:linear-gradient(90deg,#1266ad,#073665,#1266ad);text-align:center;color:#e1f2ff}
+
 /* Secondary-view geometry from the 1920 x 1080 designs. */
 .dashboard-board:is(.situation-board,.construction-board,.outcome-board){padding:0 56px 40px;gap:0;grid-template-rows:102px minmax(0,1fr);background:#06152e url('dashboard-home-background.png') center top / cover no-repeat}
 .dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title{height:82px;background:url('dashboard-assets/顶部-无标题.svg') center top / 849px 103px no-repeat}
@@ -1992,6 +1996,15 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .dashboard-board:has(.home-disease-combined) .board-stack .home-control-strip{background-image:linear-gradient(to bottom,transparent 45px,rgba(16,53,156,.1) 45px);background-position:center;background-size:100% 100%;background-repeat:no-repeat}
 .dashboard-board:not(.board-no-kpis):has(.home-disease-combined) .board-stack .home-control-strip .home-target-bars{position:relative;isolation:isolate}
 .home-control-strip .home-target-bars::before{content:'';position:absolute;left:143px;right:58px;top:8px;bottom:8px;pointer-events:none;background:repeating-linear-gradient(to right,rgba(89,145,190,.3) 0 1px,transparent 1px 20%);mask:repeating-linear-gradient(to bottom,#000 0 5px,transparent 5px 10px);z-index:-1}
+.home-control-strip .home-target-bars::before{display:none}
+.home-control-strip .home-target-track .home-target-goal{position:absolute;top:-3px;bottom:-3px;height:auto;background:#ffd25b;z-index:3}
+.map-benchmark-note{position:relative;z-index:2;color:#a8cce4;font-size:12px;padding:2px 16px;line-height:1.4}
+.summary-rank-head,.summary-rank-row{display:grid;grid-template-columns:58px minmax(100px,1fr) 55px 65px;gap:10px;align-items:center;padding:6px 0}
+.summary-rank-head{color:#96b8d0;font-size:12px;border-bottom:1px solid #28445e}
+.summary-rank-head span{grid-column:2;text-align:center}
+.summary-rank-row{font-size:13px}.summary-rank-row b,.summary-rank-row strong{text-align:right}
+.summary-rank-track{position:relative;height:12px;background:#142b49}.summary-rank-track:after{content:'';position:absolute;left:50%;height:100%;border-left:1px solid #8db1c8}
+.summary-rank-track i{position:absolute;top:2px;height:8px}.summary-rank-track i.above{left:50%;background:#4ed5bc}.summary-rank-track i.below{right:50%;background:#ffa450}.summary-rank-row b.above{color:#4ed5bc}.summary-rank-row b.below{color:#ffa450}
 .dashboard-board:not(.board-no-kpis):has(.home-disease-combined) .board-stack .home-control-strip .outcome-rings.home-target-bars:has(> :nth-child(4)){top:auto;left:auto;width:100%;height:auto;box-sizing:border-box;flex:1 1 0;margin:0}
 
 .home-summary-body .summary-action{margin:8px 0;color:#d5e8f7;font-size:14px}
@@ -2542,10 +2555,95 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .home-disease-combined .home-disease-summary,.home-population-distribution .situation-bars p{font-size:14px}
 .dashboard-board .map-scale.home-benchmark-scale :is(small,span,.benchmark-explanation){font-size:14px;line-height:1.35}
 .dashboard-board .benchmark-gradient{background:linear-gradient(90deg,#2186d0,#55a8df,#f2a54a,#ed7b46,#e65c58)}
+
+.construction-board .clinic-scatter-body{box-sizing:border-box;padding:12px;gap:4px}
+.construction-board .clinic-scatter-body svg{width:100%;flex:1 1 0;min-height:0}
+
+/* Photo gallery and chart spacing */
+.clinic-photo-link{border:0;padding:0;background:none;color:#53baff;text-decoration:underline;text-underline-offset:3px;font:inherit;cursor:pointer}
+.clinic-photo-link:focus-visible{outline:2px solid #9bd9ff;outline-offset:3px}
+.clinic-gallery-dialog{box-sizing:border-box;width:min(1100px,94vw);max-width:none;max-height:88vh;padding:0;border:1px solid #367eae;background:#0b1d36;color:#e6f3ff}
+.clinic-gallery-dialog::backdrop{background:rgba(0,8,21,.75)}
+.clinic-gallery-dialog header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:20px 24px;border-bottom:1px solid #285273}
+.clinic-gallery-dialog h2{margin:0;color:#70cbff;font-size:21px}.clinic-gallery-dialog header p{margin:7px 0 0;color:#a7bdd2;font-size:13px}
+.clinic-gallery-dialog header button{border:0;background:none;color:#b7dfff;font-size:28px;cursor:pointer}
+.clinic-gallery-body{max-height:calc(88vh - 100px);overflow:auto;padding:0 24px 24px}.clinic-gallery-body section{padding:16px 0;border-bottom:1px solid #25435e}.clinic-gallery-body h3{margin:0 0 12px;font-size:16px}.clinic-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.clinic-gallery-grid button{padding:0;border:1px solid #315d7d;background:#102944;cursor:pointer;aspect-ratio:4/3}.clinic-gallery-grid img{width:100%;height:100%;object-fit:cover}.clinic-gallery-empty{color:#abc3d6}
+.construction-board .clinic-map-column>.clinic-scatter{flex-basis:620px;min-height:620px}
+.outcome-insights{align-items:stretch}.outcome-insights h2{align-self:center}.outcome-insights p{box-sizing:border-box}
+.clinic-quadrant-key{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;flex:none;color:#bcd8eb;font-size:10px;line-height:1.2}
+.clinic-quadrant-key span{display:flex;align-items:center;gap:4px;min-width:0;white-space:nowrap}
+.clinic-quadrant-key i{width:8px;height:8px;flex:none;border-radius:50%}
+.clinic-quadrant-heading{flex:none;color:#d7eafa;font-size:13px;font-weight:600;line-height:18px}
+.situation-board .situation-risk-matrix:not(.risk-disease-matrix){box-sizing:border-box;height:calc(100% - 53px);padding:12px;grid-template-rows:22px repeat(3,minmax(0,1fr))}
+.clinic-gallery-view{display:grid;grid-template-columns:minmax(0,2fr) minmax(240px,1fr);gap:14px;padding:16px; height:min(65vh,620px);box-sizing:border-box}
+.clinic-gallery-main{position:relative;min-width:0;min-height:0;background:#061629;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.clinic-gallery-main>img{width:100%;height:100%;object-fit:contain}.clinic-gallery-caption{position:absolute;left:0;right:0;bottom:62px;padding:10px 12px;background:rgba(3,15,32,.8);font-size:14px}.clinic-gallery-caption span{float:right;color:#9ec7e4}
+.clinic-gallery-photo-nav{position:absolute;bottom:0;left:0;right:0;display:flex;gap:6px;padding:6px;overflow-x:auto;background:rgba(3,15,32,.9)}.clinic-gallery-photo-nav button{flex:0 0 64px;height:48px;padding:0;border:1px solid #41607a;background:none;cursor:pointer}.clinic-gallery-photo-nav button[aria-pressed=true]{border:2px solid #42baff}.clinic-gallery-photo-nav img{width:100%;height:100%;object-fit:cover}
+.clinic-gallery-side{min-height:0;display:flex;flex-direction:column}.clinic-gallery-list{display:flex;flex:1;min-height:0;flex-direction:column;gap:5px}.clinic-gallery-item{display:grid;grid-template-columns:76px minmax(0,1fr) 24px;align-items:center;gap:10px;flex:1;min-height:0;padding:4px 8px 4px 4px;border:1px solid transparent;background:#10233a;color:#d4e9f8;text-align:left;cursor:pointer}.clinic-gallery-item[aria-pressed=true]{border-color:#258dd0;background:#154d71}.clinic-gallery-item img{width:76px;height:100%;min-height:0;max-height:72px;object-fit:cover}.clinic-gallery-item span{font-size:13px;line-height:1.35;overflow-wrap:anywhere}.clinic-gallery-item b{color:#55c6ff;font-size:13px}.clinic-gallery-pager{display:flex;justify-content:space-between;align-items:center;padding-top:8px;color:#a7c1d4;font-size:13px}.clinic-gallery-pager button{width:30px;height:26px;margin-left:5px;border:1px solid #296185;background:#0b314e;color:#82d6ff;cursor:pointer}.clinic-gallery-pager button:disabled{opacity:.35;cursor:default}
+@media(max-width:650px){.clinic-gallery-view{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(220px,1fr) minmax(180px,1fr);height:70vh;overflow:auto}.clinic-gallery-item img{width:60px}.clinic-gallery-item{grid-template-columns:60px minmax(0,1fr) 24px}.clinic-gallery-dialog header{padding:12px 16px}.clinic-gallery-dialog h2{font-size:17px}}
+.clinic-gallery-main{display:grid;grid-template-rows:minmax(0,1fr) auto auto;align-items:stretch;justify-content:stretch}
+.clinic-gallery-main>img{min-height:0;object-fit:contain;object-position:center top}
+.clinic-gallery-caption,.clinic-gallery-photo-nav{position:static}
+.clinic-gallery-caption{display:flex;justify-content:space-between;gap:12px}.clinic-gallery-caption span{float:none;flex:none}
+.dashboard-board.construction-board .clinic-quadrant-legend>span{min-height:64px}
+.dashboard-board.outcome-board .board-columns.outcome-layout.outcome-four-columns:has(.outcome-insights){grid-template-rows:repeat(2,minmax(0,1fr)) 130px}
+.construction-board .clinic-scatter-body svg{overflow:visible}
+.clinic-quadrant-legend>span{min-height:64px}
+.clinic-quadrant-legend>span>i{display:none}
+.clinic-quadrant-legend>span>span::before{content:'';display:inline-block;width:8px;height:8px;margin-right:5px;border-radius:50%;background:currentColor;vertical-align:middle}
+.dashboard-board.outcome-board .board-columns.outcome-layout.outcome-four-columns{grid-template-rows:repeat(2,minmax(0,1fr)) 130px}
+.outcome-insights{grid-column:1 / -1;grid-row:3;display:grid;grid-template-columns:105px repeat(3,minmax(0,1fr));align-items:stretch;gap:16px;min-height:0;padding:12px 18px;border:1px solid #23577e;background:rgba(5,22,51,.76);color:#dcecff}
+.outcome-insights h2{margin:0;color:#48c8f2;font-size:20px}
+.outcome-insights p{margin:0;padding:10px 12px;border-left:3px solid #279bd8;background:#102749;font-size:16px;line-height:1.45}
+.outcome-insights p:nth-of-type(2){border-color:#ff9d39}.outcome-insights p:nth-of-type(3){border-color:#35d5c5}
+
+/* Shared dashboard tooltip and dialog treatment. */
+.dashboard-board .map-3d-tooltip:has(.home-map-tooltip){max-width:none;padding:0;border:0;background:transparent;box-shadow:none}
+.dashboard-board .home-map-tooltip{box-sizing:border-box}
+.board-chart-tooltip.visible{border:1px solid #168ef5;background:rgba(2,13,38,.94);color:#fff;box-shadow:none}
+.clinic-quadrant-key{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px;font-size:16px;line-height:1.25}
+.clinic-quadrant-key span{white-space:normal}
+.clinic-quadrant-heading{display:none}
+:is(.metric-detail-dialog,.home-summary-dialog,.town-clinic-dialog){border:1px solid #37628f;border-radius:0;background:#031530;color:#fff;box-shadow:0 16px 60px #000a}
+:is(.metric-detail-dialog,.home-summary-dialog)>header{background:#0b2244;border-bottom:1px solid #37628f;color:#dcecff}
+.metric-detail-row:nth-child(even),.summary-detail-table tbody tr:nth-child(even){background:rgba(56,84,121,.24)}
+.metric-detail-heading,.summary-detail-table th{color:#348fff}
+.town-clinic-dialog h2{margin:-20px -20px 16px;padding:14px 20px;background:#0b2244;border-bottom:1px solid #37628f}
+
+.situation-board .situation-risk-matrix:not(.risk-disease-matrix){height:calc(100% - 53px);grid-template-rows:22px repeat(3,minmax(0,1fr));padding-bottom:8px}
+.dashboard-board .home-map-tooltip .map-tooltip-comparison{font:16px DashboardChinese,sans-serif;line-height:1.4}
+.construction-board .construction-nodes span{font-size:16px!important}
+.construction-board .construction-nodes>div{grid-template-columns:minmax(145px,auto) minmax(0,1fr) 52px}
+.board-chart-tooltip.scatter-point-tooltip{line-height:1.35;gap:0!important;padding-left:25px!important}
+.board-chart-tooltip.scatter-point-tooltip::before{top:15px;left:10px;width:7px;height:7px;border:0;border-radius:50%;background:var(--scatter-point-color,#72cbed)}
+.outcome-rank-axis{flex:none;min-height:15px;align-items:center}
+.outcome-rank-axis>div{position:relative;overflow:visible}
+.outcome-rank-axis>div span{font-size:10px;white-space:nowrap;transform:translateX(-50%)}
+.outcome-rank-axis>div span:first-child{transform:none}
+.outcome-rank-axis>div span:last-child{transform:none}
 .dashboard-board:has(.home-disease-combined) .board-stack .home-control-strip{padding-left:8px;padding-right:8px}
 .home-control-strip .home-target-item{grid-template-columns:176px minmax(0,1fr)}
 .dashboard-board:has(.home-disease-combined) .home-control-strip>h2{justify-content:flex-start!important;gap:4px!important}
 .dashboard-board:has(.home-disease-combined) .home-control-strip>h2 .scope-tag{position:static!important;margin:0!important;flex:none}
+
+/* November review: map annotation, overview details and target bars. */
+.dashboard-board .board-map .panel-head h2{white-space:nowrap;flex-shrink:0}
+.dashboard-board .board-map .panel-head{margin-bottom:8px}
+.dashboard-board .board-map .map-benchmark-note{padding:0;margin:0 0 8px;font-size:16px;line-height:1.4}
+.summary-average{margin-left:8px;font-size:14px;color:#a8cce4;font-weight:normal}
+.summary-highlight{color:#ffa450}
+.summary-table-wrap{overflow-x:auto;margin-top:10px}
+.summary-detail-table{width:100%;border-collapse:collapse;font-size:13px;text-align:left}
+.summary-detail-table th,.summary-detail-table td{padding:6px 8px;border-bottom:1px solid #173b57;white-space:nowrap}
+.summary-detail-table th{color:#8bd7fa;background:#12375a}
+.summary-rank-axis{display:grid;grid-template-columns:58px minmax(100px,1fr) 55px 65px;gap:10px;color:#a5bfd2;font-size:12px}
+.summary-rank-axis div{display:flex;justify-content:space-between;white-space:nowrap}
+.summary-rank-axis div span:nth-child(2){text-align:center}
+.home-control-strip .home-target-item{grid-template-columns:160px minmax(0,1fr)}
+.home-control-strip .home-target-label{align-items:flex-start}
+.home-control-strip .home-target-label span,.home-control-strip .home-target-item .home-target-label small{text-align:left}
+.home-control-strip .home-target-track::before{content:'';position:absolute;inset:-12px 0;pointer-events:none;background:repeating-linear-gradient(to right,rgba(130,180,215,.45) 0 1px,transparent 1px 25%);mask:repeating-linear-gradient(to bottom,#000 0 4px,transparent 4px 8px)}
+.home-control-strip .home-target-track .home-target-goal{background:#ff9b45;border:0}
 .risk-composition-row{grid-template-columns:85px minmax(0,1fr) 68px}
 .risk-chart-stack>div:first-child span{transform:translateY(-8px)}
 .risk-chart-column:last-child .risk-chart-stack>div:last-child span{transform:translateY(8px)}
@@ -2579,5 +2677,395 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .situation-risk-ranking .risk-ranking-track i{top:0;height:100%}
 .situation-risk-ranking .risk-ranking-track i:after{display:none}
 .situation-risk-ranking .risk-ranking-track i.above{background:#ff994e}.situation-risk-ranking .risk-ranking-track i.below{background:#55dfc8}
+
+.summary-rank-head span{grid-column:auto;text-align:right}.summary-rank-head span:first-child{text-align:left}.summary-rank-head span:nth-child(2){text-align:center}
+.summary-rank-track,.situation-risk-ranking .risk-ranking-track{background-color:#142b49;background-image:repeating-linear-gradient(to right,rgba(167,198,219,.65) 0 1px,transparent 1px 25%);}
+.summary-rank-track::before,.situation-risk-ranking .risk-ranking-track::after{content:'';position:absolute;inset:-7px 0;pointer-events:none;background:repeating-linear-gradient(to right,rgba(150,188,211,.6) 0 1px,transparent 1px 25%);mask:repeating-linear-gradient(to bottom,#000 0 3px,transparent 3px 6px)}
+.summary-rank-axis div,.risk-ranking-axis div{display:flex;justify-content:space-between;gap:2px;white-space:nowrap}.summary-rank-axis div span{font-size:11px}
+.risk-ranking-axis{display:grid;grid-template-columns:48px minmax(0,1fr) 98px;gap:4px;margin:0 8px;color:#a5bfd2;font-size:10px}
+.dashboard-board.situation-board .board-kpis.situation-kpis{grid-template-columns:repeat(5,minmax(0,1fr))}
+.risk-disease-matrix{height:calc(100% - 40px)}
+.home-control-strip .home-target-track::before{inset:-20px 0;background:repeating-linear-gradient(to right,rgba(130,180,215,.55) 0 1px,transparent 1px 20%);mask:repeating-linear-gradient(to bottom,#000 0 4px,transparent 4px 8px)}
+.home-target-axis{display:grid;grid-template-columns:160px minmax(0,1fr);gap:4px;color:#a9c4d8;font-size:11px}.home-target-axis>div{display:flex;gap:6px}.home-target-axis>div>div{flex:1;display:flex;justify-content:space-between}.home-target-axis>div>span{width:76px;flex:none}
+.dashboard-board .benchmark-gradient{background:linear-gradient(90deg,#2186d0,#55a8df,#c3d3cf,#ed9d64,#e65c58)}
 .dashboard-board.construction-board .construction-panel h2 .metric-scope-tag,
 .dashboard-board.construction-board .clinic-scatter-title .metric-scope-tag{margin-left:4px}
+
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-record{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:20px;height:20px;padding:0 3px;border:1px solid #a97529!important;color:#eab45a!important;background:#102c4b!important;font-size:12px;line-height:18px;font-weight:400;vertical-align:middle}
+.risk-composition-strip>div{font-size:12px;white-space:nowrap}
+.risk-disease-matrix .risk-cell strong{font-size:17px}.risk-disease-matrix .risk-cell small{font-size:13px}
+.situation-risk-ranking .risk-ranking-row{column-gap:8px;grid-template-columns:48px minmax(0,1fr) 42px 56px}
+.situation-risk-ranking .risk-ranking-heading,.risk-ranking-axis{column-gap:8px;grid-template-columns:48px minmax(0,1fr) 106px}
+.clinic-visit-share{display:block;color:#b5d5e8;font-size:13px;line-height:1.3}
+.construction-board .clinic-map-column{display:flex!important;flex-direction:column;min-height:0;overflow-y:auto;gap:16px}
+.construction-board .clinic-map-column>.map-panel{flex:0 0 430px;min-height:430px}
+.construction-board .clinic-map-column>.clinic-scatter{flex:0 0 520px;min-height:520px}
+.construction-board .clinic-map-column>.clinic-scatter{flex-basis:620px;min-height:620px}
+.dashboard-board.construction-board .clinic-map-column>.map-panel{flex:1 1 auto;min-height:0}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter{min-width:0;min-height:0;overflow:auto}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter h2{height:auto;min-height:46px;flex-wrap:wrap;justify-content:flex-start}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter h2 .clinic-scatter-tabs{margin-left:0;flex-wrap:wrap}
+.dashboard-board.construction-board .board-stack:last-child .construction-panel>h2{justify-content:flex-start;gap:8px}
+.dashboard-board.construction-board .board-stack:last-child .construction-panel>h2 .metric-scope-tag{margin-left:0}
+
+/* Typography and spacing for the November dashboard review. */
+.dashboard-board .board-kpis .board-kpi>strong{font-size:32px;line-height:1.2}
+.dashboard-board .board-kpis .board-kpi>strong .board-kpi-unit{font-size:16px}
+.dashboard-board .board-kpis .board-kpi>span{font-size:16px}
+.dashboard-board .board-kpis .board-kpi>small{font-size:14px;line-height:1.3;white-space:normal;overflow:visible}
+.dashboard-board .board-map .panel-head{padding-left:0;margin-left:0}
+.dashboard-board .board-map .panel-head h2{margin-left:0;padding-left:0}
+.dashboard-board .board-map .map-benchmark-note{margin-left:0;padding-left:0}
+
+.dashboard-board .board-map .map-benchmark-note{font-size:20px}
+.dashboard-board:has(.home-disease-panel) .board-map .map-panel{padding-left:0;padding-right:0}
+.home-control-strip .home-target-track::before{display:none}
+.dashboard-board .benchmark-gradient{background:linear-gradient(90deg,#2186d0 0%,#55a8df 25%,#f2a54a 50%,#ed7b46 75%,#e65c58 100%)}
+.home-population-distribution .situation-bars>div>strong{font-size:20px;white-space:nowrap}
+.home-population-distribution .situation-bars>div>strong small{font-size:14px;font-weight:400}
+.home-coverage-composition .coverage-count strong,.construction-board .clinic-tier-chart .coverage-count strong{font-size:24px}
+.home-coverage-composition .coverage-count-unit,.construction-board .clinic-tier-chart .coverage-count-unit{font-size:14px;color:#b8d3e6;font-weight:400;margin:0}
+.home-coverage-composition .unified-coverage-legend small:not(.coverage-count-unit),.construction-board .clinic-tier-chart .unified-coverage-legend small:not(.coverage-count-unit){font-size:20px}
+.risk-composition-row strong{font-size:20px}.risk-composition-row strong small{font-size:14px}
+.risk-composition-row em{font-size:20px}
+.dashboard-board .home-risk-composition .home-risk-content{padding-left:12px;padding-right:12px;overflow:auto}
+.risk-composition-strip{min-width:540px}
+.risk-composition-strip>div{font-size:20px}
+.risk-disease-matrix,.situation-risk-matrix:not(.risk-disease-matrix){padding-left:12px;box-sizing:border-box}
+.dashboard-board.construction-board .board-stack:first-child{grid-template-rows:minmax(250px,0.85fr) minmax(480px,1.15fr);overflow-y:auto}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter{overflow-y:auto}
+
+/* Outcome groups and dashboard readability. */
+.dashboard-board .board-kpis .board-kpi>small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.situation-risk-matrix,.risk-disease-matrix{padding:12px;grid-template-columns:56px repeat(3,minmax(0,1fr))}
+.situation-risk-matrix>span{text-align:left}
+.dashboard-board.situation-board .board-stack:last-child:has(.situation-risk-ranking){grid-template-rows:minmax(440px,1.4fr) minmax(250px,1fr);overflow-y:auto}
+.situation-risk-ranking .risk-ranking-row{min-height:30px}
+.dashboard-board.outcome-board .outcome-metric-column{display:grid;grid-template-rows:auto repeat(4,minmax(135px,1fr));gap:0;overflow-y:auto;background:rgba(3,16,38,.9)}
+.outcome-group-title{margin:0;padding:10px 16px;color:#fff;font-size:18px;background:#103f72}
+.dashboard-board.outcome-board .outcome-mini-panel{background:none!important;border:0;border-bottom:1px solid #1b4265;padding:8px 12px}
+.dashboard-board.outcome-board .outcome-mini-panel h2{min-height:24px;font-size:15px}
+.outcome-mini-bars>div{grid-template-columns:48px minmax(0,1fr) 56px}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-all{border:1px solid #3189c2!important;color:#78c9ff!important;background:#102c4b!important}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-record{border:1px solid #a97529!important;color:#eab45a!important;background:#102c4b!important}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-integrated{border:1px solid #268b89!important;color:#62d7cb!important;background:#102c4b!important}
+
+/* Outcome and KPI annotation updates. */
+.dashboard-board .board-kpis > .board-kpi::before,.dashboard-board .board-kpis > .board-kpi::after{display:none!important;content:none!important}
+.dashboard-board .board-kpis > .board-kpi{background:#0b2a47!important;background-image:none!important}
+.dashboard-board .board-kpis > .board-kpi > strong{background:none!important;background-image:none!important;border:0!important}
+.dashboard-board.outcome-board .outcome-group-title{background:#0b2a47 url('dashboard-assets/标题.svg') left center/auto 100% no-repeat;border-bottom:1px solid #2588cf}
+.dashboard-board.outcome-board .outcome-mini-bars{display:grid;grid-template-columns:minmax(80px,32%) minmax(0,1fr);grid-template-rows:repeat(3,1fr);gap:3px 8px;align-items:center}
+.dashboard-board.outcome-board .outcome-mini-bars .outcome-measure-name{grid-column:1;grid-row:1 / 4;display:flex;flex-direction:column;align-items:flex-start;gap:4px;color:#c5ddec;font-size:15px}
+.outcome-measure-name small,.risk-goal-label{color:#f1ba47;font-size:11px;white-space:nowrap}
+.dashboard-board.outcome-board .outcome-mini-bars > div:not(.outcome-measure-name){grid-column:2;grid-template-columns:0 minmax(0,1fr) 52px;gap:4px}
+.outcome-mini-bars .metric-scope-tag{visibility:hidden}
+.outcome-mini-track .bar-0,.outcome-risk .risk-bar-line:not(.recorded):not(.integrated) i{background:#3189c2!important}
+.outcome-mini-track .bar-1,.outcome-risk .risk-bar-line.recorded i{background:#eab45a!important}
+.outcome-mini-track .bar-2,.outcome-risk .risk-bar-line.integrated i{background:#62d7cb!important}
+.outcome-risk .risk-legend span:nth-child(1){color:#3189c2!important}.outcome-risk .risk-legend span:nth-child(2){color:#eab45a!important}.outcome-risk .risk-legend span:nth-child(3){color:#62d7cb!important}
+.risk-bar-row{position:relative}.risk-goal-marker{position:absolute;left:80%;top:-2px;bottom:-2px;width:2px;background:#f1ba47}.risk-goal-label{position:absolute;right:0;top:-15px}
+.clinic-summary{cursor:pointer}.clinic-summary:focus-visible{outline:2px solid #78c9ff;outline-offset:2px}
+
+/* Latest dashboard annotations. */
+.dashboard-board .board-kpis .board-kpi{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;justify-content:center;gap:2px;padding:5px 10px;min-width:0}
+.dashboard-board .board-kpis .board-kpi>span{order:0;max-width:calc(100% - 30px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dashboard-board .board-kpis .board-kpi>strong{order:1;white-space:nowrap}
+.dashboard-board .board-kpis .board-kpi>small{order:2;max-width:100%}
+.dashboard-board .board-kpis .board-kpi>.metric-scope-tag,.dashboard-board .board-kpis .board-kpi>.scope-tag{position:absolute;top:5px;right:6px}
+.dashboard-board .board-map .map-benchmark-note span,.dashboard-board .board-map .map-benchmark-note small{display:block;line-height:1.3}
+.dashboard-board .board-map .map-benchmark-note span{font-size:18px}
+.dashboard-board .board-map .map-benchmark-note small{font-size:16px}
+.dashboard-board .home-risk-composition .home-risk-content{overflow:visible}
+.risk-composition-strip{min-width:0}.risk-composition-strip>div{font-size:14px}
+.situation-risk-matrix{grid-template-columns:76px repeat(3,minmax(0,1fr))}
+.situation-risk-matrix>span{white-space:nowrap}
+.situation-risk-matrix>b:nth-child(2){color:#f08073}.situation-risk-matrix>b:nth-child(3){color:#f7c657}.situation-risk-matrix>b:nth-child(4){color:#80bdff}
+.situation-risk-matrix .risk-cell-0{background:#75344c}.situation-risk-matrix .risk-cell-1{background:#967949}.situation-risk-matrix .risk-cell-2{background:#275fae}
+/* The comorbidity matrix cells retain their original class after reordering. */
+.situation-risk-matrix:not(.risk-disease-matrix) .risk-cell-2{background:#75344c}.situation-risk-matrix:not(.risk-disease-matrix) .risk-cell-0{background:#275fae}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-count{min-width:0;margin-right:8px}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-count strong{margin-right:4px}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter h2{flex-wrap:nowrap;gap:8px}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter h2 .clinic-scatter-tabs{flex-wrap:nowrap;margin-left:0}
+.construction-board .clinic-scatter-body{display:grid;grid-template-columns:minmax(0,3fr) minmax(180px,2fr);gap:12px;overflow:auto}
+.construction-board .clinic-scatter-body svg{height:100%;min-height:140px}
+.construction-board .clinic-summary{flex:none}
+
+/* Clinic matrix and compact outcome groups. */
+.dashboard-board.construction-board .board-columns{grid-template-columns:450px minmax(0,1fr) 450px}
+.construction-board .clinic-scatter-body{display:flex;flex-direction:column;gap:8px;overflow:auto;padding:8px 12px}
+.clinic-matrix{display:grid;grid-template-columns:70px repeat(3,minmax(0,1fr));grid-template-rows:30px repeat(3,minmax(85px,1fr));gap:6px;flex:1;min-height:300px;color:#a7c5dc;font-size:14px}
+.clinic-matrix-axis,.clinic-matrix-heading{display:flex;align-items:center;justify-content:center;text-align:center;color:#8eacc4}
+.clinic-matrix-cell{display:flex;flex-wrap:wrap;align-content:center;gap:6px;padding:10px;border:1px solid #29496a;border-radius:5px;background:#112846;color:#e2f0fc}
+.clinic-matrix-cell.high{background:#103341;border-color:#247b80}.clinic-matrix-cell.low{background:#302731;border-color:#985035}.clinic-matrix-cell.empty{justify-content:center;align-items:center;border-style:dashed;background:#101f34;color:#7992a8}
+.clinic-matrix-cell>div{min-width:0}.clinic-matrix-cell strong,.clinic-matrix-cell small{display:block}.clinic-matrix-cell small{margin-top:5px;color:#98bce0}
+.clinic-matrix-note{border-top:1px solid #29445e;padding-top:7px;color:#a7c5dc;font-size:13px;line-height:1.4}
+.dashboard-board.outcome-board .outcome-metric-column{position:relative;align-self:start;height:calc((100% - 10px)/2);box-sizing:border-box;grid-template-rows:45px repeat(4,minmax(0,1fr));overflow:hidden;background:rgba(3,16,38,.9)}
+.dashboard-board.outcome-board .outcome-group-title{background:transparent url('dashboard-assets/标题.svg') left center/100% 46px no-repeat;border:0;padding:0 32px;display:flex;align-items:center}
+.dashboard-board.outcome-board .outcome-metric-column::before,.dashboard-board.outcome-board .outcome-metric-column::after{content:'';position:absolute;left:0;right:0;height:7px;background-position:center;background-repeat:no-repeat;background-size:100% 7px;pointer-events:none}
+.dashboard-board.outcome-board .outcome-metric-column::before{top:45px;background-image:url('dashboard-assets/上.svg')}.dashboard-board.outcome-board .outcome-metric-column::after{bottom:0;background-image:url('dashboard-assets/下.svg')}
+.dashboard-board.outcome-board .outcome-mini-panel{border:0;padding:5px 12px;overflow:hidden}
+.dashboard-board.outcome-board .outcome-mini-panel::before,.dashboard-board.outcome-board .outcome-mini-panel::after{display:none!important}
+.dashboard-board.outcome-board .outcome-mini-bars{height:100%;min-height:0}
+.dashboard-board .board-title .board-tabs,.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{position:absolute;left:auto;right:0;top:30px;bottom:auto;display:flex;gap:0;margin:0;z-index:3}
+.dashboard-board .board-title .board-tabs button,.dashboard-board .board-title .board-tabs button:nth-child(n){position:relative;width:160px;min-width:160px;height:48px;margin:0 0 0 -25px;padding:0 12px 0 30px;clip-path:none;border:0;border-radius:0;background:transparent url('dashboard-assets/导航-未选中.svg') center / 160px 48px no-repeat;box-shadow:none;filter:none;color:rgba(255,255,255,.7);font-size:20px;white-space:nowrap}
+.dashboard-board .board-title .board-tabs button:first-child{width:138px;min-width:138px;margin-left:0;background-size:138px 48px}
+.dashboard-board .board-title .board-tabs button.active,.dashboard-board .board-title .board-tabs button:nth-child(n).active{background-image:url('dashboard-assets/导航-选中.svg');background-size:100% 100%;color:#fff;font-weight:700;box-shadow:none}
+.dashboard-board .board-title .board-tabs button:hover{color:#fff;filter:brightness(1.25)}
+.dashboard-board:has(.home-disease-panel) .board-fullscreen,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-fullscreen{left:0;right:auto;top:54px}
+.dashboard-board .board-title .board-scope-legend{left:48px;right:auto;top:39px;bottom:auto;gap:18px;color:#fff;font-size:14px}
+.dashboard-board .board-title .board-scope-legend span{gap:4px}
+.dashboard-board .board-title .board-scope-legend b{height:22px;font-size:14px;line-height:20px;color:#fff}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(n){clip-path:none;position:relative;display:flex;align-items:stretch;justify-content:flex-start;gap:0;padding:0;border:1px solid rgba(15,132,255,.55);background:linear-gradient(90deg,rgba(14,122,255,.4),rgba(14,122,255,.1))!important}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>span{order:0;box-sizing:border-box;width:100%;max-width:none;min-height:32px;padding:6px 34px 0 8px;color:#fff;font-size:18px;font-weight:600}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>small{order:1;box-sizing:border-box;width:100%;height:22px;padding:0 8px;color:rgba(255,255,255,.7);font-size:14px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>strong{order:2;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;flex:1;min-height:42px;padding:4px 8px;border-top:1px solid rgba(255,255,255,.18)!important;font-size:32px;line-height:36px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>strong .board-kpi-unit{margin:0;color:rgba(255,255,255,.7);font-size:16px;font-weight:400}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>.metric-scope-tag,.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>.scope-tag{top:6px;right:7px}
+
+/* Homepage metric cards follow the supplied two-section reference. */
+.dashboard-board:has(.home-disease-combined) .board-kpis{gap:16px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(n){display:block;text-align:left;overflow:hidden;background-color:#0c3970!important;background-image:linear-gradient(90deg,rgba(14,122,255,.45),rgba(14,122,255,.16))!important}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>span{position:absolute;top:0;left:0;display:block;text-align:left;line-height:24px;white-space:nowrap}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>small{position:absolute;top:32px;left:0;margin:0;text-align:left;line-height:18px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>strong{position:absolute;top:54px;bottom:0;left:0;min-height:0;margin:0;text-align:left;justify-content:flex-start}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>.metric-scope-tag,.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>.scope-tag{z-index:1}
+.dashboard-board .board-title .board-scope-legend{gap:24px}
+.dashboard-board .board-title .board-scope-legend span{gap:4px}
+.dashboard-board .board-title .board-scope-legend b{box-sizing:border-box;min-width:23px;height:23px;padding:0 3px;border:1.5px solid #0080ff!important;border-radius:4px 0;background:rgba(0,128,255,.5)!important;color:#fff!important;font-size:14px;line-height:normal}
+.dashboard-board .board-title .board-scope-legend b.scope-color-record{border-color:#f66d2b!important;background:rgba(246,109,43,.5)!important}
+.dashboard-board .board-title .board-scope-legend b.scope-color-integrated{border-color:#6ed4ff!important;background:rgba(110,212,255,.35)!important}
+
+/* Figma 2020:3664: home header and metric cards, on the 1920px canvas. */
+.dashboard-board:has(.home-disease-combined) .board-title h1{font-size:42px;line-height:55px;letter-spacing:4.2px;text-shadow:0 2px 3px rgba(17,20,22,.31),0 0 46px rgba(46,174,255,.49)}
+.dashboard-board:has(.home-disease-combined) .board-title .board-scope-legend{left:52px;top:42.5px}
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button{width:160px;min-width:160px;margin-left:-32px}
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:first-child{width:136px;min-width:136px;margin-left:0}
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(3){width:180px;min-width:180px;background-size:180px 48px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(n){border:1px solid rgba(15,132,255,.2);background-color:transparent!important;background-image:linear-gradient(90deg,rgba(14,122,255,.4),rgba(14,122,255,.1))!important}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi::after{display:block!important;content:''!important;position:absolute;right:-1px;top:-1px;width:27px;height:27px;background:url('dashboard-assets/figma-card-corner.svg') center/contain no-repeat;pointer-events:none}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>strong{border-top:1px solid #fff!important;font-family:DashboardDIN,sans-serif;font-weight:700}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>small{font-size:14px;line-height:16px}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi :is(.metric-scope-tag,.scope-tag){box-sizing:border-box;min-width:23px;height:23px;padding:0 3px;border:1.5px solid #0080ff!important;border-radius:4px 0;background:rgba(0,128,255,.5)!important;color:#fff!important;font-size:14px;line-height:normal}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi .scope-color-record{border-color:#f66d2b!important;background:rgba(246,109,43,.5)!important}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi .scope-color-integrated{border-color:#6ed4ff!important;background:rgba(110,212,255,.35)!important}
+
+/* Figma header: keep the slanted backgrounds and their hit areas aligned. */
+.dashboard-board .board-title .board-tabs button:nth-child(n){clip-path:polygon(51px 0,100% 0,calc(100% - 51px) 100%,0 100%);background-size:100% 48px;padding-left:25px}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active{background-size:100% 51px}
+.dashboard-board .board-title .board-tabs button:nth-child(n):hover{filter:none;color:#fff}
+.dashboard-board .board-title .board-scope-legend::before{content:'';position:absolute;left:-12px;top:3.5px;height:16px;border-left:1px solid rgba(255,255,255,.3);pointer-events:none}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi:nth-child(n){border:1px solid transparent;background:linear-gradient(90deg,rgba(14,122,255,.4),rgba(14,122,255,.1)) padding-box,linear-gradient(102deg,rgba(15,132,255,.2),rgba(15,132,255,.5)) border-box!important}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>strong{border-top:0!important}
+.dashboard-board:has(.home-disease-combined) .board-kpis>.board-kpi>strong::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(255,255,255,.04))}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b):is(.scope-color-all,.scope-color-record,.scope-color-integrated){box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;min-width:23px;height:23px;padding:0 3px;border:1.5px solid #0080ff!important;border-radius:4px 0;background:rgba(0,128,255,.5)!important;color:#fff!important;font-size:14px;line-height:normal;font-weight:400;white-space:nowrap}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-record{border-color:#f66d2b!important;background:rgba(246,109,43,.5)!important}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-integrated{border-color:#6ed4ff!important;background:rgba(110,212,255,.35)!important}
+.dashboard-board .board-title .board-tabs button:nth-child(n){width:160px;min-width:160px;margin-left:-32px}
+.dashboard-board .board-title .board-tabs button:first-child{width:136px;min-width:136px;margin-left:0}
+.dashboard-board .board-title .board-tabs button:nth-child(3){width:180px;min-width:180px}
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(n){background-size:100% 48px}
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(n).active{background-size:100% 51px}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-record.scope-color-record{border-color:#f66d2b!important;background:rgba(246,109,43,.5)!important}
+.dashboard-board :is(.metric-scope-tag,.scope-tag,.board-scope-legend b).scope-color-integrated.scope-color-integrated{border-color:#6ed4ff!important;background:rgba(110,212,255,.35)!important}
+
+/* Figma 2019:3542 metric card: keep the fill translucent over the board. */
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi:nth-child(n){
+  position:relative;display:block;overflow:hidden;clip-path:none;box-sizing:border-box;
+  padding:0;border:1px solid rgba(15,132,255,.2);border-radius:0;
+  background-color:transparent!important;
+  background-image:linear-gradient(to right,rgba(14,122,255,.4),rgba(14,122,255,.1))!important;
+  box-shadow:none;
+}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>span{
+  position:absolute;top:0;left:0;display:block;box-sizing:border-box;width:100%;max-width:none;min-height:32px;
+  padding:6px 34px 0 8px;color:#fff;font-size:18px;line-height:24px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>small{
+  position:absolute;top:32px;left:0;box-sizing:border-box;width:100%;height:22px;margin:0;padding:0 8px;
+  color:rgba(255,255,255,.7);font-size:14px;line-height:16px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>strong{
+  position:absolute;top:54px;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:flex-start;gap:8px;
+  box-sizing:border-box;width:100%;min-height:0;margin:0;padding:4px 8px;border:0!important;
+  color:#fff;font-family:DashboardDIN,sans-serif;font-size:32px;font-weight:700;line-height:36px;text-align:left;
+}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>strong::before{
+  content:'';position:absolute;top:0;right:0;left:0;height:1px;background:linear-gradient(to right,rgba(255,255,255,.2),rgba(255,255,255,.04));pointer-events:none;
+}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>strong .board-kpi-unit{margin:0;color:rgba(255,255,255,.7);font-size:16px;font-weight:400}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi::after{
+  display:block!important;content:''!important;position:absolute;top:-1px;right:-1px;width:27px;height:27px;
+  background:url('dashboard-assets/figma-card-corner.svg') center/contain no-repeat;pointer-events:none;
+}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>:is(.metric-scope-tag,.scope-tag){position:absolute;z-index:1;top:6px;right:7px}
+
+/* Keep each tab's clickable rectangle independent of its slanted artwork. */
+.dashboard-board .board-title .board-tabs,
+.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{left:44px;right:auto;z-index:5}
+.dashboard-board .board-title .board-tabs button:nth-child(n),
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(n){width:136px;min-width:136px;margin:0;clip-path:none;padding:0 8px;background-size:100% 48px}
+.dashboard-board .board-title .board-tabs button:nth-child(3),
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(3){width:156px;min-width:156px}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active,
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(n).active{background-size:100% 48px}
+.dashboard-board .board-title .board-scope-legend,
+.dashboard-board:has(.home-disease-combined) .board-title .board-scope-legend{left:auto;right:0;top:42px}
+.dashboard-board .board-title .board-scope-legend::before{display:none}
+
+/* Metric card accents and typography from the reference. */
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi:nth-child(n)::before{display:block!important;content:''!important;position:absolute;z-index:1;top:-1px;left:-1px;width:16px;height:1px;background:linear-gradient(90deg,#00c8ff,rgba(0,200,255,0));pointer-events:none}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>strong::before{background:linear-gradient(90deg,#00c8ff 0,rgba(255,255,255,.2) 8px,rgba(255,255,255,.04) 100%)}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>span{font-weight:500}
+.dashboard-board:is(:has(.home-disease-combined),.situation-board,.construction-board) .board-kpis>.board-kpi>strong{align-items:baseline;padding-top:7px}
+
+/* The clinic coverage panel leaves enough room for the matrix below it. */
+.dashboard-board.construction-board .board-stack:first-child{grid-template-rows:minmax(210px,.65fr) minmax(0,1.35fr);overflow:hidden}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter{overflow:auto}
+
+/* Outcome: two measures, two high-risk panels, then the two rankings. */
+.dashboard-board.outcome-board .board-columns.outcome-layout.outcome-four-columns{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:10px}
+.dashboard-board.outcome-board .outcome-layout>.outcome-risk,
+.dashboard-board.outcome-board .outcome-layout>.outcome-regions{display:contents}
+.dashboard-board.outcome-board .outcome-metric-column{height:100%;align-self:stretch;grid-template-rows:55px repeat(4,minmax(0,1fr));background:linear-gradient(to bottom,transparent 55px,rgba(3,16,38,.9) 55px)}
+.dashboard-board.outcome-board .outcome-metric-column::before{top:55px}
+.dashboard-board.outcome-board .outcome-group-title{height:45px;align-self:start}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-panel{background:transparent!important;background-image:none!important}
+
+/* Header controls and three-column outcome layout. */
+.dashboard-board .board-title .board-tabs,
+.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{left:12px;top:30px;gap:5px}
+.dashboard-board .board-title .board-tabs button:nth-child(n),
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(n){width:120px;min-width:120px;height:42px;margin:0;padding:0 10px;clip-path:none;background:none;isolation:isolate;font-size:18px}
+.dashboard-board .board-title .board-tabs button:nth-child(3),
+.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(3){width:140px;min-width:140px}
+.dashboard-board .board-title .board-tabs button:nth-child(n)::before{content:'';position:absolute;inset:0;z-index:-1;transform:skewX(-18deg);border:1px solid #27699d;background:#10365b;pointer-events:none}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active{background:none}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active::before{border-color:#36b6ff;background:linear-gradient(90deg,#1475b8,#19517f)}
+.dashboard-board .board-title .board-tabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.dashboard-board .board-title .board-scope-legend,
+.dashboard-board:has(.home-disease-combined) .board-title .board-scope-legend{right:12px;top:42px;align-items:center;gap:18px}
+.dashboard-board:has(.home-disease-panel) .board-title .board-scope-legend .board-fullscreen,
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-scope-legend .board-fullscreen{position:static;transform:none;flex:0 0 32px;margin-left:0;padding-left:12px;box-sizing:content-box;border-left:1px solid rgba(255,255,255,.35);background-position:right center;background-size:32px 32px}
+.dashboard-board.construction-board .board-columns{grid-template-columns:450px minmax(0,1fr) 450px}
+.dashboard-board.outcome-board .board-columns.outcome-layout.outcome-four-columns{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px}
+.dashboard-board.outcome-board .outcome-layout>.outcome-metric-column{height:100%;min-height:0}
+.dashboard-board.outcome-board .outcome-layout>.outcome-metric-column:nth-child(1){grid-column:1;grid-row:1}
+.dashboard-board.outcome-board .outcome-layout>.outcome-metric-column:nth-child(2){grid-column:1;grid-row:2}
+.dashboard-board.outcome-board .outcome-layout>.outcome-risk,
+.dashboard-board.outcome-board .outcome-layout>.outcome-regions{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));grid-row:1 / 3;min-height:0;gap:10px}
+.dashboard-board.outcome-board .outcome-layout>.outcome-risk{grid-column:2}
+.dashboard-board.outcome-board .outcome-layout>.outcome-regions{grid-column:3}
+.outcome-mini-track .bar-0,.outcome-risk .risk-bar-line:not(.recorded):not(.integrated) i{background:#0080ff!important}
+.outcome-mini-track .bar-1,.outcome-risk .risk-bar-line.recorded i{background:#f66d2b!important}
+.outcome-mini-track .bar-2,.outcome-risk .risk-bar-line.integrated i{background:#6ed4ff!important}
+.outcome-risk .risk-legend span:nth-child(1){color:#0080ff!important}.outcome-risk .risk-legend span:nth-child(2){color:#f66d2b!important}.outcome-risk .risk-legend span:nth-child(3){color:#6ed4ff!important}
+
+/* Align navigation with the header decoration and separate every panel frame. */
+.dashboard-board .board-title .board-tabs button:nth-child(n)::before{transform:skewX(18deg);border-color:rgba(31,113,181,.65);background:linear-gradient(180deg,rgba(4,21,50,.94),rgba(9,40,81,.86));box-shadow:inset 0 -1px rgba(36,130,208,.35)}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active::before{border-color:rgba(71,166,235,.9);background:linear-gradient(180deg,rgba(12,42,87,.95),rgba(20,83,153,.9));box-shadow:inset 0 -2px rgba(86,185,250,.75),0 2px 8px rgba(0,112,220,.22)}
+.dashboard-board.construction-board .board-columns{grid-template-columns:480px minmax(0,1fr) 480px}
+.dashboard-board.construction-board .board-stack:first-child{grid-template-rows:210px minmax(0,1fr)}
+.dashboard-board :is(.board-panel,.outcome-detail-panel):not(.outcome-mini-panel){background-image:linear-gradient(to bottom,transparent 53px,rgba(5,22,51,.76) 53px)!important;background-position:center!important;background-size:100% 100%!important}
+.dashboard-board :is(.board-panel,.outcome-detail-panel):not(.outcome-mini-panel)::before{top:53px!important}
+.dashboard-board :is(.board-panel,.outcome-detail-panel):not(.outcome-mini-panel)::after{bottom:0!important}
+.dashboard-board .board-stack>.board-panel>h2,
+.dashboard-board .board-stack>.board-panel>.situation-panel-title,
+.dashboard-board .situation-bottom>.board-panel>h2{margin-bottom:8px!important}
+.dashboard-board.outcome-board :is(.outcome-risk,.outcome-regions)>.outcome-detail-panel>h2{margin-bottom:8px!important;background-size:auto 46px!important;background-position:left center!important;justify-content:flex-start}
+.dashboard-board.outcome-board .outcome-metric-column{grid-template-rows:53px repeat(4,minmax(0,1fr));background:linear-gradient(to bottom,transparent 53px,rgba(5,22,51,.76) 53px)}
+.dashboard-board.outcome-board .outcome-metric-column::before{top:53px}
+.dashboard-board.outcome-board .outcome-group-title{box-sizing:border-box;width:100%;height:45px;min-height:45px;margin:0;padding:0 32px;text-align:left;justify-content:flex-start;background-position:left center!important;background-size:auto 46px!important}
+.dashboard-board:has(.home-disease-combined) .board-stack .home-control-strip{background-image:linear-gradient(to bottom,transparent 53px,rgba(5,22,51,.76) 53px)!important}
+
+/* The panel frame is a separate element, beginning 8px below the 45px title. */
+.dashboard-board :is(.board-panel,.outcome-detail-panel,.outcome-metric-column):has(> .dashboard-content-frame){position:relative;isolation:isolate;background:transparent!important;box-shadow:none!important}
+.dashboard-board :is(.board-panel,.outcome-detail-panel,.outcome-metric-column):has(> .dashboard-content-frame)::before,
+.dashboard-board :is(.board-panel,.outcome-detail-panel,.outcome-metric-column):has(> .dashboard-content-frame)::after{content:none!important;display:none!important}
+.dashboard-content-frame{position:absolute;z-index:-1;top:53px;right:0;bottom:0;left:0;background:rgba(5,22,51,.76)}
+.dashboard-content-frame::before,.dashboard-content-frame::after{content:'';position:absolute;right:0;left:0;height:7px;background-position:center;background-size:100% 100%;background-repeat:no-repeat}
+.dashboard-content-frame::before{top:0;background-image:url('dashboard-assets/上.svg')}
+.dashboard-content-frame::after{bottom:0;background-image:url('dashboard-assets/下.svg')}
+.dashboard-board.outcome-board .outcome-metric-column>.outcome-group-title{grid-row:1}
+.dashboard-board.construction-board:has(.clinic-scatter) .board-columns>.board-stack:first-child{grid-template-rows:210px minmax(0,1fr);min-height:0;overflow:hidden}
+.dashboard-board.construction-board:has(.clinic-scatter) .board-columns>.board-stack:first-child>.board-panel{min-height:0;overflow:hidden}
+.dashboard-board.construction-board:has(.clinic-scatter) .board-columns>.board-stack:first-child>.clinic-scatter{overflow:auto}
+
+/* Restore the clinic scatter plot and fit the controls within its header. */
+.dashboard-board.construction-board:has(.clinic-scatter) .board-columns>.board-stack:first-child{grid-template-rows:255px minmax(0,1fr)}
+.dashboard-board.construction-board .clinic-scatter h2{padding:0 8px 0 25px!important;gap:4px!important;overflow:visible}
+.dashboard-board.construction-board .clinic-scatter-title{flex:0 1 auto;min-width:0;white-space:nowrap;font-size:16px}
+.dashboard-board.construction-board .clinic-scatter-tabs{display:flex;flex:1 1 auto;min-width:0;gap:3px!important}
+.dashboard-board.construction-board .clinic-scatter-tabs button{flex:1 1 auto;min-width:0;padding:2px 3px;font-size:11px;white-space:nowrap}
+.construction-board .clinic-scatter-body{display:flex;flex-direction:column;flex:1;min-height:0;gap:6px;padding:8px 12px;overflow:auto}
+.construction-board .clinic-scatter-body svg{width:100%;height:auto;min-height:165px;flex:0 0 45%}
+.construction-board .clinic-scatter-details{min-height:0;overflow:auto}
+.dashboard-board.outcome-board .outcome-metric-column:first-child{grid-template-rows:53px 24px repeat(4,minmax(0,1fr))}
+.outcome-metric-legend{padding:4px 12px 0;align-items:center}
+.outcome-metric-legend span:nth-child(1){color:#0080ff}.outcome-metric-legend span:nth-child(2){color:#f66d2b}.outcome-metric-legend span:nth-child(3){color:#6ed4ff}
+.dashboard-board .board-title .board-tabs,.dashboard-board:has(.home-disease-panel) .board-title .board-tabs,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{left:0;top:50%;transform:translateY(-50%);gap:4px}
+.dashboard-board .board-title .board-tabs button:nth-child(n),.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(n){width:112px;min-width:112px;height:38px;font-size:16px}
+.dashboard-board .board-title .board-tabs button:nth-child(3),.dashboard-board:has(.home-disease-combined) .board-title .board-tabs button:nth-child(3){width:132px;min-width:132px}
+.dashboard-board .board-title .board-tabs button:nth-child(n)::before{transform:skewX(-28deg);border-color:#1e568c;background:linear-gradient(180deg,#071a3b,#0b2a54);box-shadow:inset 0 -2px #155598}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active::before{border-color:#3c98dc;background:linear-gradient(180deg,#0d3164,#155c9f);box-shadow:inset 0 -2px #55b8f4,0 2px 8px #006ad455}
+.dashboard-board .board-title .board-scope-legend,.dashboard-board:has(.home-disease-combined) .board-title .board-scope-legend{top:50%;right:0;transform:translateY(-50%);gap:10px;font-size:12px}
+.dashboard-board.construction-board .clinic-scatter h2 .clinic-scatter-tabs{flex:1 1 auto;min-width:0;gap:3px;margin:0}
+
+/* Header alignment and clinic coverage spacing. */
+.dashboard-board .board-title .board-tabs button:nth-child(n)::before{transform:skewX(28deg)}
+.dashboard-board:has(.home-disease-panel) .board-title .board-scope-legend .board-fullscreen,
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-scope-legend .board-fullscreen{position:relative;border-left:0}
+.dashboard-board .board-title .board-scope-legend .board-fullscreen::before{content:'';position:absolute;left:0;top:50%;height:23px;border-left:1px solid rgba(255,255,255,.35);transform:translateY(-50%);pointer-events:none}
+.dashboard-board.construction-board .clinic-tier-chart{padding-left:12px}
+
+/* Keep header controls aligned and give the selected tab a focused glow. */
+.dashboard-board:has(.home-disease-panel) .board-title .board-scope-legend .board-fullscreen,
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-scope-legend .board-fullscreen{top:auto;right:auto;left:auto;bottom:auto;align-self:center}
+.dashboard-board .board-title .board-tabs button:nth-child(n).active::before{background:radial-gradient(ellipse at 50% 100%,rgba(0,160,255,.8),transparent 65%),linear-gradient(180deg,#063573,#0064bd);border-color:#1ca9ff;box-shadow:inset 0 -2px #49c6ff,0 3px 10px #008dff99}
+.construction-board .clinic-scatter-body{overflow:hidden;justify-content:center}
+.construction-board .clinic-scatter-body svg{flex:1 1 auto;min-height:0;max-height:calc(100% - 45px)}
+.clinic-quadrant-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;color:#c4dcee;font-size:12px;line-height:1.3}
+.clinic-quadrant-legend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.clinic-quadrant-legend i{width:9px;height:9px;flex:none;border-radius:50%}
+.dashboard-board.outcome-board .outcome-metric-legend{display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:flex-start;gap:10px}
+.dashboard-board.outcome-board .outcome-mini-track,.dashboard-board.outcome-board .risk-bar-line{height:10px}
+.dashboard-board.outcome-board .risk-bar-row>span{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.dashboard-board.outcome-board .risk-goal-label{position:static}
+
+.dashboard-board .board-title .board-scope-legend,.dashboard-board:has(.home-disease-combined) .board-title .board-scope-legend{gap:16px}
+.dashboard-board .board-title .board-scope-legend>span:not(.board-legend-divider){gap:4px}
+.dashboard-board .board-title .board-scope-legend .board-legend-divider{display:block;width:1px;height:23px;flex:none;background:rgba(255,255,255,.35)}
+.dashboard-board .board-title .board-scope-legend .board-fullscreen{padding-left:0!important}
+.dashboard-board .board-title .board-scope-legend .board-fullscreen::before{display:none}
+.construction-board .clinic-scatter-body{justify-content:flex-start;padding-top:0;gap:4px}
+.construction-board .clinic-scatter-body svg{flex:1 1 0;max-height:none}
+.clinic-scatter .construction-grid line{stroke:#23415d}
+.clinic-quadrant-legend{display:grid;grid-template-columns:repeat(2,max-content);justify-content:center;gap:4px 20px}
+.clinic-quadrant-legend>span{display:grid;grid-template-columns:9px auto auto;gap:6px;align-items:center}
+.clinic-quadrant-legend b{font-weight:500;color:#fff}
+.dashboard-board.outcome-board .outcome-risk>.outcome-detail-panel>h2{margin-bottom:8px!important}
+.map-tooltip-comparison{color:#fff;font-weight:600;margin-bottom:6px}
+.home-population-distribution .situation-bars>div>i{height:8px}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .coverage-bar{height:9px}
+.construction-board .clinic-scatter-body{padding-top:0;gap:4px}
+.construction-board .clinic-scatter-body svg{flex:1 1 auto;min-height:0}
+.clinic-quadrant-legend{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;width:100%}
+.clinic-quadrant-legend>span{display:flex;flex-direction:column;justify-content:center;gap:3px;min-height:42px;padding:3px;border:1px solid #23577e;background:#0a2947;text-align:center;white-space:normal}
+.clinic-quadrant-legend i{display:none}
+.clinic-quadrant-legend b{font-size:16px}
+.clinic-quadrant-legend>span:nth-child(1){border-color:#a96323;color:#ffad53}
+.clinic-quadrant-legend>span:nth-child(2){border-color:#327a9b;color:#72cbed}
+.clinic-quadrant-legend>span:nth-child(3){border-color:#208a83;color:#35d5c5}
+.clinic-quadrant-legend>span:nth-child(4){border-color:#536f89;color:#afc8dc}
+.dashboard-board.outcome-board .outcome-mini-bars{grid-template-rows:repeat(3,10px);align-content:center;row-gap:8px}
+.outcome-rank-axis{display:grid;grid-template-columns:48px minmax(0,1fr) 106px;gap:8px;margin:0 10px;color:#91b4ce;font-size:10px}
+.outcome-rank-axis>div{display:flex;justify-content:space-between}
+.outcome-rank-track{background-image:repeating-linear-gradient(to right,rgba(150,188,211,.4) 0 1px,transparent 1px 25%)}
+.outcome-rank-track::after{content:'';position:absolute;inset:-7px 0;pointer-events:none;background:repeating-linear-gradient(to right,rgba(150,188,211,.55) 0 1px,transparent 1px 25%);mask:repeating-linear-gradient(to bottom,#000 0 3px,transparent 3px 6px)}
+.dashboard-board .benchmark-gradient{background:linear-gradient(90deg,#2186d0,#55a8df,#f2a54a,#ed7b46,#e65c58)}
+.construction-board .clinic-scatter-body{box-sizing:border-box;padding:12px;gap:4px}
+.construction-board .clinic-scatter-body svg{width:100%;flex:1 1 0;min-height:0}
+.situation-board .situation-risk-matrix:not(.risk-disease-matrix){box-sizing:border-box;height:calc(100% - 53px);padding:12px;grid-template-rows:22px repeat(3,minmax(0,1fr))}

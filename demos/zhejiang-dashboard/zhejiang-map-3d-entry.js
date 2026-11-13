@@ -50,35 +50,42 @@ function mount(host, geojson, values, callbacks) {
   const valid = values.map(item => item.value).filter(Number.isFinite);
   const min = Math.min(...valid);
   const max = Math.max(...valid);
-  const heatColors = ['#2186d0', '#55a8df', '#f2a54a', '#ed7b46', '#e65c58'].map(color => new THREE.Color(color));
-  const heatPoints = geojson.features.map(feature => {
+  const heatColors = ['#2186d0', '#55a8df', '#c3d3cf', '#ed9d64', '#e65c58'].map(color => new THREE.Color(color));
+  // Interpolate measured region values across the map; the texture is clipped by each region's geometry.
+  const samples = geojson.features.flatMap(feature => {
     const value = valueByName.get(feature.properties.name)?.value;
-    const position = feature.properties.centroid || feature.properties.center;
-    return Number.isFinite(value) && position ? { position: project(position), value } : null;
-  }).filter(Boolean);
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 256;
-  const context = canvas.getContext('2d');
-  const pixels = context.createImageData(canvas.width, canvas.height);
-  for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
-    const px = (x / (canvas.width - 1) - .5) * projectedWidth;
-    const py = (y / (canvas.height - 1) - .5) * projectedHeight;
-    let weighted = 0, weights = 0;
-    for (const point of heatPoints) {
-      const distance = Math.hypot((px - point.position[0]) / projectedWidth, (py - point.position[1]) / projectedHeight);
-      const weight = 1 / Math.pow(Math.max(.025, distance), 3);
-      weighted += point.value * weight; weights += weight;
+    const polygons = feature.geometry.type === 'MultiPolygon' ? feature.geometry.coordinates : [feature.geometry.coordinates];
+    const ring = polygons.map(p => p[0]).filter(Boolean).sort((a, b) => b.length - a.length)[0];
+    const center = feature.properties.centroid || feature.properties.center || (ring && ring.reduce((sum, p) => [sum[0] + p[0] / ring.length, sum[1] + p[1] / ring.length], [0, 0]));
+    if (!center || !Number.isFinite(value)) return [];
+    const [x, y] = project(center);
+    return [{ x, y, value }];
+  });
+  const heatCanvas = document.createElement('canvas');
+  heatCanvas.width = heatCanvas.height = 256;
+  const heatContext = heatCanvas.getContext('2d');
+  const heatImage = heatContext.createImageData(256, 256);
+  const colorStops = [[33,134,208], [85,168,223], [242,165,74], [237,123,70], [230,92,88]];
+  for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+    const px = (x / 255 - .5) * projectedWidth, py = (y / 255 - .5) * projectedHeight;
+    let weighted = 0, weightSum = 0;
+    for (const sample of samples) {
+      const distance = ((px - sample.x) / projectedWidth) ** 2 + ((py - sample.y) / projectedHeight) ** 2;
+      const weight = 1 / Math.max(.00005, distance ** 1.5);
+      weighted += sample.value * weight; weightSum += weight;
     }
-    const ratio = weights && max > min ? (weighted / weights - min) / (max - min) : .15;
-    const scaled = Math.min(3.999, Math.max(0, ratio * 4)), index = Math.floor(scaled);
-    const color = heatColors[index].clone().lerp(heatColors[index + 1], scaled - index).convertLinearToSRGB();
-    const offset = (y * canvas.width + x) * 4;
-    pixels.data[offset] = color.r * 255; pixels.data[offset + 1] = color.g * 255; pixels.data[offset + 2] = color.b * 255; pixels.data[offset + 3] = 255;
+    const ratio = weightSum && max > min ? THREE.MathUtils.clamp((weighted / weightSum - min) / (max - min), 0, 1) : .5;
+    const scaled = Math.min(3.999, ratio * 4), index = Math.floor(scaled), offset = (y * 256 + x) * 4;
+    for (let c = 0; c < 3; c++) heatImage.data[offset + c] = colorStops[index][c] + (colorStops[index + 1][c] - colorStops[index][c]) * (scaled - index);
+    heatImage.data[offset + 3] = 255;
   }
-  context.putImageData(pixels, 0, 0);
-  const heatTexture = new THREE.CanvasTexture(canvas);
+  heatContext.putImageData(heatImage, 0, 0);
+  const heatTexture = new THREE.CanvasTexture(heatCanvas);
   heatTexture.colorSpace = THREE.SRGBColorSpace;
   heatTexture.flipY = false;
+  heatTexture.wrapS = heatTexture.wrapT = THREE.ClampToEdgeWrapping;
+  heatTexture.repeat.set(1 / projectedWidth, 1 / projectedHeight);
+  heatTexture.offset.set(.5, .5);
   const labelLayer = document.createElement('div');
   labelLayer.className = 'map-3d-label-layer';
   if (callbacks.townLevel) labelLayer.classList.add('township-labels');
@@ -93,7 +100,7 @@ function mount(host, geojson, values, callbacks) {
     const ratio = Number.isFinite(item?.value) && max > min ? (item.value - min) / (max - min) : .15;
     const scaled = Math.min(heatColors.length - 1.001, Math.max(0, ratio * (heatColors.length - 1)));
     const index = Math.floor(scaled);
-    const topColor = Number.isFinite(item?.value) ? heatColors[index].clone().lerp(heatColors[index + 1], scaled - index) : new THREE.Color('#758393');
+    const topColor = item?.color ? new THREE.Color(item.color) : Number.isFinite(item?.value) ? heatColors[index].clone().lerp(heatColors[index + 1], scaled - index) : new THREE.Color('#758393');
     const sideColor = topColor.clone().multiplyScalar(.47);
     const polygons = feature.geometry.type === 'MultiPolygon' ? feature.geometry.coordinates : [feature.geometry.coordinates];
     for (const polygon of polygons) {
@@ -110,9 +117,7 @@ function mount(host, geojson, values, callbacks) {
       });
       shape.closePath();
       const geometry = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false, curveSegments: 1 });
-      const positions = geometry.getAttribute('position'), uv = geometry.getAttribute('uv');
-      for (let i = 0; i < positions.count; i++) uv.setXY(i, positions.getX(i) / projectedWidth + .5, positions.getY(i) / projectedHeight + .5);
-      const mesh = new THREE.Mesh(geometry, [new THREE.MeshBasicMaterial({ map: heatTexture, transparent: true, opacity: .9 }), new THREE.MeshPhongMaterial({ color: sideColor, transparent: true, opacity: .82 })]);
+      const mesh = new THREE.Mesh(geometry, [new THREE.MeshBasicMaterial({ color: topColor }), new THREE.MeshPhongMaterial({ color: sideColor, transparent: true, opacity: .82 })]);
       mesh.userData.name = name;
       scene.add(mesh);
       meshes.push(mesh);
@@ -131,7 +136,7 @@ function mount(host, geojson, values, callbacks) {
     if (position) {
       const label = document.createElement('span');
       label.className = 'map-3d-label';
-      label.textContent = item?.displayName || name;
+      label.textContent = (item?.displayName || name).replace(/^.*?市(?=.+(?:区|县|市)$)/, '');
       labelLayer.appendChild(label);
       const [x, y] = project(position);
       labels.push({ element: label, position: new THREE.Vector3(x, y, depth + .02), county: !callbacks.townLevel && (callbacks.countyLevel || geojson.features.length > 20) });
@@ -188,11 +193,14 @@ function mount(host, geojson, values, callbacks) {
     if (disposed) return;
     frame = requestAnimationFrame(animate);
     controls.update();
+    const occupied = [];
     for (const label of labels) {
       const projected = label.position.clone().project(camera);
-      const visible = (callbacks.showLabels !== false || geojson.features.length <= 11) && projected.z < 1 && Math.abs(projected.x) < .97 && Math.abs(projected.y) < .97 && (!label.county || geojson.features.length <= 20 || camera.zoom >= 2.5);
+      const x = (projected.x + 1) * host.clientWidth / 2, y = (-projected.y + 1) * host.clientHeight / 2;
+      const overlaps = occupied.some(point => Math.abs(point.x - x) < 55 && Math.abs(point.y - y) < 20);
+      const visible = (callbacks.showLabels !== false || geojson.features.length <= 11) && projected.z < 1 && Math.abs(projected.x) < .97 && Math.abs(projected.y) < .97 && (!label.county || geojson.features.length <= 20 || camera.zoom >= 2.5) && !overlaps;
       label.element.style.display = visible ? '' : 'none';
-      if (visible) label.element.style.transform = `translate(${(projected.x + 1) * host.clientWidth / 2}px, ${(-projected.y + 1) * host.clientHeight / 2}px) translate(-50%, -50%)`;
+      if (visible) { occupied.push({ x, y }); label.element.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`; }
     }
     renderer.render(scene, camera);
   }
@@ -214,12 +222,12 @@ function mount(host, geojson, values, callbacks) {
       resizeObserver.disconnect();
       cancelAnimationFrame(frame);
       controls.dispose();
-      heatTexture.dispose();
       scene.traverse(object => {
         object.geometry?.dispose();
         if (object.material) (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => material.dispose());
       });
       renderer.dispose();
+      heatTexture.dispose();
       renderer.forceContextLoss();
       host.replaceChildren();
     }
