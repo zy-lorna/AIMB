@@ -1632,6 +1632,7 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .metric-detail-trigger{cursor:pointer}.metric-detail-trigger:hover{color:#70dcff!important;text-decoration:underline;text-decoration-style:dotted}
 .metric-detail-dialog{width:min(620px,90vw);max-height:80vh;padding:20px;background:#071d3a;color:#e8f6ff;border:1px solid #1682bd;border-radius:4px}
 .metric-detail-dialog::backdrop{background:rgba(0,8,22,.72)}.metric-detail-dialog header{display:flex;justify-content:space-between;align-items:center}.metric-detail-dialog h2{margin:0;font-size:20px}.metric-detail-dialog button{color:inherit;cursor:pointer}.metric-detail-dialog header button{border:0;background:none;font-size:28px}.metric-detail-dialog p{font-size:13px;color:#aacbe1}.metric-detail-dialog nav{margin:14px 0;color:#81d6ff}.metric-detail-dialog nav button{background:none;border:0;color:#81d6ff}.metric-detail-table{max-height:50vh;overflow:auto}.metric-detail-row{display:flex;justify-content:space-between;gap:12px;width:100%;padding:10px 12px;text-align:left;border:0;border-bottom:1px solid #244969;background:transparent;color:#e8f6ff}.metric-detail-row:not(.metric-detail-heading):hover{background:#143a5d}.metric-detail-heading{color:#8fb5ce}
+.metric-detail-dialog nav{display:flex;flex-wrap:wrap;align-items:center;gap:3px}.metric-detail-dialog .metric-detail-row strong{white-space:nowrap;text-align:right}.metric-detail-dialog .metric-detail-empty,.metric-detail-dialog .metric-detail-note{padding:0 12px;line-height:1.5}.metric-detail-trigger:focus-visible,.metric-detail-dialog button:focus-visible{outline:2px solid #73d7ff;outline-offset:2px}
 
 /* Keep ring labels above the inner disc and highlight the active segment. */
 .home-coverage-ring>div{position:relative;z-index:2;gap:2px}
@@ -2575,6 +2576,7 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .clinic-quadrant-key i{width:8px;height:8px;flex:none;border-radius:50%}
 .clinic-quadrant-heading{flex:none;color:#d7eafa;font-size:13px;font-weight:600;line-height:18px}
 .situation-board .situation-risk-matrix:not(.risk-disease-matrix){box-sizing:border-box;height:calc(100% - 53px);padding:12px;grid-template-rows:22px repeat(3,minmax(0,1fr))}
+
 .clinic-gallery-view{display:grid;grid-template-columns:minmax(0,2fr) minmax(240px,1fr);gap:14px;padding:16px; height:min(65vh,620px);box-sizing:border-box}
 .clinic-gallery-main{position:relative;min-width:0;min-height:0;background:#061629;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .clinic-gallery-main>img{width:100%;height:100%;object-fit:contain}.clinic-gallery-caption{position:absolute;left:0;right:0;bottom:62px;padding:10px 12px;background:rgba(3,15,32,.8);font-size:14px}.clinic-gallery-caption span{float:right;color:#9ec7e4}
@@ -2986,6 +2988,9 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .dashboard-board :is(.board-panel,.outcome-detail-panel,.outcome-metric-column):has(> .dashboard-content-frame)::before,
 .dashboard-board :is(.board-panel,.outcome-detail-panel,.outcome-metric-column):has(> .dashboard-content-frame)::after{content:none!important;display:none!important}
 .dashboard-content-frame{position:absolute;z-index:-1;top:53px;right:0;bottom:0;left:0;background:rgba(5,22,51,.76)}
+.dashboard-board .board-map .panel-head{position:relative;z-index:4}
+.dashboard-board .board-map-modes{position:relative;z-index:1}
+.dashboard-board .map-stage.is-3d .map-3d{position:relative;width:100%;height:100%;min-height:1px}
 .dashboard-content-frame::before,.dashboard-content-frame::after{content:'';position:absolute;right:0;left:0;height:7px;background-position:center;background-size:100% 100%;background-repeat:no-repeat}
 .dashboard-content-frame::before{top:0;background-image:url('dashboard-assets/上.svg')}
 .dashboard-content-frame::after{bottom:0;background-image:url('dashboard-assets/下.svg')}
@@ -3048,6 +3053,42 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .clinic-quadrant-legend b{font-weight:500;color:#fff}
 .dashboard-board.outcome-board .outcome-risk>.outcome-detail-panel>h2{margin-bottom:8px!important}
 .map-tooltip-comparison{color:#fff;font-weight:600;margin-bottom:6px}
+.dashboard-board .map-tooltip .map-tooltip-comparison{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.dashboard-board .map-tooltip .map-tooltip-comparison span{font-size:inherit;font-weight:inherit}
+.dashboard-board .map-tooltip .map-tooltip-comparison b{white-space:nowrap}
+
+/* Shared shell for dashboard dialogs; map tooltips use separate styles. */
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog){box-sizing:border-box;max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:0;border:1px solid #39587d;border-radius:0;background:#00132f;color:#e3f1ff;box-shadow:0 16px 24px #0006}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog)::backdrop{background:rgba(0,6,20,.7)}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header{box-sizing:border-box;min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0;padding:12px 24px;border-bottom:1px solid #2c4c70;background:#071e3d url('dashboard-assets/标题.svg') left center/auto 100% no-repeat}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header h2{margin:0;color:#d9ebff;font-size:22px;line-height:1.4;font-weight:700}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header button{flex:none;width:30px;height:30px;padding:0;border:0;border-radius:2px;background:#203e61;color:#fff;font:22px/30px sans-serif;cursor:pointer}
+dialog.clinic-gallery-dialog>header p{margin:3px 0 0;color:#a7bdd2;font-size:12px}
+dialog.town-clinic-dialog{padding:0 20px 20px}
+dialog.town-clinic-dialog>h2{margin:0 -20px 16px;padding:18px 24px;border-bottom:1px solid #2c4c70;background:#071e3d url('dashboard-assets/标题.svg') left center/auto 100% no-repeat;color:#d9ebff;font-size:22px}
+dialog.metric-detail-dialog{width:min(848px,calc(100vw - 32px));overflow:hidden}
+.metric-detail-dialog header h2{display:flex;align-items:center;gap:16px;min-width:0}
+.metric-detail-dialog header h2 b{font-weight:700}
+.metric-detail-dialog header h2 span{padding-left:16px;border-left:1px solid #7294b5;font-weight:400}
+.metric-detail-content{padding:20px 39px 24px}
+.metric-detail-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:24px;color:#93b4d7;font-size:14px}
+.metric-detail-dialog .metric-detail-meta nav{display:flex;flex-wrap:wrap;justify-content:flex-end;margin:0;color:#93b4d7}
+.metric-detail-dialog .metric-detail-meta nav button{padding:2px 3px;color:#93b4d7;font-size:14px}
+.metric-detail-section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px;color:#e3f1ff;font-size:16px}
+.metric-detail-section-title span{color:#8fafce;font-size:14px}
+.metric-detail-table{max-height:min(52vh,484px);overflow:auto}
+.metric-detail-dialog .metric-detail-row{display:grid;grid-template-columns:minmax(100px,1fr) minmax(70px,1.3fr) minmax(110px,1.2fr);align-items:center;gap:20px;min-height:44px;padding:6px 20px;border:0;background:rgba(8,26,50,.72);color:#ddecff;font-size:16px;line-height:1.4}
+.metric-detail-dialog .metric-detail-row:nth-child(even){background:rgba(11,34,64,.72)}
+.metric-detail-dialog button.metric-detail-row:hover,.metric-detail-dialog button.metric-detail-row:focus-visible{background:#0d315f}
+.metric-detail-dialog .metric-detail-heading{position:sticky;top:0;z-index:1;min-height:44px;background:#12345d!important;color:#a6c8ec;font-size:14px}
+.metric-detail-heading span:last-child{text-align:right}
+.metric-detail-dialog .metric-detail-row strong{text-align:right;font:700 19px DashboardDIN,DashboardChinese,sans-serif;white-space:normal;overflow-wrap:anywhere}
+.metric-detail-dialog .metric-detail-row strong small{display:block;color:#91aecd;font:12px DashboardChinese,sans-serif}
+.metric-value-track{display:block;height:6px;background:#153858}
+.metric-value-track i{position:relative;display:block;height:100%;background:linear-gradient(90deg,#0e5fd0,#67b5f3)}
+.metric-value-track i::after{content:'';position:absolute;right:0;top:-2px;width:2px;height:10px;background:#76c5fc}
+.metric-detail-footer{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid #1c3b5d;color:#91aecd;font-size:13px}
+@media(max-width:600px){.metric-detail-content{padding:14px 16px 18px}.metric-detail-dialog header h2{gap:8px;font-size:18px!important}.metric-detail-dialog header h2 span{padding-left:8px}.metric-detail-dialog .metric-detail-row{grid-template-columns:minmax(65px,1fr) minmax(35px,.65fr) minmax(70px,1fr);gap:8px;padding:6px 10px;font-size:14px}.metric-detail-dialog .metric-detail-row strong{font-size:16px}.metric-detail-meta{align-items:flex-start;flex-direction:column}.metric-detail-section-title{margin-top:12px}}
 .home-population-distribution .situation-bars>div>i{height:8px}
 .dashboard-board:has(.home-disease-panel) .home-coverage-composition .coverage-bar{height:9px}
 .construction-board .clinic-scatter-body{padding-top:0;gap:4px}
@@ -3069,3 +3110,196 @@ body.dashboard-booting .app,body.dashboard-booting .drawer-bg{visibility:hidden}
 .construction-board .clinic-scatter-body{box-sizing:border-box;padding:12px;gap:4px}
 .construction-board .clinic-scatter-body svg{width:100%;flex:1 1 0;min-height:0}
 .situation-board .situation-risk-matrix:not(.risk-disease-matrix){box-sizing:border-box;height:calc(100% - 53px);padding:12px;grid-template-rows:22px repeat(3,minmax(0,1fr))}
+
+/* Dashboard dialog shell, based on the Figma detail dialog. */
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog){background:linear-gradient(90deg,#001637 0%,#00122e 52.153%,#001637 100%);font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header{
+  position:relative;isolation:isolate;box-sizing:border-box;min-height:76px;padding:13px 30px 20px 24px;border:0;
+  background:linear-gradient(90deg,transparent 0 42.83%,#a7ceef 42.83%,#34506f 82%,transparent 82% 83%,#294565 83% 100%) left top/100% 4px no-repeat,linear-gradient(90deg,rgba(167,206,239,.3),transparent 37%) left bottom 7px/100% 3px no-repeat,linear-gradient(90deg,rgba(106,151,193,.28),rgba(44,77,112,.08)) left bottom/100% 3px no-repeat,linear-gradient(90deg,#172d4a,#061934 65%,#03152e);
+}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header::before{
+  content:'';position:absolute;z-index:-1;left:13.37%;bottom:8px;width:32.76%;height:32px;pointer-events:none;
+  background:repeating-linear-gradient(45deg,rgba(89,129,174,.08) 0 18px,transparent 18px 34px);
+}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header::after{
+  content:'';position:absolute;left:8px;top:14px;bottom:14px;width:4px;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,#799bc1 0 1px,transparent 1px 3px);
+}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header h2{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;font-size:26px;line-height:39px;color:#c9dfff}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header button{width:29px;height:29px;background:#203c5f;color:#fff;font-size:22px;line-height:29px}
+dialog.town-clinic-dialog>h2{background:#0b203d;color:#c9dfff}
+dialog.metric-detail-dialog[open]{display:flex;flex-direction:column;height:min(800px,calc(100dvh - 32px));overflow:hidden}
+.metric-detail-dialog header h2{gap:18px}.metric-detail-dialog header h2 span{padding-left:18px;border-color:rgba(255,255,255,.3)}
+.metric-detail-content{display:flex;flex:1;min-height:0;flex-direction:column;padding:17px 39px 26px}
+.metric-detail-meta{flex:none;min-height:23px;font-size:15px;line-height:23px}
+.metric-detail-dialog .metric-detail-meta nav button{font-size:15px}
+.metric-detail-section-title{flex:none;margin:19px 0 15px;font-size:18px;line-height:27px;font-weight:500}
+.metric-detail-section-title span{font-size:15px;font-weight:400}
+.metric-detail-table{flex:1;min-height:0;max-height:none;overflow:auto}
+.metric-detail-dialog .metric-detail-row{grid-template-columns:minmax(100px,210fr) minmax(70px,256fr) minmax(110px,262fr);gap:0;height:44px;min-height:44px;padding:0 20px;font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;font-size:19px;font-weight:500;line-height:28.5px}
+.metric-detail-dialog .metric-detail-heading{font-size:15px;font-weight:400;line-height:22.5px;background:linear-gradient(90deg,#123966,#0a2446)!important}
+.metric-detail-dialog .metric-detail-row strong{font:600 21px/31.5px Inter,'Helvetica Neue',Arial,sans-serif;color:#e5f1ff}
+.metric-detail-dialog .metric-detail-row.metric-row-maximum{position:relative;background:#0d315f}
+.metric-detail-dialog .metric-row-maximum::before{content:'';position:absolute;left:0;top:12px;width:2px;height:20px;background:#67b5f3}
+.metric-detail-dialog .metric-row-maximum strong{color:#94dfff}
+.metric-detail-dialog .metric-row-maximum .metric-value-track i{background:linear-gradient(90deg,#0e5fd0,#94dfff)}
+.metric-detail-footer{flex:none;margin-top:32px;padding-top:15px;font-size:14px;line-height:21px}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog)::before,dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog)::after{content:'';position:absolute;bottom:7px;width:8px;height:8px;background:#a64f27;pointer-events:none;z-index:2}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog)::before{left:7px;clip-path:polygon(0 0,0 100%,100% 100%)}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog)::after{right:7px;clip-path:polygon(100% 0,0 100%,100% 100%)}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header h2{background:linear-gradient(180deg,#fff 21.573%,rgba(255,255,255,0) 75.362%),#95c4ff;background-clip:text;-webkit-background-clip:text;color:transparent}
+@media(max-width:600px){dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header{min-height:64px;padding:10px 18px 16px 20px}dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header h2{font-size:18px;line-height:28px}.metric-detail-content{padding:12px 16px 18px}.metric-detail-meta{gap:2px}.metric-detail-section-title{margin:10px 0;font-size:16px}.metric-detail-dialog .metric-detail-row{grid-template-columns:minmax(65px,1fr) minmax(35px,.65fr) minmax(70px,1fr);gap:8px;padding:0 10px;font-size:14px}.metric-detail-dialog .metric-detail-heading{font-size:13px}.metric-detail-dialog .metric-detail-row strong{font-size:16px}.metric-detail-footer{margin-top:14px}}
+
+/* Detail navigation and photo gallery. */
+dialog.metric-detail-dialog>header h2{font-size:22px;line-height:1.4}
+.metric-detail-dialog .metric-detail-meta{justify-content:flex-start}
+.metric-detail-dialog .metric-detail-meta nav{justify-content:flex-start}
+.metric-detail-content>.metric-detail-section-title:first-child{margin-top:4px}
+.clinic-gallery-view{height:auto;max-height:calc(100dvh - 150px);align-items:start;overflow:auto;grid-template-columns:minmax(0,1.55fr) minmax(240px,1fr);gap:16px}
+.clinic-gallery-main{display:flex;flex-direction:column;align-items:stretch;min-width:0;background:#061629}
+.clinic-gallery-main>img{display:block;width:100%;height:auto;max-height:min(48dvh,480px);object-fit:contain;object-position:center top}
+.clinic-gallery-caption{position:static;align-items:center;padding:10px 12px;line-height:1.4}
+.clinic-gallery-photo-nav{position:static;padding:8px;gap:8px}
+.clinic-gallery-photo-nav button{flex:0 0 64px;height:48px}
+.clinic-gallery-side{align-self:stretch;min-height:0}
+.clinic-gallery-list{display:grid;grid-template-rows:repeat(6,minmax(54px,1fr));gap:5px}
+.clinic-gallery-item{min-height:54px}
+@media(max-width:650px){dialog.metric-detail-dialog>header h2{font-size:22px!important}.clinic-gallery-view{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;max-height:calc(100dvh - 120px);gap:12px;padding:12px}.clinic-gallery-main>img{max-height:38dvh}.clinic-gallery-list{grid-template-rows:repeat(6,58px)}.clinic-gallery-item{grid-template-columns:70px minmax(0,1fr) 24px}.clinic-gallery-item img{width:70px}}
+
+dialog.clinic-gallery-dialog>header h2{font-size:20px;line-height:1.4}
+.clinic-gallery-view{height:min(600px,65dvh);max-height:calc(100dvh - 130px);min-height:0;align-items:stretch;overflow:hidden;grid-template-columns:minmax(0,1.8fr) minmax(230px,1fr)}
+.clinic-gallery-main{display:grid;grid-template-rows:minmax(0,1fr) 56px 64px;min-height:0;overflow:hidden}
+.clinic-gallery-photo-stage{min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;background:#07182b;overflow:hidden}
+.clinic-gallery-photo-stage>img{display:block;width:100%;height:100%;object-fit:contain}
+.clinic-gallery-caption{min-height:0;box-sizing:border-box;align-items:center;overflow:auto}
+.clinic-gallery-caption .clinic-gallery-name{flex:1 1 auto;min-width:0;white-space:normal;overflow-wrap:anywhere}
+.clinic-gallery-photo-nav{box-sizing:border-box;min-width:0;align-items:center}
+.clinic-gallery-side{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px}
+.clinic-gallery-list{min-height:0;grid-template-rows:repeat(6,minmax(0,1fr));gap:5px}
+.clinic-gallery-item{display:flex;align-items:center;min-width:0;min-height:0;padding:8px 12px;line-height:1.4}
+.clinic-gallery-item span{font-size:14px;overflow-wrap:anywhere}
+.clinic-gallery-pager{padding-top:0}
+.clinic-gallery-item:focus-visible,.clinic-gallery-photo-nav button:focus-visible,.clinic-gallery-pager button:focus-visible{outline:2px solid #9bd9ff;outline-offset:-2px}
+@media(max-width:650px){dialog.clinic-gallery-dialog>header h2{font-size:18px}.clinic-gallery-view{height:auto;max-height:calc(100dvh - 110px);overflow:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto}.clinic-gallery-main{height:auto;grid-template-rows:auto 56px 64px}.clinic-gallery-photo-stage{width:100%;aspect-ratio:4/3}.clinic-gallery-side{height:auto;grid-template-rows:auto auto}.clinic-gallery-list{grid-template-rows:repeat(6,minmax(48px,auto))}}
+
+/* Compact detail text and aligned coverage rows. */
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog)>header h2{font-size:20px;line-height:1.4}
+.metric-detail-dialog .metric-detail-row{font-size:15px;line-height:1.4}
+.metric-detail-dialog .metric-detail-heading{font-size:14px}
+.metric-detail-dialog .metric-detail-row strong{font-size:16px;line-height:1.3;overflow-wrap:normal}
+.metric-detail-dialog .metric-detail-row strong small{font-size:11px;line-height:1.2}
+.metric-detail-section-title{font-size:16px}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .unified-coverage-legend>div{display:grid;grid-template-columns:70px 64px minmax(25px,1fr) 66px;column-gap:8px;align-items:center}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-count{grid-column:1;grid-row:1;order:0;margin:0 4px 0 0;white-space:nowrap}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-name{grid-column:2;grid-row:1;white-space:nowrap}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-bar{grid-column:3;grid-row:1;width:100%;min-width:0;margin:0}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .unified-coverage-legend small:not(.coverage-count-unit){grid-column:4;grid-row:1;margin:0;text-align:right;font-size:16px;white-space:nowrap}
+.board-chart-tooltip .structured-tip-title{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.board-chart-tooltip .structured-tip-title i{width:9px;height:9px;flex:none}
+.board-chart-tooltip .structured-tip-row{display:flex;justify-content:space-between;gap:20px;white-space:nowrap}
+.board-chart-tooltip .structured-tip-row b{text-align:right;font-weight:500}
+.clinic-scatter .construction-grid line{stroke:#244965}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .unified-coverage-legend>div{box-sizing:border-box;grid-template-columns:90px 64px minmax(24px,1fr) 66px;column-gap:8px;padding-left:12px}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-count{margin:0 4px 0 0}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .coverage-count-unit{font-size:14px!important}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .clinic-photo-link{grid-column:2;grid-row:1;min-width:0;white-space:nowrap}
+.board-chart-tooltip .structured-tip-title i{width:7px;height:7px}
+.clinic-scatter .construction-grid line{stroke:#386782}
+.clinic-scatter svg>line[stroke-dasharray]{stroke:#7eabc1}
+.dashboard-board :is(.home-coverage-composition,.clinic-tier-chart) .unified-coverage-legend>div>i:not(.coverage-bar){display:none}
+.clinic-quadrant-legend>button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;min-width:0;min-height:42px;padding:3px;border:1px solid #23577e;background:#0a2947;color:#c4dcee;font:inherit;text-align:center;cursor:pointer}
+.clinic-quadrant-legend>button>i{display:none}
+.clinic-quadrant-legend>button:nth-child(1){border-color:#a96323;color:#ffad53}
+.clinic-quadrant-legend>button:nth-child(2){border-color:#327a9b;color:#72cbed}
+.clinic-quadrant-legend>button:nth-child(3){border-color:#208a83;color:#35d5c5}
+.clinic-quadrant-legend>button:nth-child(4){border-color:#536f89;color:#afc8dc}
+.clinic-quadrant-legend>button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.clinic-quadrant-legend>button b{font-size:16px;color:#fff}
+.clinic-quadrant-dialog .summary-table-wrap{max-height:55vh;overflow:auto}
+
+/* Dashboard chart labels and hover details. */
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend>div{display:grid;grid-template-columns:90px 64px minmax(24px,1fr) 66px;grid-template-rows:1fr;gap:8px;padding:0 12px;box-sizing:border-box}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend .coverage-count{grid-column:1;grid-row:1;min-width:0;margin:0}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend :is(.coverage-name,.clinic-photo-link){grid-column:2;grid-row:1}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend .coverage-bar{display:block;grid-column:3;grid-row:1;min-width:0;width:100%}
+.dashboard-board:has(.home-disease-panel) .home-coverage-composition .unified-coverage-legend>div>small{grid-column:4;grid-row:1;margin:0;text-align:right}
+.board-chart-tooltip.visible{line-height:1.5;background:rgba(8,13,33,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.board-chart-tooltip .structured-tip-title{gap:calc(8px * var(--tip-scale,1));margin:0}
+.board-chart-tooltip .structured-tip-title i,.board-chart-tooltip .board-tip-row i{width:calc(8px * var(--tip-scale,1));height:calc(8px * var(--tip-scale,1));flex:none}
+.board-chart-tooltip .board-tip-row{display:flex;align-items:center;gap:calc(8px * var(--tip-scale,1))}
+.board-chart-tooltip .structured-tip-row{gap:calc(8px * var(--tip-scale,1))}
+.dashboard-board svg :is(.construction-grid,.chart-grid) line{stroke:rgba(255,255,255,.3)}
+.dashboard-board svg :is(.construction-grid,.chart-grid) text,.dashboard-board svg :is(.construction-month,.scatter-axis-label){fill:rgba(255,255,255,.7)}
+.dashboard-board :is(.outcome-rank-axis,.risk-ranking-axis,.home-target-axis){color:rgba(255,255,255,.7)}
+.dashboard-board .outcome-rank-track::after{background:repeating-linear-gradient(to right,rgba(255,255,255,.3) 0 1px,transparent 1px 25%)}
+.dashboard-board .outcome-rank-track::before{border-color:rgba(255,255,255,.3)}
+.dashboard-board.outcome-board .outcome-mini-panel{box-sizing:border-box;min-width:0;padding-right:12px}
+.dashboard-board.outcome-board .outcome-mini-bars{min-width:0;grid-template-columns:minmax(72px,30%) minmax(0,1fr)}
+.dashboard-board.outcome-board .outcome-mini-bars>div:not(.outcome-measure-name){min-width:0;grid-template-columns:0 minmax(0,1fr) 58px}
+.dashboard-board.outcome-board .outcome-mini-bars strong{min-width:0;white-space:nowrap}
+
+.content:fullscreen{box-sizing:border-box;width:100vw;height:100vh;overflow:auto;background:#061b32;padding:0}
+.board-chart-tooltip.scatter-point-tooltip{gap:calc(8px * var(--tip-scale,1))!important}
+.board-chart-tooltip :is(.structured-tip-title,.structured-tip-row,.board-tip-row){font-size:inherit;line-height:1}
+
+/* Keep chart tips and controls consistent at the final cascade layer. */
+.board-chart-tooltip.visible{gap:calc(8px * var(--tip-scale,1))!important;white-space:normal}
+.board-chart-tooltip :is(.structured-tip-title,.structured-tip-row,.structured-tip-line,.board-tip-row){font-size:inherit;line-height:1.25;margin:0}
+.board-chart-tooltip .structured-tip-row{display:flex;justify-content:space-between;align-items:baseline;gap:calc(16px * var(--tip-scale,1));white-space:nowrap}
+.board-chart-tooltip .structured-tip-row span{text-align:left}
+.board-chart-tooltip .structured-tip-row b{margin-left:auto;text-align:right;white-space:nowrap}
+.content:fullscreen{max-width:none}
+.dashboard-board .board-title{z-index:20}
+.dashboard-board .board-title .board-tabs{z-index:30!important;pointer-events:auto}
+.dashboard-board .board-title .board-tabs button{position:relative;z-index:1;pointer-events:auto}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-panel{width:100%;max-width:100%;padding-left:12px;padding-right:12px;overflow:hidden}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-bars{width:100%;max-width:100%;grid-template-columns:minmax(100px,19%) minmax(0,1fr)}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-bars>div:not(.outcome-measure-name){width:100%;max-width:100%;grid-template-columns:0 minmax(0,1fr) 72px;gap:4px}
+.dashboard-board .board-title>div:not(.board-scope-legend):not(.filters){pointer-events:none}
+.dashboard-board.outcome-board .outcome-mini-bars strong{display:block;text-align:right;overflow:visible}
+body:has(#dashboardBoard) :is(.metric-tooltip,.scope-floating-tip){font-size:16px;line-height:1.5;background:rgba(8,13,33,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.clinic-gallery-dialog{width:min(1220px,94vw)}
+.clinic-gallery-view{height:min(650px,70dvh);max-height:calc(100dvh - 150px);grid-template-columns:minmax(250px,340px) minmax(0,1fr);gap:16px;overflow:hidden}
+.clinic-gallery-side{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;min-height:0}
+.clinic-gallery-search{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;color:#bdd5e8;font-size:14px}
+.clinic-gallery-search input{grid-column:1/-1;grid-row:2;box-sizing:border-box;width:100%;height:38px;padding:0 12px;border:1px solid #356083;background:#071b34;color:#fff;font:inherit;outline-offset:2px}
+.clinic-gallery-search small{color:#91b1c9}
+.clinic-gallery-list{display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+.clinic-gallery-item{flex:none;min-height:50px;display:flex;justify-content:space-between;gap:10px;padding:8px 10px}
+.clinic-gallery-item span{flex:1;min-width:0;line-height:1.4}
+.clinic-gallery-item small{flex:none;color:#92b7d0;font-size:12px}
+.clinic-gallery-main{grid-template-rows:minmax(0,1fr) auto 64px}
+.clinic-gallery-photo-stage{position:relative}
+.clinic-gallery-photo-stage>button{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:48px;border:1px solid #4d7799;background:rgba(3,18,37,.78);color:#fff;font:28px/1 sans-serif;cursor:pointer}
+.clinic-gallery-photo-stage .gallery-prev{left:10px}.clinic-gallery-photo-stage .gallery-next{right:10px}
+.clinic-gallery-empty{display:flex;align-items:center;justify-content:center;min-height:180px;color:#a9c1d3}
+@media(max-width:650px){.clinic-gallery-view{display:flex;flex-direction:column;height:auto;max-height:calc(100dvh - 110px);overflow:auto}.clinic-gallery-side{height:auto;min-height:220px;grid-template-rows:auto minmax(100px,220px) auto}.clinic-gallery-main{min-height:300px;grid-template-rows:minmax(200px,1fr) auto 64px}.clinic-gallery-photo-stage{aspect-ratio:4/3}.clinic-gallery-photo-stage>img{position:absolute;inset:0}}
+
+#view:fullscreen{width:100vw;height:100vh;overflow:auto;background:#061b32}
+#view:fullscreen .dashboard-viewport{width:100%;margin:0}
+
+/* Keep the photo gallery centered and contained in the fullscreen viewport. */
+dialog.clinic-gallery-dialog:modal{position:fixed;inset:auto;margin:0;transform:translate(-50%,-50%);max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);overflow:hidden;display:flex;flex-direction:column}
+dialog.clinic-gallery-dialog:modal>header{flex:none}
+dialog.clinic-gallery-dialog:modal .clinic-gallery-view{flex:1;min-height:0;height:auto;max-height:none}
+@media(max-width:650px){dialog.clinic-gallery-dialog:modal .clinic-gallery-view{overflow-y:auto;flex-direction:column}dialog.clinic-gallery-dialog:modal .clinic-gallery-side{flex:none;height:260px;min-height:0}dialog.clinic-gallery-dialog:modal .clinic-gallery-main{flex:none;min-height:300px}}
+
+/* Compact dialogs sized to their content and the visible dashboard. */
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog):modal{position:fixed;inset:auto;left:var(--dialog-x,50%);top:var(--dialog-y,50%);transform:translate(-50%,-50%);margin:0;box-sizing:border-box;max-width:var(--dialog-max-width,calc(100vw - 32px));max-height:var(--dialog-max-height,calc(100dvh - 32px))}
+dialog.metric-detail-dialog:modal{width:720px;height:auto;overflow:hidden;display:flex;flex-direction:column}
+.metric-detail-dialog:modal>header,.metric-detail-dialog:modal .metric-detail-meta,.metric-detail-dialog:modal .metric-detail-section-title,.metric-detail-dialog:modal .metric-detail-footer{flex:none}
+.metric-detail-dialog:modal .metric-detail-content{flex:0 1 auto;min-height:0;padding:12px 24px 18px;overflow:hidden}
+.metric-detail-dialog:modal .metric-detail-section-title{margin:10px 0}
+.metric-detail-dialog:modal .metric-detail-table{flex:0 1 auto;min-height:0;max-height:440px;overflow:auto}
+.metric-detail-dialog:modal .metric-detail-row{height:38px;min-height:38px}
+.metric-detail-dialog:modal .metric-detail-footer{margin-top:12px;padding-top:10px}
+dialog.home-summary-dialog:modal{width:720px;height:auto;overflow:auto}
+dialog.clinic-gallery-dialog:modal{width:960px;height:min(600px,var(--dialog-max-height,calc(100dvh - 32px)))}
+dialog.town-clinic-dialog:modal{width:680px;overflow:auto}
+@media(max-width:650px){.metric-detail-dialog:modal .metric-detail-content{padding:10px 14px 14px}.metric-detail-dialog:modal .metric-detail-footer{flex-wrap:wrap}dialog.clinic-gallery-dialog:modal{height:min(620px,var(--dialog-max-height,calc(100dvh - 32px)))}}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-panel{padding-left:12px;padding-right:12px}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-bars{grid-template-columns:100px minmax(0,1fr);column-gap:12px}
+.dashboard-board.outcome-board .outcome-metric-column .outcome-mini-bars>div:not(.outcome-measure-name){grid-template-columns:minmax(0,1fr) 64px;column-gap:12px}
+.dashboard-board.outcome-board .outcome-mini-bars .metric-scope-tag{display:none}
+.dashboard-board.outcome-board .outcome-mini-bars strong,.dashboard-board.outcome-board .risk-bar-line b{font-size:16px;font-weight:700}
+dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog):modal{transform:translate(-50%,-50%) scale(var(--dialog-scale,1));transform-origin:center}

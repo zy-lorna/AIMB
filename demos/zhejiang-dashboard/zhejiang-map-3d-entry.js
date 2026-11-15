@@ -182,7 +182,11 @@ function mount(host, geojson, values, callbacks) {
     tooltip.style.top = `${Math.max(5, Math.min(y + 12, host.clientHeight - tooltip.offsetHeight - 5))}px`;
   }
   const onLeave = () => { hovered = ''; tooltip.hidden = true; };
-  const onClick = event => { if (hovered && (!pointerStart || Math.hypot(event.clientX - pointerStart[0], event.clientY - pointerStart[1]) < 5)) callbacks.onClick(hovered); };
+  const onClick = event => {
+    if (pointerStart && Math.hypot(event.clientX - pointerStart[0], event.clientY - pointerStart[1]) >= 5) return;
+    showAt(event);
+    if (hovered) callbacks.onClick(hovered);
+  };
   const onPointerDown = event => { pointerStart = [event.clientX, event.clientY]; };
   renderer.domElement.addEventListener('pointermove', showAt);
   renderer.domElement.addEventListener('pointerdown', onPointerDown);
