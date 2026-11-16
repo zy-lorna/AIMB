@@ -1,8 +1,19 @@
 // Product prototype refinements. All organization names below county level and all values are demonstrations.
 const demoClinicNames={
-  '余杭区':['五常街道社区卫生服务中心','仓前街道社区卫生服务中心','闲林街道社区卫生服务中心','良渚街道社区卫生服务中心','瓶窑镇社区卫生服务中心','径山镇社区卫生服务中心','鸬鸟镇社区卫生服务中心','黄湖镇社区卫生服务中心'],
-  '西湖区':['西溪街道社区卫生服务中心','文新街道社区卫生服务中心','翠苑街道社区卫生服务中心','留下街道社区卫生服务中心','蒋村街道社区卫生服务中心'],
-  '上城区':['湖滨街道社区卫生服务中心','清波街道社区卫生服务中心','小营街道社区卫生服务中心','望江街道社区卫生服务中心']
+  '余杭区':['良渚街道','仁和街道','余杭街道','闲林街道','五常街道','仓前街道','中泰街道','瓶窑镇','径山镇','黄湖镇','鸬鸟镇','百丈镇'],
+  '上城区':['湖滨街道','清波街道','小营街道','望江街道','南星街道','紫阳街道','采荷街道','凯旋街道','闸弄口街道','四季青街道','彭埠街道','笕桥街道','九堡街道','丁兰街道'],
+  '拱墅区':['长庆潮鸣街道','天水武林街道','文晖街道','朝晖街道','东新街道','石桥街道','拱宸桥街道','大关上塘街道','小河湖墅街道','祥符街道','康桥街道','米市巷街道','半山街道','和睦街道'],
+  '西湖区':['文新街道','三墩镇','古荡街道','转塘街道','双浦镇','北山街道','灵隐街道','翠苑街道','留下街道'],
+  '滨江区':['长河街道'],
+  '萧山区':['所前镇','盈丰街道','闻堰街道','蜀山街道','瓜沥镇','益农镇','楼塔镇','河上镇','衙前镇','北干街道','城厢街道','浦阳镇','戴村镇','进化镇','临浦镇'],
+  '临平区':['运河街道','崇贤街道','塘栖镇','东湖街道','星桥街道'],
+  '钱塘区':['下沙街道','河庄街道','义蓬街道','新湾街道','临江街道','前进街道'],
+  '鹿城区':['七都街道','滨江街道','南汇街道','松台街道','五马街道','广化街道','双屿街道','大南街道','南郊街道','蒲鞋市街道','藤桥镇'],
+  '龙湾区':['永中街道','海滨街道','永兴街道','蒲州街道','瑶溪街道','状元街道'],
+  '瓯海区':['茶山街道','郭溪街道','娄桥街道','潘桥街道','梧田街道','三垟街道','仙岩街道','丽岙街道','南白象街道'],
+  '洞头区':['北岙街道','东屏街道','元觉街道','霓屿街道'],
+  '永嘉县':['瓯北街道','黄田街道','三江街道','乌牛街道'],
+  '瑞安市':['玉海街道','莘塍街道']
 };
 const roleNames={province:'省级',city:'市级',county:'区县',consortium:'医共体',clinic:'基层机构'};
 const originalPopulationFor=populationFor;
@@ -288,8 +299,8 @@ boardChartTooltip.setAttribute('role','tooltip');
 document.body.append(boardChartTooltip);
 function boardTipText(target){
   if(target.closest('strong,small,em,text,.coverage-count,.coverage-name'))return '';
-  if(!target.closest('svg rect,svg circle,svg path,.risk-cell,.risk-composition-strip > div,.coverage-bar,.outcome-mini-track,.risk-bar-line,.situation-bars i,.risk-composition-track,.requested-rank-list i,.home-risk-bars i,.home-capacity-bars i,.outcome-rank-chart-row i,.construction-nodes i,.construction-node-bar,.construction-node-list i,.home-case-stack > div,.disease-stack > i,.outcome-slope i,.outcome-source-bar,.construction-rank i,[class*="track"],[class*="bar"] i'))return '';
-  const chart=target.closest('svg,.period-trend-layout,.board-panel,.outcome-detail-panel,.outcome-comparison-row');
+  if(!target.closest('svg rect,svg circle,svg path,svg polyline,.risk-cell,.risk-composition-strip > div,.coverage-bar,.outcome-mini-track,.risk-bar-line,.situation-bars i,.risk-composition-track,.requested-rank-list i,.home-risk-bars i,.home-capacity-bars i,.outcome-rank-chart-row i,.construction-nodes i,.construction-node-bar,.construction-node-list i,.home-case-stack > div,.disease-stack > i,.outcome-slope i,.outcome-source-bar,.construction-rank i,[class*="track"],[class*="bar"] i'))return '';
+  const chart=target.closest('svg,.period-trend-layout,.board-panel,.outcome-detail-panel,.outcome-comparison-row,.outcome-new-panel');
   if(!chart)return '';
   const valueNode=target.closest('[data-board-tip]');
   return valueNode?.dataset.boardTip||'';
@@ -300,7 +311,7 @@ function formatBoardTip(raw){
   return `${period.trim()}\n${groups.join('｜').split('；').map(group=>group.trim().replace(/，/g,'\n')).join('\n')}`;
 }
 document.addEventListener('pointermove',event=>{
-  if(!event.target.closest('#dashboardBoard .board-panel,#dashboardBoard .outcome-detail-panel,#dashboardBoard .outcome-comparison-row')){boardChartTooltip.classList.remove('visible');return}
+  if(!event.target.closest('#dashboardBoard .board-panel,#dashboardBoard .outcome-detail-panel,#dashboardBoard .outcome-comparison-row,#dashboardBoard .outcome-new-panel')){boardChartTooltip.classList.remove('visible');return}
   const detail=boardTipText(event.target);
   if(!detail){boardChartTooltip.classList.remove('visible');return}
   const tooltipHost=document.fullscreenElement||document.body;
@@ -3092,6 +3103,8 @@ render();
 
 
 
+
+
 document.addEventListener('click',event=>{
   if(!event.target.closest?.('[data-open-clinic-photos]'))return;
   const node=currentNode(),level=scopeLevel();
@@ -3199,7 +3212,7 @@ const clinicTrendResize=new ResizeObserver(entries=>entries.forEach(({target,con
     if(name==='points')el.setAttribute(name,value.trim().split(/\s+/).map(pair=>{const [x,y]=pair.split(',');return `${mapX(x)},${y}`}).join(' '));
     else if(name!=='x'||Number(value)>42)el.setAttribute(name,mapX(value));
   }));
-  target.setAttribute('viewBox',`0 0 ${width} 185`);
+  target.setAttribute('viewBox',`-22 0 ${width+22} 185`);
 }));
 function observeClinicTrend(){document.querySelectorAll(clinicTrendSelector).forEach(svg=>clinicTrendResize.observe(svg))}
 new MutationObserver(observeClinicTrend).observe(document.body,{childList:true,subtree:true});
@@ -3233,11 +3246,11 @@ dashboard=function(){
     if(panel){
       const options=[['bloodPressure','血压控制率'],['bloodGlucose','血糖控制率'],['hba1cTarget','糖化血红蛋白控制率'],['bloodLipids','血脂控制率']];
       const selected=options.find(([key])=>key===state.clinicScatterMetric)||options[0];
-      const points=cities.map(city=>({name:city.name,x:constructionValue(city,'construction'),y:homeMapValue(city,selected[0])})).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+      const points=clinicScatterPoints(selected[0]);
       if(points.length){
-        const mx=constructionValue(currentNode(),'construction'),my=homeMapValue(currentNode(),selected[0]);
-        const xmin=Math.max(0,Math.floor((Math.min(...points.map(p=>p.x))-5)/5)*5),xmax=Math.min(105,Math.ceil((Math.max(...points.map(p=>p.x))+5)/5)*5);
-        const ymin=Math.max(0,Math.floor((Math.min(...points.map(p=>p.y))-4)/5)*5),ymax=Math.min(100,Math.ceil((Math.max(...points.map(p=>p.y))+4)/5)*5);
+        const mx=constructionValue(null,'construction'),my=homeMapValue(null,selected[0]);
+        const range=(values)=>{const low=Math.min(...values),high=Math.max(...values),padding=Math.max(1,(high-low)*.08);let min=Math.max(0,Math.floor(low-padding)),max=Math.min(100,Math.ceil(high+padding));if(max-min<2){min=Math.max(0,min-1);max=Math.min(100,max+1)}return [min,max]};
+        const [xmin,xmax]=range([mx,...points.map(p=>p.x)]),[ymin,ymax]=range([my,...points.map(p=>p.y)]);
         const sx=v=>65+(v-xmin)/Math.max(1,xmax-xmin)*820,sy=v=>175-(v-ymin)/Math.max(1,ymax-ymin)*145;
         const variance=points.reduce((sum,p)=>sum+(p.x-mx)**2,0),slope=variance?points.reduce((sum,p)=>sum+(p.x-mx)*(p.y-my),0)/variance:0;
         const trend=x=>Math.max(ymin,Math.min(ymax,my+slope*(x-mx)));
@@ -3326,7 +3339,7 @@ dashboard=function(){
     board.querySelectorAll('.home-coverage-composition .unified-coverage-legend>div').forEach(row=>{const percent=parseFloat(row.querySelector('small')?.textContent)||0;row.querySelector('.coverage-name')?.insertAdjacentHTML('afterend',`<i class="coverage-bar"><b style="width:${Math.min(100,percent)}%"></b></i>`)});
   }
   if(situationActive()){
-    const p=populationData(),risk=homeRisk(currentNode()),assessed=330*p.managed/Math.max(.0001,367.5);
+    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*.5;
     const cards=[['专档患者数',p.managed.toFixed(1),'万人'],['风险分层人数',assessed.toFixed(1),'万人'],['高风险患者数',risk.high.toFixed(1),'万人'],['高风险患者占比',(risk.high/Math.max(.0001,p.managed)*100).toFixed(1),'%']];
     const kpis=board.querySelector('.situation-kpis');if(kpis)kpis.innerHTML=cards.map(([name,value,unit])=>`<div class="board-kpi"><strong>${value}<em class="board-kpi-unit">${unit}</em></strong><span>${name} <b class="metric-scope-tag">专</b></span></div>`).join('');
     const pathway=board.querySelector('.situation-pathway');if(pathway){pathway.className='situation-pathway situation-scope';pathway.innerHTML=scope}
@@ -3417,7 +3430,7 @@ dashboard=function(){
   const root=document.createElement('div');root.innerHTML=dashboardBeforeDecemberLayout();
   const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
   if(situationActive()){
-    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*330/367.5;
+    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*.5;
     const levels=[['高风险',risk.high,'#ef5358','需重点干预'],['中风险',risk.middle,'#ff9245','需随访管理'],['低风险',Math.max(0,assessed-risk.high-risk.middle),'#3385eb','常规管理'],['未知风险',Math.max(0,p.managed-assessed),'#637d95','未完成风险评估']];
     const content=board.querySelector('.home-risk-composition .home-risk-content');
     if(content)content.innerHTML=`<div class="risk-composition-strip">${levels.map(([name,v,c,note])=>`<div style="width:${v/p.managed*100}%;background:${c}" data-board-tip="${name}：${v.toFixed(1)}万人，占专档患者 ${(v/p.managed*100).toFixed(1)}%；${note}" title="${name}：${v.toFixed(1)}万人，占比 ${(v/p.managed*100).toFixed(1)}%">${(v/p.managed*100).toFixed(1)}%</div>`).join('')}</div><div class="risk-composition-rows">${levels.map(([name,v,c,note])=>`<div class="risk-composition-row" data-board-tip="${name}：${v.toFixed(1)}万人，占专档患者 ${(v/p.managed*100).toFixed(1)}%；${note}"><strong>${v.toFixed(1)}<small>万人</small></strong><div><span><i style="background:${c}"></i>${name} · ${note}</span><div class="risk-composition-track"><b style="width:${v/p.managed*100}%;background:${c}"></b></div></div><em>${(v/p.managed*100).toFixed(1)}%</em></div>`).join('')}</div>`;
@@ -3449,7 +3462,7 @@ dashboard=function(){
   if(situationActive()){
     const ranking=board.querySelector('.situation-risk-ranking');
     if(ranking){ranking.querySelector('.risk-ranking-caption')?.remove();ranking.querySelector('h2')?.insertAdjacentHTML('afterend','<div class="risk-ranking-heading"><span>地市</span><span>← 低于均值　|　高于均值 →</span><span>偏差 / 值</span></div>');ranking.querySelectorAll('.risk-ranking-row').forEach(row=>{const value=row.querySelector('.risk-ranking-value');if(value)row.append(value)})}
-    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*330/367.5;
+    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*.5;
     const levels=[risk.high,risk.middle,Math.max(0,assessed-risk.high-risk.middle),Math.max(0,p.managed-assessed)];
     const diseases=[['高血压',p.managedHigh],['糖尿病',p.managedDiabetes],['慢阻肺',p.managedCopd]];
     board.querySelectorAll('.risk-chart-stack').forEach((stack,i)=>{
@@ -3470,9 +3483,9 @@ dashboard=function(){
       panel.querySelector('h2 small')?.remove();
       svg.querySelector('line[stroke="#f5a52f"]')?.remove();
       const key=state.clinicScatterMetric||'bloodPressure',points=clinicScatterPoints(key);
-      const mx=constructionValue(currentNode(),'construction'),my=homeMapValue(currentNode(),key);
+      const mx=constructionValue(null,'construction'),my=homeMapValue(null,key);
       const groups=[['高覆盖低成效','#f4a64c',p=>p.x>=mx&&p.y<my],['低覆盖高成效','#75bff2',p=>p.x<mx&&p.y>=my],['高覆盖高成效','#4dcbbb',p=>p.x>=mx&&p.y>=my],['低覆盖低成效','#91a9c1',p=>p.x<mx&&p.y<my]];
-      svg.querySelectorAll('g[data-board-tip]').forEach((g,i)=>{const p=points[i],circle=g.querySelector('circle'),label=g.querySelector('text');if(!p)return;circle?.setAttribute('fill',groups.find(group=>group[2](p))[1]);if(label){label.textContent=p.name.replace(/市$/,'');label.setAttribute('y',Number(circle.getAttribute('cy'))-13)}});
+      svg.querySelectorAll('g[data-board-tip]').forEach((g,i)=>{const p=points[i],circle=g.querySelector('circle'),label=g.querySelector('text');if(!p)return;circle?.setAttribute('fill',groups.find(group=>group[2](p))[1]);if(label){label.textContent=p.name.replace(/(?:街道|镇)社区卫生服务中心$/,'').replace(/市$/,'');label.setAttribute('y',Number(circle.getAttribute('cy'))-13)}});
       details.className='clinic-quadrant-legend';
       const unit=clinicScatterUnitLabel();
       details.innerHTML=groups.map(([name,color,test],index)=>`<button type="button" data-clinic-quadrant="${index}"><i style="background:${color}"></i><span>${name}</span><b>${points.filter(test).length} ${unit}</b></button>`).join('');
@@ -3496,7 +3509,7 @@ dashboard=function(){
   const root=document.createElement('div');root.innerHTML=dashboardBeforeClinicScopeTags();
   if(state.dashboardView==='construction'){
     root.querySelectorAll('.construction-panel h2').forEach(heading=>{
-      if(/^(医防融合入径率|路径节点执行率)/.test(heading.textContent.trim())&&!heading.querySelector('.metric-scope-tag')) heading.insertAdjacentHTML('beforeend','<span class="metric-scope-tag scope-color-record">专</span>');
+      if(/^(医防融合入径率|路径节点执行率)/.test(heading.textContent.trim())&&!heading.querySelector('.metric-scope-tag')) heading.insertAdjacentHTML('beforeend','<span class="metric-scope-tag scope-color-integrated">一体化</span>');
     });
     const scatter=root.querySelector('.clinic-scatter');
     const frequency=root.querySelector('.frequency-responsive')?.closest('.construction-panel');
@@ -3535,6 +3548,7 @@ const chartResizeObserver = new ResizeObserver(entries => entries.forEach(({targ
   if (!contentRect.width || !contentRect.height) return;
   let source = chartGeometry.get(svg);
   if (!source) {
+    if(svg.closest('.clinic-scatter'))svg.querySelectorAll('.construction-grid text[text-anchor="middle"]').forEach(text=>text.dataset.scatterTick='x');
     const box = svg.getAttribute('viewBox').trim().split(/\s+/).map(Number);
     const elements = [...svg.querySelectorAll('line, text, circle, rect, polyline, polygon')].map(el => ({el, attrs: Object.fromEntries(['x','x1','x2','cx','width','y','y1','y2','cy','height','points'].filter(name => el.hasAttribute(name)).map(name => [name, el.getAttribute(name)]))}));
     source = {box, elements}; chartGeometry.set(svg, source);
@@ -3546,7 +3560,7 @@ const chartResizeObserver = new ResizeObserver(entries => entries.forEach(({targ
       el.setAttribute(name, value.trim().split(/\s+/).map(pair => {const [x,y] = pair.split(',').map(Number); return `${(x-left)*sx},${(y-top)*sy}`}).join(' '));
     } else if (['x','x1','x2','cx'].includes(name)) el.setAttribute(name, svg.closest('.clinic-scatter')?46+(Number(value)-left)*(contentRect.width-46)/width:(Number(value)-left)*sx);
     else if (['y','y1','y2','cy'].includes(name)) el.setAttribute(name, svg.closest('.clinic-scatter')?12+(Number(value)-30)*Math.max(.1,(contentRect.height-42)/165):(Number(value)-top)*sy);
-    else el.setAttribute(name, Number(value)*(name === 'width' ? sx : sy));
+    else el.setAttribute(name, Number(value)*(svg.closest('.clinic-scatter')?(name === 'width'?(contentRect.width-46)/width:Math.max(.1,(contentRect.height-42)/165)):(name === 'width' ? sx : sy)));
   }));
   svg.querySelectorAll('path').forEach(path => path.setAttribute('transform', `scale(${sx} ${sy}) translate(${-left} ${-top})`));
   const axisLabels=svg.querySelectorAll('.scatter-axis-label');
@@ -3554,8 +3568,12 @@ const chartResizeObserver = new ResizeObserver(entries => entries.forEach(({targ
     const y=axisLabels[0], x=axisLabels[1];
     const axisX=20,axisY=contentRect.height*.45;
     y.setAttribute('x', String(axisX)); y.setAttribute('y', String(axisY));
-    y.setAttribute('transform',`rotate(-90 ${axisX} ${axisY})`);
+    y.removeAttribute('transform');
     x.setAttribute('y', String(contentRect.height-4));
+  }
+  if(svg.closest('.clinic-scatter')){
+    svg.querySelectorAll('g[data-board-tip]').forEach(group=>{const circle=group.querySelector('circle'),label=group.querySelector('text');if(!circle||!label)return;const cx=Number(circle.getAttribute('cx')),cy=Number(circle.getAttribute('cy'));label.setAttribute('x',cx);label.setAttribute('text-anchor',cx>contentRect.width-55?'end':cx<75?'start':'middle');label.setAttribute('y',cy<30?cy+18:cy-13)});
+    const ticks=[...svg.querySelectorAll('.construction-grid text[data-scatter-tick="x"]')];if(ticks.length){ticks[0].setAttribute('text-anchor','start');ticks[ticks.length-1].setAttribute('text-anchor','end')}
   }
 }));
 function observeClinicCharts() {
@@ -3631,7 +3649,7 @@ dashboard=function(){
   const root=document.createElement('div');root.innerHTML=dashboardForNovemberGrid();
   const board=root.querySelector('#dashboardBoard');
   if(board&&situationActive()){
-    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*330/367.5,low=Math.max(0,assessed-risk.high-risk.middle);
+    const p=populationData(),risk=homeRisk(currentNode()),assessed=p.managed*.5,low=Math.max(0,assessed-risk.high-risk.middle);
     const cards=board.querySelector('.situation-kpis'),fourth=cards?.children[3];
     if(fourth){fourth.querySelector('strong').innerHTML=`${risk.middle.toFixed(1)}<em class="board-kpi-unit">万人</em>`;fourth.querySelector('span').innerHTML='中风险患者数 <b class="metric-scope-tag">专</b>';fourth.insertAdjacentHTML('afterend',`<div class="board-kpi"><strong>${low.toFixed(1)}<em class="board-kpi-unit">万人</em></strong><span>低风险患者数 <b class="metric-scope-tag">专</b></span></div>`)}
     const chart=board.querySelector('.responsive-risk-chart');
@@ -3644,6 +3662,30 @@ dashboard=function(){
   return root.innerHTML;
 };
 pages.dashboard=dashboard;
+render();
+
+// Apply the same detail and comparison conventions across dashboard views.
+const dashboardBeforeDetailReview=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeDetailReview();
+  const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
+  board.querySelectorAll('.home-target-item').forEach(row=>{const value=row.querySelector('.home-target-actual'),name=row.querySelector('.home-target-label span')?.textContent.trim();if(value&&name){value.classList.add('metric-detail-trigger');value.dataset.detailLabel=`${name}控制率`;value.setAttribute('role','button');value.setAttribute('tabindex','0');value.setAttribute('aria-label',`${name}控制率，查看区域明细`)}});
+  board.querySelectorAll('.home-population-distribution .situation-bars > div').forEach((row,i)=>{const value=row.querySelector('strong');if(value&&i===0)value.dataset.detailLabel='3病叠加人数'});
+  board.querySelectorAll('.unified-coverage-legend > div').forEach(row=>{const name=row.querySelector('.coverage-name,.clinic-photo-link')?.textContent.trim(),value=row.querySelector('.coverage-count strong');if(value&&name)value.dataset.detailLabel=name});
+  const key=state.clinicScatterMetric||'bloodPressure',points=clinicScatterPoints(key),provinceX=constructionValue(null,'construction'),provinceY=homeMapValue(null,key);
+  board.querySelectorAll('.clinic-scatter svg g[data-board-tip]').forEach((g,i)=>{const p=points[i];if(!p){g.remove();return}g.dataset.tipRows=JSON.stringify([p.name,['覆盖率',`${p.x.toFixed(2)}%`],['覆盖率省均值',`${provinceX.toFixed(2)}%`],['控制率',`${p.y.toFixed(2)}%`],['控制率省均值',`${provinceY.toFixed(2)}%`]]);const label=g.querySelector('text');if(label&&/第\d+(?:社区卫生服务中心|乡镇卫生院)/.test(p.name))label.textContent=p.name.replace(/^.*?(?:市|区|县)/,'').replace(/（演示）/,'')});
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+const showModalBeforeDetailReview=HTMLDialogElement.prototype.showModal;
+HTMLDialogElement.prototype.showModal=function(){
+  if(this.matches('.home-summary-dialog:not(.clinic-quadrant-dialog)')){
+    this.querySelectorAll('.summary-detail-table').forEach(table=>{const headers=[...table.querySelectorAll('thead th')],index=headers.findIndex(th=>th.textContent.trim()==='省均值');if(index>=0)table.querySelectorAll('tr').forEach(row=>row.children[index]?.remove())});
+    this.querySelectorAll('section').forEach(section=>{const table=section.querySelector('.summary-detail-table'),average=Number(section.querySelector('.summary-average')?.textContent.match(/[\d.]+/)?.[0]),action=section.querySelector('.summary-action');if(!table||!action||!Number.isFinite(average))return;const rows=[...table.querySelectorAll('tbody tr')].map(row=>({name:row.cells[0]?.textContent.trim(),value:parseFloat(row.cells[1]?.textContent)})).filter(row=>row.name&&Number.isFinite(row.value));const groups=[['高于',rows.filter(r=>Math.round((r.value-average)*100)>0)],['等于',rows.filter(r=>Math.round((r.value-average)*100)===0)],['低于',rows.filter(r=>Math.round((r.value-average)*100)<0)]];action.innerHTML=groups.map(([name,items])=>`${name}省均值的有 ${items.length} 个区域${items.length?`，分别是 ${items.map(item=>esc(item.name)).join('、')}`:''}。`).join('<br>')});
+    this.querySelectorAll('h3').forEach(h=>{if(h.firstChild?.nodeType===Node.TEXT_NODE)h.firstChild.nodeValue=h.firstChild.nodeValue.replace('共病负担','共病患者占确诊患者的比例')});
+  }
+  return showModalBeforeDetailReview.call(this);
+};
 render();
 
 // Apply the latest dashboard annotations after the existing view-specific renderers.
@@ -3812,7 +3854,8 @@ dashboard=function(){
     const percent=raw.match(/(?:占[^\d；，]*|占比\s*)([\d.]+)%/)?.[1];
     if(!name||!count||percent==null)return;
     const category=el.closest('.situation-bars')?'占重点慢病患者占比':el.closest('.risk-disease-matrix')?'占该病种专档患者':el.closest('.situation-risk-matrix')?'占该叠加类型':'占比';
-    el.dataset.boardTip=raw;el.dataset.tipRows=JSON.stringify([name,['人数',count],[category,Number(percent).toFixed(2)+'%']]);
+    el.dataset.boardTip=raw;el.dataset.tipRows=JSON.stringify(el.closest('.risk-disease-matrix')?[name,['人数',count]]:[name,['人数',count],[category,Number(percent).toFixed(2)+'%']]);
+    if(el.closest('.risk-disease-matrix'))el.removeAttribute('title');
     const matrixColors=el.closest('.risk-disease-matrix')?['#75344c','#967949','#275fae']:['#275fae','#967949','#75344c'];
     const matrixIndex=[0,1,2].find(i=>el.classList.contains(`risk-cell-${i}`));
     el.dataset.tipColor=el.querySelector('i b, .risk-composition-track b, i[style]')?.style.backgroundColor||el.style.backgroundColor||(matrixIndex==null?'#63baff':matrixColors[matrixIndex]);
@@ -3861,6 +3904,7 @@ render();
 
 // Use reported values where available and reproducible demonstration values elsewhere.
 function metricDetailLabel(el){
+  if(el.dataset.detailLabel)return el.dataset.detailLabel;
   const kpi=el.closest('.board-kpi'),row=el.closest('.construction-nodes > div,.situation-filing-cards > div,.situation-ring-legend > div,.coverage-composition-legend > div,.outcome-ring-item,.funnel-row');
   const source=kpi?.querySelector(':scope > span')||row?.querySelector('span')||el.closest('.board-panel,.outcome-detail-panel,.outcome-metric-column')?.querySelector('h2')||el.parentElement;
   const copy=source?.cloneNode(true);copy?.querySelectorAll('.metric-scope-tag,.scope-tag,button,strong,b,small').forEach(node=>node.remove());
@@ -3874,6 +3918,12 @@ function metricDetailValue(label,region){
   }
   if(!node)return null;
   const report=clinicReportRow(node);
+  if(label==='基本保障')return report?`${report[1]} 家`:null;
+  if(label==='专档患者数')return `${populationFor(node).managed.toFixed(2)} 万人`;
+  if(label==='风险分层人数')return `${(populationFor(node).managed*.5).toFixed(2)} 万人`;
+  if(label==='3病叠加人数')return `${diseaseCombinations(populationFor(node))[6].value.toFixed(2)} 万人`;
+  const controlKeys={'血压控制率':'bloodPressure','血糖控制率':'bloodGlucose','血脂控制率':'bloodLipids','糖化血红蛋白控制率':'hba1cTarget'};
+  if(controlKeys[label])return `${homeMapValue(node,controlKeys[label]).toFixed(2)}%`;
   if(/一体化门诊(?:总数|机构数)|已建成一体化门诊机构数/.test(label))return report?`${report[1]+report[2]+report[3]} 家`:null;
   if(label.includes('一体化门诊覆盖率'))return report?`${((report[1]+report[2]+report[3])/report[0]*100).toFixed(2)}%`:null;
   if(label==='基层机构总数')return report?`${report[0]} 家`:null;
@@ -3886,14 +3936,21 @@ showMetricDetail=function(el){
   const riskContext=index>=4?{category:cells[4+Math.floor((index-4)/4)*4]?.textContent.trim(),level:cells[1+(index-4)%4]?.textContent.trim(),disease:matrix.classList.contains('risk-disease-matrix')}:null;
   const label=riskContext?`${riskContext.category} · ${riskContext.level}`:metricDetailLabel(el),data=window.RESIDENT_POPULATION||{},dialog=document.createElement('dialog');
   dialog.className='metric-detail-dialog';document.body.append(dialog);
-  const selectedText=(el.querySelector('title')?.textContent||el.textContent||'').replace(/,/g,''),match=selectedText.match(/-?\d+(?:\.\d+)?/),selectedValue=match?Math.abs(Number(match[0])):50;
-  const isRate=selectedText.includes('%')||/率|占比|比例/.test(label),unit=isRate?'%':(selectedText.match(/万人|万次|万份|人次|家|人|次|万/)||[''])[0];
+  const selectedText=(el.dataset.detailValue||el.querySelector('title')?.textContent||el.textContent||'').replace(/,/g,''),match=selectedText.match(/-?\d+(?:\.\d+)?/),provinceValues={'全口径患者数':1850,'专档患者数':748.5,'风险分层人数':374.25,'高风险患者数':149.7,'中风险患者数':135,'低风险患者数':89.55},selectedValue=!currentNode()&&provinceValues[label]!=null?provinceValues[label]:match?Number(match[0]):50;
+  const isRate=!selectedText.includes('pp')&&(selectedText.includes('%')||/率|占比|比例/.test(label)),unit=isRate?'%':(selectedText.match(/万人|万次|万份|人次|pp|家|人|次|万/)||[''])[0];
   let path=[];
+  if(el.dataset.outcomeDetail&&currentNode()){
+    const node=currentNode();
+    if(node.cityName)path=[{name:node.cityName,detailValue:selectedValue},{name:node.name,detailValue:selectedValue}];
+    else if(cities.some(city=>city.name===node.name))path=[{name:node.name,detailValue:selectedValue}];
+  }
+  if(el.dataset.detailRegion){const city=cities.find(item=>item.name===el.dataset.detailRegion||item.name===`${el.dataset.detailRegion}市`);if(city)path=[{name:city.name,detailValue:selectedValue}]}
   function rows(){
     if(!path.length)return cities.map(node=>({level:'city',name:node.name,node}));
     const city=path[0].name;
     if(path.length===1){
       const names=new Set([...counties.filter(node=>node.cityName===city).map(node=>node.name),...Object.keys(data.counties||{}).filter(key=>key.startsWith(city+'/')).map(key=>key.slice(city.length+1))]);
+      names.delete('西湖风景名胜区');
       return [...names].map(name=>({level:'county',city,name,node:counties.find(node=>node.cityName===city&&node.name===name)}));
     }
     const county=path[1].name,prefix=`${city}/${county}/`,names=new Set(Object.keys(data.towns||{}).filter(key=>key.startsWith(prefix)).map(key=>key.slice(prefix.length)));
@@ -3909,35 +3966,44 @@ showMetricDetail=function(el){
   function valuesFor(items){
     const parent=path.length?path[path.length-1].detailValue:selectedValue,rawWeights=items.map(numericWeight),knownWeights=rawWeights.filter(Number.isFinite),fallbackWeight=knownWeights.length?knownWeights.reduce((a,b)=>a+b,0)/knownWeights.length:1,weights=rawWeights.map(value=>value??fallbackWeight),total=weights.reduce((a,b)=>a+b,0)||1;
     const variations=items.map(item=>stableVariation(`${item.city||''}/${item.county||''}/${item.name}`)),mean=variations.reduce((sum,v,i)=>sum+v*weights[i]/total,0);
+    const ratioBase={'全口径患者数':1850/6700.9,'专档患者数':748.5/1850,'风险分层人数':374.25/748.5,'高风险患者数':149.7/374.25,'中风险患者数':135/374.25,'低风险患者数':89.55/374.25}[label];
+    const adjusted=weights.map((weight,i)=>weight*(1+.16*(variations[i]-mean))),adjustedTotal=adjusted.reduce((a,b)=>a+b,0)||1;
     return items.map((item,i)=>{
+      if(ratioBase){const denominator=(path.length?path[path.length-1].detailDenominator:selectedValue/ratioBase)*weights[i]/total,value=parent*adjusted[i]/adjustedTotal;return {value,denominator,display:`${value.toFixed(2)} 万人`}}
       if(riskContext&&!item.node)return {value:0,display:'待接入'};
       if(riskContext&&item.node){
         const p=populationFor(item.node),risk=homeRisk(item.node),parts=diseaseCombinations(p),total=parts.reduce((sum,part)=>sum+part.value,0);
         const group=riskContext.disease?({'高血压':p.managedHigh,'糖尿病':p.managedDiabetes,'慢阻肺':p.managedCopd}[riskContext.category]||0):riskContext.category==='3病叠加'?parts[6].value:riskContext.category==='2病共患'?parts.slice(3,6).reduce((sum,part)=>sum+part.value,0):parts.slice(0,3).reduce((sum,part)=>sum+part.value,0);
         const level=({'高风险':risk.high,'中风险':risk.middle,'低风险':risk.low})[riskContext.level]||0;
         const denominator=riskContext.disease?p.managed:total,value=group*level/Math.max(.0001,denominator),pct=value/Math.max(.0001,group)*100;
-        return {value,display:`${value.toFixed(2)} 万人 · ${pct.toFixed(2)}%`};
+        return {value,display:`${value.toFixed(2)} 万人`};
+      }
+      if(label.includes('血脂')&&isRate&&unit!=='pp'){
+        const value=Math.max(20,Math.min(30,parent+(variations[i]-mean)*2));
+        return {value,display:`${value.toFixed(2)} %`};
       }
       const known=metricDetailValue(label,item);
       if(known){const value=Number(known.replace(/,/g,'').match(/-?\d+(?:\.\d+)?/)?.[0]);return {display:known,value:Number.isFinite(value)?value:parent}}
-      const value=isRate?Math.max(0,Math.min(100,parent+(variations[i]-mean)*Math.min(8,parent*.18,(100-parent)*.18))):parent*weights[i]/total;
+      const value=unit==='pp'?parent+(variations[i]-mean)*2:isRate?Math.max(0,Math.min(100,parent+(variations[i]-mean)*Math.min(8,parent*.18,(100-parent)*.18))):parent*weights[i]/total;
       const townResident=label.includes('常住人口')&&item.level==='town',shown=townResident?value*10000:value,shownUnit=townResident?'人':unit;
       const digits=isRate?2:shownUnit==='家'||shownUnit==='人'||shownUnit==='人次'?0:2;
       return {value,display:`${shown.toFixed(digits)}${shownUnit?' '+shownUnit:''}`};
     });
   }
   function draw(){
-    const items=rows(),values=valuesFor(items);
+    const items=rows(),values=valuesFor(items),ratioLabel=({'全口径患者数':'占常住人口比例','专档患者数':'建档率','风险分层人数':'占专档比例','高风险患者数':'占风险分层比例','中风险患者数':'占风险分层比例','低风险患者数':'占风险分层比例'})[label]||null;
+    const ratios=items.map((item,i)=>ratioLabel?values[i].value/Math.max(.000001,values[i].denominator)*100:values[i].value);
+    const order=items.map((_,i)=>i).sort((a,b)=>ratios[b]-ratios[a]);
     const resident=label.includes('常住人口'),level=path.length===0?'地市':path.length===1?'区县':'乡镇街道',max=Math.max(1,...values.map(item=>item.value)),periods=[...new Set(values.map(item=>item.display.match(/（(.+)）$/)?.[1]).filter(Boolean))],period=periods.length===1?periods[0]:'',displayUnit=resident?(path.length===2?'人':'万人'):unit;
-    const rowMarkup=(item,i)=>{const entry=values[i],number=resident?entry.display.replace(/\s*(?:万人|人)\s*(?:（.+）)?$/,'').replace(/,/g,''):entry.display,bar=Math.max(0,Math.min(100,entry.value/max*100)),name=`<span class="metric-region-name">${esc(item.name)}</span><span class="metric-value-track" aria-hidden="true"><i style="width:${bar}%"></i></span><strong>${esc(number)}${resident&&!period&&entry.display.match(/（(.+)）$/)?`<small>${esc(entry.display.match(/（(.+)）$/)[1])}</small>`:''}</strong>`;return item.level!=='town'?`<button class="metric-detail-row" type="button" data-detail-index="${i}" aria-label="${esc(item.name)} ${esc(entry.display)}，查看下级区域">${name}</button>`:`<div class="metric-detail-row">${name}</div>`};
-    dialog.innerHTML=`<header><h2><b>${esc(label)}</b><span>${level}明细</span></h2><button type="button" data-detail-close aria-label="关闭">×</button></header><div class="metric-detail-content">${path.length?`<div class="metric-detail-meta"><nav aria-label="区域层级"><button type="button" data-detail-back="0">浙江省</button>${path.map((item,i)=>`<span> / </span><button type="button" data-detail-back="${i+1}">${esc(item.name)}</button>`).join('')}</nav></div>`:''}<div class="metric-detail-section-title"><strong>${level}明细</strong>${displayUnit&&!riskContext?`<span>单位：${esc(displayUnit)}</span>`:''}</div><div class="metric-detail-table"><div class="metric-detail-row metric-detail-heading"><span>${level}</span><span>${resident?'人口规模':'数值规模'}</span><span>${riskContext?'人数 · 占比':esc(label)}</span></div>${items.length?items.map(rowMarkup).join(''):'<p class="metric-detail-empty">暂无下级区域数据</p>'}</div><footer class="metric-detail-footer"><span>${riskContext?`演示数据：${esc(riskContext.category)}专档患者中${esc(riskContext.level)}人数及占比`:`统计口径：${esc(label)}`}</span><span>已展示全部 ${items.length} 个${level}</span></footer></div>`;
+    const rowMarkup=(item,i)=>{const entry=values[i],number=resident?entry.display.replace(/\s*(?:万人|人)\s*(?:（.+）)?$/,'').replace(/,/g,''):entry.display,bar=Math.max(0,Math.min(100,ratioLabel?ratios[i]:entry.value/max*100)),name=`<span class="metric-region-name">${esc(item.name)}</span><span class="metric-value-track" aria-label="${ratioLabel||'数值规模'} ${bar.toFixed(2)}%"><i style="width:${bar}%"></i>${ratioLabel?`<small>${ratios[i].toFixed(2)}%</small>`:''}</span><strong>${esc(number)}${resident&&!period&&entry.display.match(/（(.+)）$/)?`<small>${esc(entry.display.match(/（(.+)）$/)[1])}</small>`:''}</strong>`;return item.level!=='town'?`<button class="metric-detail-row" type="button" data-detail-index="${i}" aria-label="${esc(item.name)} ${esc(entry.display)}，查看下级区域">${name}</button>`:`<div class="metric-detail-row">${name}</div>`};
+    dialog.innerHTML=`<header><h2><b>${esc(label)}</b><span>${level}明细</span></h2><button type="button" data-detail-close aria-label="关闭">×</button></header><div class="metric-detail-content">${path.length?`<div class="metric-detail-meta"><nav aria-label="区域层级"><button type="button" data-detail-back="0">浙江省</button>${path.map((item,i)=>`<span> / </span><button type="button" data-detail-back="${i+1}">${esc(item.name)}</button>`).join('')}</nav></div>`:''}<div class="metric-detail-section-title"><strong>${level}明细</strong>${displayUnit&&!riskContext?`<span>单位：${esc(displayUnit)}</span>`:''}</div><div class="metric-detail-table"><div class="metric-detail-row metric-detail-heading"><span>${level}</span><span>${ratioLabel|| (resident?'人口规模':'数值规模')}</span><span>${riskContext?'人数':esc(label)}</span></div>${items.length?order.map(i=>rowMarkup(items[i],i)).join(''):'<p class="metric-detail-empty">暂无下级区域数据</p>'}</div><footer class="metric-detail-footer"><span>${riskContext?`演示数据：${esc(riskContext.category)}专档患者中${esc(riskContext.level)}人数`:`演示数据：${esc(label)}`}</span><span>已展示全部 ${items.length} 个${level}</span></footer></div>`;
     if(period)dialog.querySelector('.metric-detail-footer span')?.append(`；数据年份：${period}`);
     dialog.querySelector('.metric-detail-table').scrollTop=0;
   }
   dialog.addEventListener('click',event=>{
     if(event.target.closest('[data-detail-close]')){dialog.close();return}
     const back=event.target.closest('[data-detail-back]');if(back){path=path.slice(0,Number(back.dataset.detailBack));draw();return}
-    const row=event.target.closest('[data-detail-index]');if(row){const items=rows(),index=Number(row.dataset.detailIndex),item=items[index];if(item){item.detailValue=valuesFor(items)[index].value;path.push(item);draw()}}
+    const row=event.target.closest('[data-detail-index]');if(row){const items=rows(),index=Number(row.dataset.detailIndex),item=items[index];if(item){const entry=valuesFor(items)[index];item.detailValue=entry.value;item.detailDenominator=entry.denominator;path.push(item);draw()}}
   });
   dialog.addEventListener('close',()=>dialog.remove());draw();dialog.showModal();
 };
@@ -4010,7 +4076,12 @@ function clinicScatterUnits(){
   const node=currentNode();
   if(!node)return cities;
   if(state.city.startsWith('city:'))return counties.filter(item=>item.cityName===node.name);
-  if(state.city.startsWith('county:'))return clinics.filter(item=>item.adcode===node.adcode);
+  if(state.city.startsWith('county:')){
+    const items=clinics.filter(item=>item.adcode===node.adcode);
+    const names=['杭州市','温州市'].includes(node.cityName)&&demoClinicNames[node.name];
+    if(names&&items.length)return names.map((name,i)=>({...items[i%items.length],name:`${name}社区卫生服务中心`,clinicIndex:i+1}));
+    return items;
+  }
   if(state.city.startsWith('consortium:'))return clinics.filter(item=>item.consortiumName===node.name);
   return [node];
 }
@@ -4018,18 +4089,25 @@ function clinicScatterUnitLabel(){
   return !currentNode()?'市':state.city.startsWith('city:')?'区县':'机构';
 }
 function clinicScatterPoints(key){
-  return clinicScatterUnits().map(node=>({name:node.name,x:constructionValue(node,'construction'),y:homeMapValue(node,key)})).filter(point=>Number.isFinite(point.x)&&Number.isFinite(point.y));
+  const units=clinicScatterUnits(),isClinicLevel=!!currentNode()&&(state.city.startsWith('county:')||state.city.startsWith('consortium:'));
+  return units.map((node,i)=>{
+    if(!isClinicLevel)return {name:node.name,x:constructionValue(node,'construction'),y:homeMapValue(node,key)};
+    const parent=counties.find(county=>county.adcode===node.adcode),base=homeMapValue(parent||node,key);
+    return {name:node.name,x:Math.max(0,Math.min(100,88+(i%4)*3.2+Math.floor(i/4)*.5)),y:Math.max(0,Math.min(100,base-5+((i*5)%12)*.9))};
+  }).filter(point=>Number.isFinite(point.x)&&Number.isFinite(point.y));
 }
 document.addEventListener('click',event=>{
   const button=event.target.closest?.('[data-clinic-quadrant]');
   if(!button)return;
-  const key=state.clinicScatterMetric||'bloodPressure',points=clinicScatterPoints(key),mx=constructionValue(currentNode(),'construction'),my=homeMapValue(currentNode(),key);
+  const key=state.clinicScatterMetric||'bloodPressure',points=clinicScatterPoints(key),mx=constructionValue(null,'construction'),my=homeMapValue(null,key);
   const groups=[['高覆盖低成效',p=>p.x>=mx&&p.y<my],['低覆盖高成效',p=>p.x<mx&&p.y>=my],['高覆盖高成效',p=>p.x>=mx&&p.y>=my],['低覆盖低成效',p=>p.x<mx&&p.y<my]];
   const group=groups[Number(button.dataset.clinicQuadrant)];if(!group)return;
-  const items=points.filter(group[1]),metric=({bloodPressure:'血压',bloodGlucose:'血糖',hba1cTarget:'糖化血红蛋白',bloodLipids:'血脂'})[key]||'血压';
+  const items=points.filter(group[1]).sort((a,b)=>b.x-a.x),metric=({bloodPressure:'血压',bloodGlucose:'血糖',hba1cTarget:'糖化血红蛋白',bloodLipids:'血脂'})[key]||'血压';
   const dialog=document.createElement('dialog');dialog.className='home-summary-dialog clinic-quadrant-dialog';
   dialog.innerHTML=`<header><h2>${esc(group[0])} · ${esc(regionLabel())}明细</h2><button type="button" data-summary-close aria-label="关闭">×</button></header><div class="home-summary-body"><div class="summary-table-wrap"><table class="summary-detail-table"><thead><tr><th>区域名称</th><th>一体化门诊覆盖率</th><th>${esc(metric)}控制率</th></tr></thead><tbody>${items.length?items.map(item=>`<tr><td>${esc(item.name)}</td><td>${item.x.toFixed(2)}%</td><td>${item.y.toFixed(2)}%</td></tr>`).join(''):'<tr><td colspan="3">暂无符合条件的区域</td></tr>'}</tbody></table></div></div>`;
   (document.fullscreenElement||document.body).append(dialog);dialog.addEventListener('click',e=>{if(e.target.closest('[data-summary-close]'))dialog.close()});dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
+  const headers=dialog.querySelectorAll('th');let sortKey='x',descending=true;
+  [1,2].forEach((column)=>{const button=document.createElement('button');button.type='button';button.className='summary-sort';button.textContent=' ↕';button.setAttribute('aria-label',`按${headers[column].textContent}排序`);headers[column].append(button);button.addEventListener('click',()=>{const next=column===1?'x':'y';descending=sortKey===next?!descending:true;sortKey=next;const body=dialog.querySelector('tbody');if(!items.length)return;items.sort((a,b)=>(descending?b[sortKey]-a[sortKey]:a[sortKey]-b[sortKey]));body.innerHTML=items.map(item=>`<tr><td>${esc(item.name)}</td><td>${item.x.toFixed(2)}%</td><td>${item.y.toFixed(2)}%</td></tr>`).join('')})});
 });
 
 // Keep dashboard dialogs within the visible screen, including fullscreen mode.
@@ -4056,3 +4134,286 @@ document.addEventListener('click',event=>{
     dialog.addEventListener('close',()=>{window.removeEventListener('resize',position);window.removeEventListener('scroll',position,true);document.removeEventListener('fullscreenchange',position)},{once:true});
   };
 }
+
+// Province overview values requested for the demonstration.
+const dashboardBeforeOverviewCorrections=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeOverviewCorrections();
+  const board=root.querySelector('#dashboardBoard');if(!board||!homeView())return root.innerHTML;
+  const targetBars=board.querySelector('.home-control-strip .home-target-bars');
+  if(targetBars)targetBars.insertAdjacentHTML('afterbegin','<div class="home-target-heading"><span>控制率</span><span>偏差 / 个百分点</span></div>');
+  board.querySelectorAll('.home-target-item').forEach(item=>{
+    const label=item.querySelector('.home-target-label'),difference=label?.querySelector('small'),goal=item.querySelector('.home-target-goal-label'),chart=item.querySelector('.home-target-chart');
+    if(label&&difference&&goal&&chart){chart.append(goal);difference.textContent=difference.textContent.replace(/差距\s*/, '').replace(/\s*个百分点/, '');item.append(difference);difference.classList.add('home-target-difference')}
+  });
+  board.querySelectorAll('.board-kpis > .board-kpi').forEach(card=>{
+    const label=card.querySelector(':scope > span');
+    if(label&&/基层就诊人次|一体化门诊服务人次/.test(label.textContent)&&!card.querySelector('.metric-scope-tag'))card.insertAdjacentHTML('beforeend','<b class="metric-scope-tag scope-color-integrated" title="一体化口径：一体化管理的专档患者">一体化</b>');
+  });
+  const legend=board.querySelector('.board-scope-legend'),fullscreen=legend?.querySelector('.board-fullscreen');
+  if(legend&&fullscreen){const year=document.createElement('select');year.className='board-year';year.setAttribute('aria-label','选择年份');year.innerHTML=['2025','2026'].map(y=>`<option value="${y}" ${state.year===y?'selected':''}>${y}年</option>`).join('');legend.insertBefore(year,fullscreen)}
+  const node=currentNode(),weight=node?node.should/sum(cities,'should'):1,yearFactor=state.year==='2025'?.91:1,factor=weight*yearFactor;
+  const display=(n,digits=2)=>node||yearFactor!==1?(n*factor).toFixed(digits).replace(/\.?0+$/,''):String(n);
+  const values={'全口径患者数':display(1850),'专档患者数':display(748.5),'风险分层人数':display(374.25),'高风险患者数':display(149.7),'基层就诊人次':display(1800),'一体化门诊服务人次':display(1000)};
+  board.querySelectorAll('.board-kpis > .board-kpi').forEach(card=>{
+    const label=card.querySelector(':scope > span')?.childNodes[0]?.textContent.trim(),value=values[label],strong=card.querySelector(':scope > strong');
+    if(value&&strong&&strong.firstChild?.nodeType===Node.TEXT_NODE)strong.firstChild.nodeValue=value;
+    if(label==='一体化门诊服务人次')card.classList.add('integrated-service-kpi');
+  });
+  const data=[['1579.8','690','400'],['552.94','171.94','80'],['360.25','120','12.25'],['137.00','54.00','8.70']].map(row=>row.map(n=>factor===1?n:(Number(n)*factor).toFixed(2)));
+  board.querySelectorAll('.home-disease-table .disease-table-row').forEach((row,i)=>{
+    row.querySelectorAll(':scope > div').forEach((cell,j)=>{
+      const value=cell.querySelector('strong'),unit=cell.querySelector(':scope > small'),ratio=cell.querySelector('em');
+      if(value)value.textContent=data[i][j];
+      if(unit)unit.textContent='万人';
+      if(ratio&&i>0)ratio.textContent=`${['','建档率','占专档','占比'][i]} ${(Number(data[i][j])/Number(data[i-1][j])*100).toFixed(2)}%`;
+    });
+  });
+  const summary=board.querySelector('.home-disease-summary');
+  if(summary)summary.textContent=`高风险合计 ${data[3].reduce((sum,n)=>sum+Number(n),0).toFixed(2)} 万人，去重后 ${display(149.7)} 万人`;
+  const bars=board.querySelector('.home-population-distribution .situation-bars'),groups=[170,479.8,950,100.2,150],total=1850;
+  bars?.querySelectorAll(':scope > div').forEach((row,i)=>{
+    const amount=groups[i]*factor,pct=groups[i]/total*100,strong=row.querySelector('strong'),percent=row.querySelector('em'),bar=row.querySelector('i>b'),name=row.querySelector('span')?.textContent.trim()||'';
+    if(strong)strong.innerHTML=`${amount.toFixed(node?2:1)}<small>万人</small>`;
+    if(percent)percent.textContent=`${pct.toFixed(2)}%`;
+    if(bar)bar.style.width=`${pct}%`;
+    row.dataset.boardTip=`${name}；人数 ${amount.toFixed(2)}万人；占全口径患者 ${pct.toFixed(2)}%`;
+  });
+  const groupSummary=bars?.querySelector('p');if(groupSummary)groupSummary.textContent=`共病 ${((170+479.8)*factor).toFixed(1)}万人，单病 ${((950+100.2+150)*factor).toFixed(1)}万人`;
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+document.addEventListener('change',event=>{if(event.target.matches('.board-year')){state.year=event.target.value;const year=document.getElementById('year');if(year)year.value=state.year;render()}});
+
+// Shared demonstration totals for the overview and situation views.
+const populationForBeforeOverviewAlignment=populationFor;
+const populationDataBeforeOverviewAlignment=populationData;
+const homeRiskBeforeOverviewAlignment=homeRisk;
+const diseaseCombinationsBeforeOverviewAlignment=diseaseCombinations;
+function overviewDemoFactor(node){return (node?node.should/sum(cities,'should'):1)*(state.year==='2025'?.91:1)}
+function demoLocalDeviation(node){
+  if(!node)return 0;
+  const city=cities.find(c=>c.name===(node.cityName||node.name));
+  if(!city)return 0;
+  const centered=(items,item,score)=>{const total=items.reduce((s,x)=>s+x.should,0);return score(item)-items.reduce((s,x)=>s+x.should*score(x),0)/Math.max(1,total)};
+  const cityScore=c=>(cities.indexOf(c)%6-2.5)*.035;
+  let result=centered(cities,city,cityScore);
+  if(node.cityName){const siblings=counties.filter(c=>c.cityName===node.cityName),county=siblings.find(c=>c.adcode===node.adcode);if(county){const countyScore=c=>(siblings.indexOf(c)%5-2)*.025;result+=centered(siblings,county,countyScore)}}
+  if(node.clinicIndex||node.consortiumName){const members=scopeDescendants(node),siblings=clinics.filter(c=>c.adcode===node.adcode),score=c=>(c.clinicIndex%7-3)*.012;const mean=members.reduce((s,c)=>s+centered(siblings,c,score),0)/Math.max(1,members.length);result+=mean}
+  return result;
+}
+function alignedOverviewPopulation(node,original){
+  const f=overviewDemoFactor(node);
+  return {...original,diagnosed:1850*f,managed:748.5*f,high:1579.8*f,diabetes:690*f,copd:400*f,
+    managedHigh:552.94*f,managedDiabetes:171.94*f,managedCopd:80*f,overlap:649.8*f,coverage:748.5/1850*100,demoDeviation:demoLocalDeviation(node)};
+}
+populationFor=function(node){const original=populationForBeforeOverviewAlignment(node);return state.page==='dashboard'&&(homeView()||situationActive())?alignedOverviewPopulation(node,original):original};
+populationData=function(){const original=populationDataBeforeOverviewAlignment();return state.page==='dashboard'&&(homeView()||situationActive())?alignedOverviewPopulation(currentNode(),original):original};
+homeRisk=function(node){
+  if(state.page!=='dashboard'||(!homeView()&&!situationActive()))return homeRiskBeforeOverviewAlignment(node);
+  const f=overviewDemoFactor(node);
+  const high=(149.7+748.5*demoLocalDeviation(node)*.45)*f,middle=135*f;
+  return {high,middle,low:374.25*f-high-middle};
+};
+diseaseCombinations=function(p){
+  if(state.page!=='dashboard'||(!homeView()&&!situationActive()))return diseaseCombinationsBeforeOverviewAlignment(p);
+  const f=p.diagnosed/1850;
+  const deviation=p.demoDeviation||0,comorbid=1+deviation,single=1-deviation*649.8/1200.2;
+  return [['仅高血压',1,950],['仅糖尿病',2,100.2],['仅慢阻肺',4,150],['仅高血压+糖尿病',3,300],['仅高血压+慢阻肺',5,100],['仅糖尿病+慢阻肺',6,79.8],['高糖慢合并',7,170]].map(([name,bits,value])=>({name,bits,value:value*f*(bits===1||bits===2||bits===4?single:comorbid)}));
+};
+const dashboardBeforeRegionalPolish=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeRegionalPolish();
+  const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
+  const legend=board.querySelector('.board-scope-legend'),fullscreen=legend?.querySelector('.board-fullscreen');
+  if(legend){const labels=['全口径患者','有专档患者','一体化管理的专档患者'];legend.querySelectorAll(':scope > span:not(.board-legend-divider)').forEach((el,i)=>{if(labels[i]){const tag=el.querySelector('b');el.replaceChildren(tag,document.createTextNode(' '+labels[i]))}});
+    if(fullscreen&&!legend.querySelector('.board-year')){const year=document.createElement('select');year.className='board-year';year.setAttribute('aria-label','选择年份');year.innerHTML=['2025','2026'].map(y=>`<option value="${y}" ${state.year===y?'selected':''}>${y}年</option>`).join('');legend.insertBefore(year,fullscreen)}}
+  if(homeView()){
+    const p=populationData(),risk=homeRisk(currentNode()),f=overviewDemoFactor(currentNode());
+    const values={'全口径患者数':p.diagnosed,'专档患者数':p.managed,'风险分层人数':p.managed*.5,'高风险患者数':risk.high};
+    board.querySelectorAll('.board-kpis > .board-kpi').forEach(card=>{const key=card.querySelector(':scope > span')?.childNodes[0]?.textContent.trim(),strong=card.querySelector(':scope > strong');if(values[key]!=null&&strong?.firstChild?.nodeType===Node.TEXT_NODE)strong.firstChild.nodeValue=Number(values[key].toFixed(2)).toString()});
+    const rows=board.querySelectorAll('.home-population-distribution .situation-bars > div'),parts=diseaseCombinations(p),groups=[parts[6].value,parts.slice(3,6).reduce((s,x)=>s+x.value,0),...parts.slice(0,3).map(x=>x.value)];
+    rows.forEach((row,i)=>{const n=groups[i],pct=n/p.diagnosed*100,strong=row.querySelector('strong'),em=row.querySelector('em'),bar=row.querySelector('i>b');if(strong)strong.innerHTML=`${n.toFixed(currentNode()?2:1)}<small>万人</small>`;if(em)em.textContent=`${pct.toFixed(2)}%`;if(bar)bar.style.width=`${pct}%`;row.dataset.boardTip=`${row.querySelector('span')?.textContent.trim()}；人数 ${n.toFixed(2)}万人；占全口径患者 ${pct.toFixed(2)}%`});
+    const summary=board.querySelector('.home-population-distribution .situation-bars p');if(summary)summary.textContent=`共病 ${(groups[0]+groups[1]).toFixed(1)}万人，单病 ${(groups[2]+groups[3]+groups[4]).toFixed(1)}万人`;
+    const highSummary=board.querySelector('.home-disease-summary');if(highSummary)highSummary.textContent=`高风险合计 ${(199.7*f).toFixed(2)} 万人，去重后 ${Number(risk.high.toFixed(2))} 万人`;
+    const heading=board.querySelector('.home-target-heading');if(heading)heading.innerHTML='<span>控制率</span><span>当前值</span><span>目标值</span><span>偏差 (pp)</span>';
+    board.querySelectorAll('.home-target-item').forEach(row=>{const chart=row.querySelector('.home-target-chart'),track=row.querySelector('.home-target-track'),goal=row.querySelector('.home-target-goal-label'),actual=track?.querySelector('b'),label=row.querySelector('.home-target-label span');if(label)label.textContent=label.textContent.replace(/控制率/g,'');if(chart&&track&&goal&&actual){const block=document.createElement('div');block.className='home-target-current';goal.textContent=goal.textContent.replace(/目标\s*/,'');block.append(goal);chart.after(block);const value=document.createElement('strong');value.className='home-target-actual';value.textContent=actual.textContent;chart.append(value)}});
+  }
+  if(situationActive()){
+    board.querySelectorAll('.situation-risk-matrix .risk-cell small').forEach(el=>el.remove());
+    const matrix=board.querySelector('.situation-risk-matrix:not(.risk-disease-matrix)');
+    if(matrix){const cells=[...matrix.children],risk=homeRisk(currentNode()),totals=[0,1,2].map(i=>cells.slice(5+i*4,8+i*4).reduce((s,c)=>s+(parseFloat(c.textContent)||0),0)),sum=totals.reduce((s,n)=>s+n,0);if(sum>0){const high=[totals[0]*.7,totals[1]*.5,0];high[2]=Math.max(0,risk.high-high[0]-high[1]);const remaining=totals.map((n,i)=>Math.max(0,n-high[i])),remainingTotal=remaining.reduce((s,n)=>s+n,0);totals.forEach((n,i)=>{const values=[high[i],remaining[i]*risk.middle/Math.max(.0001,remainingTotal),remaining[i]*risk.low/Math.max(.0001,remainingTotal)];cells.slice(5+i*4,8+i*4).forEach((cell,j)=>{const label=cells[4+i*4].textContent.trim(),level=['高风险','中风险','低风险'][j],value=values[j];cell.innerHTML=`<strong>${value.toFixed(1)}万</strong>`;cell.dataset.boardTip=`${label} · ${level}；人数 ${value.toFixed(2)}万人`;cell.dataset.tipRows=JSON.stringify([`${label} · ${level}`,['人数',`${value.toFixed(2)}万人`]])})})}}
+    const ranking=board.querySelector('.situation-risk-ranking');const title=ranking?.querySelector('.risk-ranking-heading span:last-child');if(title)title.textContent='偏差';
+    ranking?.querySelectorAll('.risk-ranking-row').forEach(row=>{const value=row.querySelector('.risk-ranking-value'),difference=row.querySelector(':scope > strong');if(value&&difference)row.insertBefore(value,difference)});
+    ranking?.querySelectorAll('.risk-ranking-axis > div').forEach(axis=>{const labels=[...axis.children],middle=labels[Math.floor(labels.length/2)];if(middle)axis.replaceChildren(middle)});
+  }
+  if(state.dashboardView==='construction'){
+    board.querySelector('.clinic-scatter-title .metric-scope-tag')?.remove();
+    const scatter=board.querySelector('.clinic-scatter svg');if(scatter){const axes=scatter.querySelectorAll('.scatter-axis-label');if(axes[0]){axes[0].textContent='';axes[0].removeAttribute('transform');axes[0].setAttribute('x','14');axes[0].setAttribute('y','85');['控','制','率'].forEach((ch,i)=>{const span=document.createElementNS('http://www.w3.org/2000/svg','tspan');span.setAttribute('x','14');span.setAttribute('dy',i?'1.1em':'0');span.textContent=ch;axes[0].append(span)})}if(axes[1])axes[1].textContent='覆盖率'}
+    const f=overviewDemoFactor(currentNode()),primary=1800*f,integrated=1000*f,cards=[...board.querySelectorAll('.construction-kpis > .board-kpi')],service=cards.find(c=>c.querySelector(':scope > span')?.textContent.includes('一体化门诊服务人次')),frequency=cards.find(c=>c.querySelector(':scope > span')?.textContent.includes('人均就诊频率'));
+    if(service){const strong=service.querySelector(':scope > strong'),share=service.querySelector('.clinic-visit-share');if(strong?.firstChild?.nodeType===Node.TEXT_NODE)strong.firstChild.nodeValue=Number(integrated.toFixed(2)).toString();if(share)share.textContent=`基层就诊总人次 ${Number(primary.toFixed(2))} 万人次，占比 ${(integrated/primary*100).toFixed(2)}%`}
+    if(frequency){const label=frequency.querySelector(':scope > span'),strong=frequency.querySelector(':scope > strong'),unit=strong?.querySelector('em');if(label)label.textContent='人均就诊次数';if(unit)unit.textContent='次/人年';if(strong?.firstChild?.nodeType===Node.TEXT_NODE)strong.firstChild.nodeValue=(1800/1850).toFixed(2)}
+    board.querySelectorAll('.construction-kpis > .board-kpi').forEach(card=>{if(!card.querySelector(':scope > .metric-scope-tag'))card.insertAdjacentHTML('beforeend','<b class="metric-scope-tag scope-color-integrated">一体化</b>')});
+    board.querySelectorAll('svg.construction-line:not(.construction-bar-chart)').forEach(svg=>{const box=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number);if(box.length===4&&box.every(Number.isFinite))svg.setAttribute('viewBox',`${box[0]-25} ${box[1]} ${box[2]+25} ${box[3]}`)});
+  }
+  if(state.dashboardView==='outcomes'){const layout=board.querySelector('.outcome-layout'),insights=layout?.querySelector('.outcome-insights');if(insights)layout.prepend(insights)}
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+render();
+const dashboardAfterDetailReview=dashboard;
+dashboard=function(){const root=document.createElement('div');root.innerHTML=dashboardAfterDetailReview();const board=root.querySelector('#dashboardBoard');if(!board)return root.innerHTML;
+  board.querySelectorAll('.home-target-item').forEach(row=>{const value=row.querySelector('.home-target-actual'),name=row.querySelector('.home-target-label span')?.textContent.trim();if(value&&name){value.classList.add('metric-detail-trigger');value.dataset.detailLabel=`${name}控制率`;value.setAttribute('role','button');value.setAttribute('tabindex','0')}});
+  board.querySelectorAll('.home-population-distribution .situation-bars > div').forEach((row,i)=>{if(i===0&&row.querySelector('strong'))row.querySelector('strong').dataset.detailLabel='3病叠加人数'});
+  board.querySelectorAll('.risk-composition-row').forEach(row=>{const name=row.querySelector('span')?.textContent.trim(),value=row.querySelector('strong');if(value&&['高风险','中风险','低风险'].includes(name))value.dataset.detailLabel=`${name}患者数`});
+  return root.innerHTML};
+pages.dashboard=dashboard;
+render();
+
+// Keep the risk ranking scoped to the area selected on the map.
+function riskRankingChildren(node){
+  if(!node)return cities;
+  if(state.city.startsWith('city:'))return counties.filter(item=>item.cityName===node.name&&item.name!=='西湖风景名胜区');
+  if(state.city.startsWith('county:')){
+    const city=node.cityName,county=node.name,prefix=`${city}/${county}/`;
+    return Object.keys(window.RESIDENT_POPULATION?.towns||{}).filter(key=>key.startsWith(prefix)).map(key=>({name:key.slice(prefix.length),cityName:city,countyName:county}));
+  }
+  return [];
+}
+function riskRankingValue(node){
+  if(!node.countyName)return homeMapValue(node,'highRisk');
+  let hash=0;for(const c of `${node.cityName}/${node.countyName}/${node.name}`)hash=(hash*31+c.charCodeAt(0))>>>0;
+  const parent=counties.find(item=>item.cityName===node.cityName&&item.name===node.countyName);
+  return Math.max(0,Math.min(100,homeMapValue(parent,'highRisk')+((hash%1001)/1000-.5)*8));
+}
+const dashboardBeforeScopedRiskRanking=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeScopedRiskRanking();
+  const board=root.querySelector('#dashboardBoard'),panel=board?.querySelector('.situation-risk-ranking');
+  if(panel&&situationActive()){
+    const province=homeMapValue(null,'highRisk'),items=riskRankingChildren(currentNode()).map(node=>({node,value:riskRankingValue(node)})).filter(item=>Number.isFinite(item.value)).sort((a,b)=>b.value-a.value),extent=Math.max(1,...items.map(item=>Math.abs(item.value-province)));
+    const heading=panel.querySelector('.risk-ranking-heading span');if(heading)heading.textContent=!currentNode()?'地市':state.city.startsWith('city:')?'区县':'乡镇街道';
+    const rows=panel.querySelector('.risk-ranking-rows');if(rows)rows.innerHTML=items.map(({node,value})=>{const delta=value-province;return `<div class="risk-ranking-row" data-risk-region="${esc(node.name)}"><span>${esc(node.name)}</span><div class="risk-ranking-track"><i class="${delta>=0?'above':'below'}" style="width:${Math.abs(delta)/extent*45}%"></i></div><small class="risk-ranking-value">${value.toFixed(2)}%</small><strong class="risk-region-detail" role="button" tabindex="0" aria-label="${esc(node.name)}高风险患者占比，查看下级区域">${delta>=0?'+':''}${delta.toFixed(2)}</strong></div>`}).join('');
+  }
+  const scatter=board?.querySelector('.clinic-scatter svg');
+  if(scatter){scatter.querySelectorAll(':scope > line[stroke-dasharray]').forEach(line=>line.setAttribute('stroke','#369cff'));scatter.querySelectorAll('.construction-grid text[text-anchor="middle"]').forEach(text=>text.setAttribute('dy','6'))}
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+render();
+document.addEventListener('click',event=>{
+  const target=event.target.closest?.('.risk-region-detail');if(!target)return;
+  const name=target.closest('.risk-ranking-row')?.dataset.riskRegion,node=riskRankingChildren(currentNode()).find(item=>item.name===name);if(!node)return;
+  let children=[];
+  if(!currentNode())children=counties.filter(item=>item.cityName===name&&item.name!=='西湖风景名胜区');
+  else if(state.city.startsWith('city:')){const prefix=`${node.cityName}/${name}/`;children=Object.keys(window.RESIDENT_POPULATION?.towns||{}).filter(key=>key.startsWith(prefix)).map(key=>({name:key.slice(prefix.length),cityName:node.cityName,countyName:name}))}
+  const rows=children.map(item=>({name:item.name,value:riskRankingValue(item)})).filter(item=>Number.isFinite(item.value)).sort((a,b)=>b.value-a.value);
+  const dialog=document.createElement('dialog');dialog.className='home-summary-dialog';dialog.innerHTML=`<header><h2>${esc(name)} · 高风险患者占比</h2><button type="button" data-close-risk aria-label="关闭">×</button></header><div class="home-summary-body"><div class="summary-table-wrap"><table class="summary-detail-table"><thead><tr><th>区域名称</th><th>高风险患者占比</th></tr></thead><tbody>${rows.length?rows.map(row=>`<tr><td>${esc(row.name)}</td><td>${row.value.toFixed(2)}%</td></tr>`).join(''):'<tr><td colspan="2">暂无下级区域数据</td></tr>'}</tbody></table></div></div>`;
+  (document.fullscreenElement||document.body).append(dialog);dialog.addEventListener('click',e=>{if(e.target.closest('[data-close-risk]'))dialog.close()});dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
+});
+
+// The outcome groups keep independent detection/control selections.
+const outcomeModes={core:'control',risk:'control'};
+const dashboardBeforeOutcomeThreeColumns=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeOutcomeThreeColumns();
+  const layout=root.querySelector('.outcome-layout');if(state.dashboardView!=='outcomes'||!layout)return root.innerHTML;
+  const metrics=[
+    ['血压',[88.6,92.3,95.7],[62.4,68.9,74.5],[74.5,81.4,88.2],[48.6,55.5,62.3]],
+    ['血糖',[82.4,89.1,93.6],[48.7,55.3,62.1],[59.3,69.5,79.6],[33.1,40.5,47.8]],
+    ['血脂',[22.4,25.1,28.3],[21.6,24.2,26.8],[21.2,23.8,26.4],[20.8,23.1,25.4]],
+    ['糖化血红蛋白',[65.3,74.8,83.4],[36.5,42.6,49.6],[35.2,46.8,58.3],[27.8,34.0,40.2]]
+  ];
+  const group=(key,title)=>{const control=outcomeModes[key]==='control',index=key==='core'?(control?2:1):(control?4:3);return `<section class="outcome-new-panel outcome-group"><header><h2>${title} ｜ ${control?'控制率':'检测率'}</h2><button type="button" data-outcome-toggle="${key}">${control?'检测率':'控制率'}</button></header><p>三口径对照，黄线为 80% 目标</p><div class="outcome-new-grid">${metrics.map(metric=>`<div class="outcome-new-tile"><h3>${metric[0]}</h3>${metric[index].map((value,i)=>`<div class="outcome-new-bar"><span>${['全','专','一体化'][i]}</span><div><i style="width:${value}%;background:${['#3885f6','#ff873c','#65c5ff'][i]}"></i><b></b></div><strong>${value.toFixed(1)}%</strong></div>`).join('')}</div>`).join('')}</div></section>`};
+  const names=['杭州','宁波','湖州','嘉兴','温州','绍兴','台州','金华','舟山','衢州','丽水'],offsets=[3.9,2.5,1.8,.9,.7,.1,-1.3,-2.5,-3.6,-5.2,-5.9],base=74.5;
+  const ranking=`<section class="outcome-new-panel outcome-new-ranking"><header><h2>各地市控制率与省均值偏差 · 血压</h2></header><p>以省均值 ${base.toFixed(1)}% 为基准，绿色高于、红色低于省均值</p><div class="outcome-new-ranks">${names.map((name,i)=>`<div><span>${name}</span><div class="outcome-new-rank-track"><i class="${offsets[i]>=0?'positive':'negative'}" style="width:${Math.abs(offsets[i])/6*48}%"></i></div><strong>${offsets[i]>0?'+':''}${offsets[i].toFixed(1)} pp · ${(base+offsets[i]).toFixed(1)}%</strong></div>`).join('')}</div></section>`;
+  const flows=[[58,24,10],[12,120,35],[0,7,92]],colors=['#fb5361','#ffbd4e','#4bc695'],source=[0,92,259],target=[0,70,221],sourceUsed=[0,0,0],targetUsed=[0,0,0],scale=0.73,top=15,gap=12;
+  const sy=i=>top+source[i]*scale+i*gap,ty=i=>top+target[i]*scale+i*gap;
+  const paths=flows.flatMap((row,i)=>row.map((value,j)=>{if(!value)return '';const y1=sy(i)+sourceUsed[i]*scale,y2=ty(j)+targetUsed[j]*scale,h=value*scale;sourceUsed[i]+=value;targetUsed[j]+=value;return `<path d="M 95 ${y1} C 260 ${y1}, 290 ${y2}, 455 ${y2} L 455 ${y2+h} C 290 ${y2+h}, 260 ${y1+h}, 95 ${y1+h} Z" fill="${colors[i]}" opacity=".34"><title>Q1 ${['高','中','低'][i]}风险 → Q2 ${['高','中','低'][j]}风险：${value} 万人</title></path>`})).join('');
+  const sankey=`<section class="outcome-new-panel outcome-new-sankey"><header><h2>风险等级迁移（Q1 → Q2）</h2></header><p>流带宽度代表人数（万人），模拟数据</p><svg viewBox="0 0 550 310" role="img" aria-label="风险等级迁移桑基图，演示数据">${paths}${[92,167,99].map((v,i)=>`<rect x="82" y="${sy(i)}" width="13" height="${v*scale}" fill="${colors[i]}"/><text x="99" y="${sy(i)+v*scale/2}">Q1 ${['高','中','低'][i]}风险</text>`).join('')}${[70,151,137].map((v,i)=>`<rect x="455" y="${ty(i)}" width="13" height="${v*scale}" fill="${colors[i]}"/><text x="473" y="${ty(i)+v*scale/2}">Q2 ${['高','中','低'][i]}风险</text>`).join('')}</svg></section>`;
+  const series=[[58.1,59.6,61,62.4],[63.2,65.5,67.3,68.9],[68.4,70.8,72.9,74.5]],lineColors=['#3885f6','#ff873c','#65c5ff'],x=i=>55+i*145,y=v=>660-(v-50)*18;
+  const trend=`<section class="outcome-new-panel outcome-new-trend"><header><h2>管理成效趋势 · 血压控制率</h2></header><p>分季度三口径控制率趋势，模拟数据</p><div class="outcome-trend-legend">${['全口径','专档','一体化'].map((name,i)=>`<span style="color:${lineColors[i]}">● ${name}</span>`).join('')}</div><svg viewBox="0 0 540 710" preserveAspectRatio="none" role="img" aria-label="季度血压控制率趋势">${[50,55,60,65,70,75,80].map(v=>`<line x1="55" x2="490" y1="${y(v)}" y2="${y(v)}" stroke="#25436b"/><text x="48" y="${y(v)+4}" text-anchor="end">${v}%</text>`).join('')}<line x1="55" x2="490" y1="${y(80)}" y2="${y(80)}" stroke="#e4ad4c" stroke-dasharray="5 4"/>${series.map((values,j)=>`<polyline fill="none" stroke="${lineColors[j]}" stroke-width="2.5" points="${values.map((v,i)=>`${x(i)},${y(v)}`).join(' ')}"/>${values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${lineColors[j]}"/><text x="${x(i)}" y="${y(v)-10}" text-anchor="middle">${v.toFixed(1)}%</text>`).join('')}`).join('')}${['Q1','Q2','Q3','Q4'].map((q,i)=>`<text x="${x(i)}" y="690" text-anchor="middle">${q}</text>`).join('')}</svg></section>`;
+  layout.className='board-columns outcome-layout outcome-three-columns';
+  layout.innerHTML=`<div class="outcome-new-insights"><div><strong>一体化管理成效更显著</strong><span>一体化管理人群血压控制率 74.5%，全口径 62.4%；检测率 95.7%，全口径 88.6%。</span></div><div><strong>风险持续下沉</strong><span>Q1 → Q2 高风险由 92.0 万降至 70.0 万，其中 24.0 万转中风险、10.0 万转低风险。</span></div><div><strong>短板仍需重点追踪</strong><span>全口径血脂控制率 41.2%、糖化血红蛋白控制率 36.5%；高风险人群血压检测率 74.5%。</span></div></div><div class="outcome-new-left">${group('core','核心指标')}${group('risk','高风险人群')}</div><div class="outcome-new-middle">${ranking}${sankey}</div>${trend}`;
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+document.addEventListener('click',event=>{const button=event.target.closest?.('[data-outcome-toggle]');if(!button)return;const key=button.dataset.outcomeToggle;outcomeModes[key]=outcomeModes[key]==='control'?'detection':'control';render()});
+render();
+
+const dashboardBeforeScatterQuadrants=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeScatterQuadrants();
+  const svg=root.querySelector('.clinic-scatter svg');
+  if(svg){
+    const lines=[...svg.querySelectorAll(':scope > line[stroke-dasharray]')];
+    const vertical=lines.find(line=>line.getAttribute('x1')===line.getAttribute('x2'));
+    const horizontal=lines.find(line=>line.getAttribute('y1')===line.getAttribute('y2'));
+    if(vertical&&horizontal){
+      const x=Number(vertical.getAttribute('x1')),y=Number(horizontal.getAttribute('y1'));
+      const left=65,right=885,top=30,bottom=175;
+      const ns='http://www.w3.org/2000/svg';
+      [[x,top,right-x,y-top,'#40c8a2'],[left,y,x-left,bottom-y,'#e65b72']].forEach(([rx,ry,width,height,color])=>{
+        const rect=document.createElementNS(ns,'rect');rect.setAttribute('x',rx);rect.setAttribute('y',ry);rect.setAttribute('width',Math.max(0,width));rect.setAttribute('height',Math.max(0,height));rect.setAttribute('fill',color);rect.setAttribute('fill-opacity','.11');rect.setAttribute('pointer-events','none');svg.insertBefore(rect,svg.firstChild);
+      });
+      [vertical,horizontal].forEach(line=>{line.setAttribute('stroke','#65baff');line.setAttribute('stroke-width','2');line.setAttribute('opacity','.95')});
+    }
+  }
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+render();
+
+
+const outcomeMetricChoice={overall:0,high:0,trend:0};
+const dashboardBeforeOutcomeRankingTabs=dashboard;
+dashboard=function(){
+  const root=document.createElement('div');root.innerHTML=dashboardBeforeOutcomeRankingTabs();
+  const layout=root.querySelector('.outcome-three-columns');if(!layout)return root.innerHTML;
+  const labels=['血压','血糖','糖化血红蛋白','血脂'];
+  const baseValues=[[74.5,62.1,49.6,26.8],[62.3,47.8,40.2,25.4]];
+  const offsets=[[3.9,2.5,1.8,.9,.7,.1,-1.3,-2.5,-3.6,-5.2,-5.9],[3.9,2.3,1.3,.6,.4,-.3,-.9,-2.1,-3.3,-4.7,-5.9],[3.3,2,1,.7,.2,-.1,-.8,-1.7,-2.6,-4.3,-5.1],[2.6,2.1,1.5,1,.4,-.2,-.8,-1.5,-2.3,-3.1,-4.2]];
+  const names=['杭州','宁波','湖州','嘉兴','温州','绍兴','台州','金华','舟山','衢州','丽水'];
+  const tabs=(key)=>`<div class="outcome-metric-tabs" role="group" aria-label="选择指标">${labels.map((label,i)=>`<button type="button" data-outcome-metric="${key}" data-metric-index="${i}" aria-pressed="${outcomeMetricChoice[key]===i}">${label}</button>`).join('')}</div>`;
+  const ranking=(key,title)=>{const index=outcomeMetricChoice[key],base=baseValues[key==='high'?1:0][index],rows=names.map((name,i)=>({name,delta:offsets[index][i]})).sort((a,b)=>b.delta-a.delta),extent=Math.max(...rows.map(row=>Math.abs(row.delta)));return `<section class="outcome-new-panel outcome-new-ranking situation-risk-ranking"><header><h2>${title}</h2>${tabs(key)}</header><div class="outcome-ranking-heading"><span>地市</span><span>← 低于均值　|　高于均值 →</span><span>控制率</span><span>偏差</span></div><div class="outcome-ranking-rows">${rows.map(({name,delta})=>`<div class="risk-ranking-row"><span>${name}</span><div class="risk-ranking-track"><i class="${delta>=0?'above':'below'}" style="width:${Math.abs(delta)/extent*48}%"></i></div><small class="risk-ranking-value">${(base+delta).toFixed(2)}%</small><strong>${delta>=0?'+':''}${delta.toFixed(2)}</strong></div>`).join('')}</div><div class="outcome-ranking-average">省均值 ${base.toFixed(2)}%</div></section>`};
+  const middle=layout.querySelector('.outcome-new-middle'),sankey=middle.querySelector('.outcome-new-sankey'),trend=layout.querySelector('.outcome-new-trend');
+  middle.innerHTML=ranking('overall','控制率与省均值偏差')+ranking('high','高风险人群控制率与省均值偏差');
+  sankey.querySelector('h2').textContent='风险等级迁移';sankey.querySelector('svg').setAttribute('preserveAspectRatio','xMidYMid meet');
+  trend.querySelector('h2').textContent='控制率趋势';trend.querySelector('header').insertAdjacentHTML('beforeend',tabs('trend'));
+  const finalValues=[[62.4,68.9,74.5],[48.7,55.3,62.1],[36.5,42.6,49.6],[21.6,24.2,26.8]][outcomeMetricChoice.trend],series=finalValues.map(value=>outcomeMetricChoice.trend===3?[Math.max(20,value-1.5),Math.max(20,value-1),Math.max(20,value-.5),value]:[value-6.1,value-3.8,value-1.7,value]);
+  const min=Math.max(0,Math.floor((Math.min(...series.flat())-3)/5)*5),step=Math.ceil((Math.max(...series.flat())+3-min)/4),max=min+step*4,x=i=>70+i*140,y=v=>285-(v-min)/(max-min)*240,colors=['#3885f6','#ff873c','#65c5ff'];
+  trend.querySelector('svg').outerHTML=`<svg viewBox="0 0 540 320" preserveAspectRatio="none" role="img" aria-label="${labels[outcomeMetricChoice.trend]}控制率季度趋势，演示数据">${Array.from({length:5},(_,i)=>{const v=min+step*i;return `<line x1="85" x2="490" y1="${y(v)}" y2="${y(v)}" stroke="#25436b"/><text class="outcome-axis-label" x="76" y="${y(v)}" text-anchor="end">${v}%</text>`}).join('')}${series.map((values,j)=>`<polyline fill="none" stroke="${colors[j]}" stroke-width="2.5" points="${values.map((v,i)=>`${x(i)},${y(v)}`).join(' ')}"/>${values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${colors[j]}"/><text class="outcome-point-label" x="${x(i)}" y="${y(v)-12}" text-anchor="${i===0?'start':i===3?'end':'middle'}">${v.toFixed(2)}%</text>`).join('')}`).join('')}${['Q1','Q2','Q3','Q4'].map((q,i)=>`<text class="outcome-axis-label" x="${x(i)}" y="310" text-anchor="middle">${q}</text>`).join('')}</svg>`;
+  const right=document.createElement('div');right.className='outcome-new-right';right.append(sankey,trend);layout.append(right);
+  trend.querySelectorAll('svg > line').forEach(line=>{line.setAttribute('x1','55');line.setAttribute('x2','510')});
+  trend.querySelectorAll('svg > .outcome-axis-label[text-anchor="end"]').forEach(label=>label.setAttribute('x','48'));
+  layout.querySelectorAll('.outcome-group > p, .outcome-new-sankey > p, .outcome-new-trend > p').forEach(el=>el.remove());
+  layout.querySelectorAll('.outcome-new-tile h3').forEach(el=>el.insertAdjacentHTML('beforeend','<span class="outcome-tile-target">目标 80.00%</span>'));
+  const sankeySvg=sankey.querySelector('svg');
+  const node=currentNode(),factor=overviewDemoFactor(node),high=(149.7+748.5*demoLocalDeviation(node)*.45)*factor,middleRisk=135*factor;
+  const totals=[high,middleRisk,Math.max(0,374.25*factor-high-middleRisk)];
+  const weights=[[.8,.12,.04],[.16,.78,.14],[.04,.10,.82]],flows=weights.map(row=>row.map((weight,j)=>weight*totals[j]));
+  const sources=flows.map(row=>row.reduce((a,b)=>a+b,0)),total=totals.reduce((a,b)=>a+b,0),scale=total?240/total:0,gap=12,top=20,levels=['高风险','中风险','低风险'],flowColors=['#fb5361','#ffbd4e','#4bc695'];
+  const positions=values=>values.map((_,i)=>top+values.slice(0,i).reduce((a,b)=>a+b,0)*scale+i*gap),starts=positions(sources),ends=positions(totals),usedSource=[0,0,0],usedTarget=[0,0,0];
+  const paths=flows.flatMap((row,i)=>row.map((value,j)=>{const a=starts[i]+usedSource[i]*scale,b=ends[j]+usedTarget[j]*scale,h=value*scale;usedSource[i]+=value;usedTarget[j]+=value;const tip=`上期${levels[i]} → 本期${levels[j]}；迁移人数 ${value.toFixed(2)} 万人`;return `<path class="outcome-flow" data-board-tip="${tip}" d="M 125 ${a} C 250 ${a}, 300 ${b}, 425 ${b} L 425 ${b+h} C 300 ${b+h}, 250 ${a+h}, 125 ${a+h} Z" fill="${flowColors[i]}" opacity=".42"/>`})).join('');
+  const nodes=(values,ys,side)=>values.map((value,i)=>`<rect x="${side==='上期'?112:425}" y="${ys[i]}" width="13" height="${value*scale}" fill="${flowColors[i]}" data-board-tip="${side}${levels[i]}；人数 ${value.toFixed(2)} 万人"/><text x="${side==='上期'?108:442}" y="${ys[i]+value*scale/2}" text-anchor="${side==='上期'?'end':'start'}">${side}${levels[i]}</text>`).join('');
+  sankeySvg.setAttribute('viewBox','30 0 490 300');sankeySvg.innerHTML=paths+nodes(sources,starts,'上期')+nodes(totals,ends,'本期');
+  [...sankeySvg.querySelectorAll('.outcome-flow')].slice(0,3).forEach(path=>sankeySvg.insertBefore(path,sankeySvg.querySelector('rect')));
+  const insight=layout.querySelector('.outcome-new-insights > div:nth-child(2) span');if(insight){insight.previousElementSibling.textContent='风险等级迁移';insight.textContent=`上期高风险 ${sources[0].toFixed(2)} 万人，本期 ${totals[0].toFixed(2)} 万人；其中转中风险 ${flows[0][1].toFixed(2)} 万人、转低风险 ${flows[0][2].toFixed(2)} 万人。`}
+  layout.querySelectorAll('.outcome-new-bar').forEach(row=>{const group=row.closest('.outcome-group'),metric=row.closest('.outcome-new-tile')?.querySelector('h3')?.childNodes[0]?.textContent.trim(),population=row.querySelector('span')?.textContent.trim(),value=row.querySelector('strong')?.textContent.trim(),mode=group?.querySelector('h2')?.textContent.trim();row.querySelector('i')?.setAttribute('data-board-tip',`${mode}；${metric}；${population} ${value}`)});
+  layout.querySelectorAll('.outcome-new-ranking .risk-ranking-row').forEach(row=>{const section=row.closest('section'),name=row.querySelector('span')?.textContent.trim(),value=row.querySelector('small')?.textContent.trim(),delta=row.querySelector('strong')?.textContent.trim(),title=section?.querySelector('h2')?.textContent.trim(),average=section?.querySelector('.outcome-ranking-average')?.textContent.trim().replace('省均值','').trim();row.querySelector('i')?.setAttribute('data-board-tip',`${name}；${title}；偏差 ${delta} 个百分点；控制率 ${value}；省均值 ${average}`)});
+  const shortfall=layout.querySelector('.outcome-new-insights > div:nth-child(3) span');if(shortfall)shortfall.textContent='全口径血脂检测率 22.40%、控制率 21.60%，糖化血红蛋白控制率 36.50%；高风险人群血压检测率 74.50%。';
+  trend.querySelectorAll('circle').forEach((circle,index)=>{const j=Math.floor(index/4),i=index%4;circle.setAttribute('data-board-tip',`${labels[outcomeMetricChoice.trend]}控制率；${['全口径','专档','一体化'][j]}；Q${i+1} ${series[j][i].toFixed(2)}%`);circle.setAttribute('r','6')});
+  trend.querySelectorAll('polyline').forEach((line,j)=>{line.setAttribute('data-board-tip',`${labels[outcomeMetricChoice.trend]}控制率；${['全口径','专档','一体化'][j]}；${series[j].map((value,i)=>`Q${i+1} ${value.toFixed(2)}%`).join('；')}`);line.setAttribute('stroke-width','5')});
+  layout.querySelectorAll('.outcome-new-group, .outcome-group').forEach(group=>group.querySelectorAll('.outcome-new-bar strong').forEach(el=>{const value=parseFloat(el.textContent);if(Number.isFinite(value))el.textContent=`${value.toFixed(2)}%`}));
+  layout.querySelectorAll('.outcome-group > p').forEach(el=>{el.textContent=el.textContent.replace(/(\d+(?:\.\d+)?)%/g,(_,value)=>`${Number(value).toFixed(2)}%`)});
+  layout.querySelectorAll('.outcome-new-insights span').forEach(el=>{el.textContent=el.textContent.replace(/(\d+(?:\.\d+)?)%/g,(_,value)=>`${Number(value).toFixed(2)}%`)});
+  const detail=(el,label,value)=>{if(!el)return;el.classList.add('metric-detail-trigger');el.dataset.outcomeDetail='1';el.dataset.detailLabel=label;el.dataset.detailValue=value;el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label',`${label} ${value}，查看区域明细`)};
+  layout.querySelectorAll('.outcome-new-bar').forEach(row=>{const group=row.closest('.outcome-group'),metric=row.closest('.outcome-new-tile').querySelector('h3').firstChild.textContent.trim(),scope=row.querySelector('span').textContent.trim(),mode=group.querySelector('h2').textContent.split('｜')[1].trim();detail(row.querySelector('strong'),`${group.querySelector('h2').textContent.split('｜')[0].trim()} · ${scope} · ${metric}${mode}`,row.querySelector('strong').textContent.trim())});
+  trend.querySelectorAll('circle,.outcome-point-label').forEach(el=>{const list=el.tagName.toLowerCase()==='circle'?[...trend.querySelectorAll('circle')]:[...trend.querySelectorAll('.outcome-point-label')],index=list.indexOf(el),j=Math.floor(index/4),i=index%4;detail(el,`${labels[outcomeMetricChoice.trend]}控制率 · ${['全口径','专档','一体化'][j]} · Q${i+1}`,`${series[j][i].toFixed(2)}%`)});
+  layout.querySelectorAll('.outcome-ranking-rows .risk-ranking-row').forEach(row=>{const section=row.closest('section'),key=section.querySelector('[data-outcome-metric]').dataset.outcomeMetric,metric=labels[outcomeMetricChoice[key]],region=row.querySelector('span').textContent.trim(),rate=row.querySelector('small');detail(rate,`${region} · ${key==='high'?'高风险人群 · ':''}${metric}控制率`,rate.textContent.trim());rate.dataset.detailRegion=region;const value=row.querySelector('strong');detail(value,`${region} · ${key==='high'?'高风险人群 · ':''}${metric}控制率偏差`,`${value.textContent.trim()} pp`);value.dataset.detailRegion=region});
+  layout.querySelectorAll('.outcome-new-insights span').forEach(span=>{span.innerHTML=span.textContent.replace(/(-?\d+(?:\.\d+)?\s*(?:%|万人))/g,value=>`<b class="outcome-insight-number">${value}</b>`);span.querySelectorAll('.outcome-insight-number').forEach(el=>detail(el,`${span.previousElementSibling.textContent} · ${span.textContent.slice(0,span.textContent.indexOf(el.textContent)).split(/[，；、]/).pop().trim()}`,el.textContent.trim()))});
+  return root.innerHTML;
+};
+pages.dashboard=dashboard;
+document.addEventListener('click',event=>{const button=event.target.closest?.('[data-outcome-metric]');if(!button)return;outcomeMetricChoice[button.dataset.outcomeMetric]=Number(button.dataset.metricIndex);render()});
+render();
