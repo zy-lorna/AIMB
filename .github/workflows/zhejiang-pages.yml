@@ -26,3 +26,22 @@ jobs:
           path: demos/zhejiang-dashboard
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify published page
+        shell: bash
+        run: |
+          set -euo pipefail
+          site="https://zy-lorna.github.io/AIMB/"
+          for attempt in {1..12}; do
+            if curl -fsSL "$site" -o /tmp/dashboard-page.html && grep -q '基层慢病健康管理服务平台' /tmp/dashboard-page.html; then
+              break
+            fi
+            sleep 10
+          done
+          grep -q '基层慢病健康管理服务平台' /tmp/dashboard-page.html
+          for asset in demo-refinement.css demo-refinement.js echarts.min.js zhejiang-map-3d.js; do
+            curl -fsSL -o /dev/null "${site}${asset}"
+            echo "Loaded $asset"
+          done
+          google-chrome --headless --no-sandbox --disable-dev-shm-usage --virtual-time-budget=15000 --dump-dom "$site" > /tmp/dashboard-rendered.html
+          grep -q '基层慢病健康管理服务平台' /tmp/dashboard-rendered.html
+          echo "Chrome rendered the dashboard page."
