@@ -45,3 +45,9 @@ jobs:
           google-chrome --headless --no-sandbox --disable-dev-shm-usage --virtual-time-budget=15000 --dump-dom "$site" > /tmp/dashboard-rendered.html
           grep -q '基层慢病健康管理服务平台' /tmp/dashboard-rendered.html
           echo "Chrome rendered the dashboard page."
+          google-chrome --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --window-size=1440,900 --virtual-time-budget=15000 --screenshot=/tmp/dashboard-screenshot.png "$site"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-screenshot
+          path: /tmp/dashboard-screenshot.png
+          retention-days: 1
