@@ -3417,3 +3417,20 @@ dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.tow
 .dashboard-board.outcome-board .outcome-new-trend svg .outcome-point-label{font-size:20px}
 .dashboard-board.outcome-board .outcome-new-trend .outcome-trend-legend{margin:8px -8px 0 0}
 .outcome-insight-number{font-weight:inherit;color:inherit}
+
+/* Keep dashboard module headings consistent across all views. */
+.dashboard-board :is(.board-panel,.outcome-detail-panel)>h2,
+.dashboard-board :is(.situation-panel-title,.node-region-head)>h2,
+.dashboard-board.outcome-board .outcome-new-panel>header>h2,
+.dashboard-board.construction-board .clinic-scatter-title{font-size:20px!important}
+
+.dashboard-board.construction-board .clinic-scatter h2 .clinic-scatter-tabs{gap:2px!important}
+.dashboard-board.construction-board .clinic-scatter-tabs button{flex:0 0 auto;padding:4px 7px;border-color:#245a82;border-radius:0;background:#0b2946;color:#bcd8ec;font-size:12px}
+.dashboard-board.construction-board .clinic-scatter-tabs button[aria-pressed=true]{background:#1265a3;color:#fff}
+.outcome-new-sankey svg .outcome-risk-node{stroke:#ffffff55;stroke-width:1.5}
+.outcome-new-sankey svg .outcome-risk-node-label,.outcome-new-sankey svg .outcome-risk-node-value{fill:#fff;text-anchor:middle;font-weight:700;pointer-events:none}
+.outcome-new-sankey svg .outcome-risk-node-label{font-size:18px}
+.outcome-new-sankey svg .outcome-risk-node-value{font-size:14px}
+.outcome-new-sankey svg .outcome-risk-period{fill:#e3f1ff;font-size:13px;font-weight:600}
+.dashboard-board.outcome-board .outcome-new-trend .outcome-point-label{display:none}
+.dashboard-board.construction-board .board-stack:first-child>.clinic-scatter h2 .clinic-scatter-tabs{flex:0 0 auto;margin-left:auto;justify-content:flex-end}
