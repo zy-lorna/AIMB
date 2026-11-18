@@ -3509,7 +3509,7 @@ dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.tow
 
 /* Dashboard review refinements. */
 .home-disease-table .disease-table-row>div{position:relative;overflow:visible}
-.home-disease-table .disease-table-row>div em{position:absolute;top:0;transform:translateY(-50%);font-size:14px;white-space:nowrap}
+.home-disease-table .disease-table-row>div em{position:absolute;top:0;transform:translateY(-50%);font-size:12px;white-space:nowrap}
 .dashboard-board .integrated-service-kpi>span{letter-spacing:-2px}
 .risk-composition-row span i,.risk-composition-row>em{display:none!important}
 .risk-composition-row{grid-template-columns:85px 85px minmax(0,1fr)}

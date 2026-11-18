@@ -4227,7 +4227,7 @@ dashboard=function(){
   });
   board.querySelectorAll('.board-kpis > .board-kpi').forEach(card=>{
     const label=card.querySelector(':scope > span');
-    if(label&&/基层就诊人次|一体化门诊服务人次/.test(label.textContent)&&!card.querySelector('.metric-scope-tag'))card.insertAdjacentHTML('beforeend','<b class="metric-scope-tag scope-color-integrated" title="一体化口径：一体化管理的专档患者">一体化</b>');
+    if(label&&/基层就诊人次|一体化门诊服务人次/.test(label.textContent)&&!card.querySelector('.metric-scope-tag')){const all=label.textContent.includes('基层就诊人次');card.insertAdjacentHTML('beforeend',all?'<b class="metric-scope-tag scope-color-all" title="全口径患者">全</b>':'<b class="metric-scope-tag scope-color-integrated" title="一体化口径：一体化管理的专档患者">一体化</b>')}
   });
   const legend=board.querySelector('.board-scope-legend'),fullscreen=legend?.querySelector('.board-fullscreen');
   if(legend&&fullscreen){const year=document.createElement('select');year.className='board-year';year.setAttribute('aria-label','选择年份');year.innerHTML=['2025','2026'].map(y=>`<option value="${y}" ${state.year===y?'selected':''}>${y}年</option>`).join('');legend.insertBefore(year,fullscreen)}
