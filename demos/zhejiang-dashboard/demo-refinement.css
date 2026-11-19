@@ -3582,7 +3582,139 @@ dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.tow
 .dashboard-board.outcome-board .outcome-new-sankey header .outcome-sankey-unit{margin-left:auto}
 .dashboard-board.outcome-board :is(.outcome-group .outcome-mode-tabs,.outcome-ranking-population-tabs) button{box-sizing:border-box;height:26px;padding-top:0;padding-bottom:0;line-height:24px}
 .dashboard-board.outcome-board .outcome-ranking-rows{overflow-y:auto}
+.dashboard-board .home-population-distribution .home-comorbidity-chart{display:grid;grid-template-columns:minmax(90px, 32%) minmax(0,1fr);grid-template-rows:auto repeat(5,minmax(0,1fr));column-gap:12px;align-items:center;justify-content:stretch}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>p{grid-column:1 / -1;grid-row:1}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>.home-comorbidity-ring{grid-column:1;grid-row:2 / span 5;display:block;position:relative;justify-self:center;width:min(100%,160px);aspect-ratio:1;border-radius:50%}
+.dashboard-board .home-population-distribution .home-comorbidity-ring::after{content:'';position:absolute;inset:26%;border-radius:50%;background:#061831}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>div{grid-column:2;display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;gap:6px;align-items:center;padding:0;background:none;border:0}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>div>i{grid-column:1;grid-row:1;width:8px;height:8px;border-radius:50%;background:var(--category-color)}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>div>i>b{display:none}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>div>span{grid-column:2;grid-row:1;white-space:nowrap}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>div>strong{grid-column:3;grid-row:1;white-space:nowrap}
+.dashboard-board .home-population-distribution .home-comorbidity-chart>div>em{grid-column:4;grid-row:1;white-space:nowrap}
 .risk-composition-rows{display:grid;grid-template-columns:max-content max-content minmax(0,1fr);align-content:space-evenly;column-gap:12px}
 .risk-composition-row{grid-column:1 / -1;grid-template-columns:subgrid;column-gap:12px}
 .risk-composition-row strong{text-align:right}
 .risk-composition-row span{text-align:left}
+
+/* Three-view navigation, following the Figma dashboard menu. */
+.dashboard-board .board-title .board-tabs,.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{display:flex;align-items:center;gap:0;left:0;top:50%;transform:translateY(-50%);height:62px}
+.dashboard-board .board-title .board-tabs button:nth-child(n){position:relative;width:auto;min-width:0;height:62px;padding:0 28px;border:0;background:transparent;box-shadow:none;color:#819bb4;font-size:24px;font-weight:400;line-height:62px;white-space:nowrap}
+.dashboard-board .board-title .board-tabs button:first-child{padding-left:0}
+.dashboard-board .board-title .board-tabs button:nth-child(n)::before{content:none}
+.dashboard-board .board-title .board-tabs button:not(:last-child)::after{content:'/';position:absolute;right:-4px;top:0;color:#33a3dd;font-weight:400;transform:skewX(-10deg)}
+.dashboard-board .board-title .board-tabs button.active{color:#fff;font-weight:500;background:radial-gradient(ellipse 75px 12px at 50% 100%,rgba(0,159,235,.45),transparent 90%)}
+.dashboard-board .board-title .board-tabs button.active::before{content:'';display:block;position:absolute;left:50%;top:auto;bottom:0;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #ff963e;transform:translateX(-50%);background:none;box-shadow:none}
+.dashboard-board .board-title .board-tabs button:focus-visible{outline:2px solid #98e0ff;outline-offset:-4px}
+
+/* 大屏统一底色，保留标题及各模块自身的装饰层。 */
+.dashboard-viewport,.dashboard-viewport:fullscreen{background:#09101a}
+.dashboard-board.dashboard-board{background:#09101a}
+
+/* 慢病态势首页参考布局 */
+.dashboard-board.situation-board{display:block;padding:0 14px 18px;background:#09101a;overflow:hidden}
+.dashboard-board.situation-board::after{display:none}
+.dashboard-board.situation-board>.board-title{position:relative;height:100px;margin:0 -14px;background:url('dashboard-assets/top-reference.svg') center top/1920px 164px no-repeat;z-index:5}
+.dashboard-board.situation-board>.board-columns,.dashboard-board.situation-board>.board-kpis,.dashboard-board.situation-board>.situation-bottom{display:none}
+.situation-reference{height:calc(100% - 112px);display:grid;grid-template-columns:45% minmax(0,1fr);gap:18px;color:#edf8ff}
+.reference-map,.reference-panel,.reference-kpi{border:1px solid #18a8e8;border-radius:12px;background:linear-gradient(145deg,rgba(4,28,58,.96),rgba(2,19,42,.96));box-shadow:inset 0 0 22px #087cba35,0 0 8px #009ee855;overflow:hidden}
+.reference-map{display:flex;flex-direction:column;min-height:0;padding:16px 18px 12px}
+.reference-map>header h2,.reference-panel h2{margin:0;padding:0 0 10px;border-bottom:1px solid #1686b7;color:#fff;font-size:26px;line-height:1.25}
+.reference-map>header h2:before,.reference-panel h2:before{content:'▰';color:#00d8fa;margin-right:12px}
+.reference-map-slot{position:relative;flex:1;min-height:0}
+.reference-map-slot .board-map{position:absolute;inset:0;width:100%;height:100%;min-height:0;background:transparent;border:0}
+.reference-map-slot .board-map .map-panel{height:100%}
+.reference-map-slot .board-map .panel-head{position:absolute;right:0;top:-48px;z-index:3}
+.reference-map-slot .board-map .panel-head>h2,.reference-map-slot .board-map .map-metrics,.reference-map-slot .board-ticker{display:none}
+.reference-map-slot .board-map .map-stage{height:100%;min-height:0}
+.reference-summary{padding:15px 20px;border:1px solid #1689c7;border-radius:9px;background:#092a50;font-size:18px;line-height:1.55}
+.reference-summary small{margin-left:10px;color:#8db4d1;font-size:13px}
+.reference-content{display:grid;grid-template-rows:146px minmax(0,1fr);gap:18px;min-width:0;min-height:0}
+.reference-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.reference-kpi{display:flex;flex-direction:column;justify-content:center;padding:14px 18px}
+.reference-kpi span{font-size:21px;font-weight:600;white-space:nowrap}.reference-kpi i{color:#26d6f6;font-size:26px;font-style:normal;margin-right:10px}.reference-kpi strong{font-size:42px;line-height:1.4;white-space:nowrap}.reference-kpi small{font-size:20px}.reference-kpi.is-risk strong,.reference-kpi.is-risk i{color:#ff8a88}
+.reference-panels{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1.15fr;gap:18px;min-height:0}
+.reference-panel{padding:16px 20px;min-width:0;min-height:0}.reference-panel h2{font-size:24px}
+.reference-chart{height:calc(100% - 42px);display:flex;align-items:center;justify-content:space-around;gap:20px}
+.reference-ring{width:min(52%,240px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;flex:none}.reference-ring>div{width:60%;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#061c36;font-size:24px;font-weight:600}.reference-ring strong{font-size:30px}
+.reference-legend{flex:1;font-size:20px}.reference-legend p{display:flex;align-items:center;gap:10px;white-space:nowrap}.reference-legend i{width:22px;height:15px;border-radius:3px;flex:none}.reference-legend b{margin-left:auto}
+.reference-filing{display:flex;justify-content:space-between;align-items:center;margin:18px 0;padding:8px 16px;border:1px solid #1169aa;background:#0a355c;font-size:21px}.reference-filing strong{font-size:32px}
+.reference-bars{display:grid;gap:16px}.reference-bars>div{display:grid;grid-template-columns:120px minmax(0,1fr) 80px;gap:12px;align-items:center;font-size:18px}.reference-bars i{height:17px;border-radius:6px;background:#29588b;overflow:hidden}.reference-bars i b{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#078cff,#56e1f6)}.reference-bars strong{text-align:right;white-space:nowrap}.reference-control{padding-top:24px;gap:25px}.reference-control>div{grid-template-columns:185px minmax(0,1fr) 80px}
+
+/* SVG 原稿为 1920 × 1080：标题从 x=70 开始，导航文字从 x=845、y=39 开始。 */
+.dashboard-board.situation-board>.board-title{height:104px}
+.dashboard-board.situation-board .board-title>div:not(.board-scope-legend):not(.filters){left:70px;top:42.5px;transform:translateY(-50%);max-width:none;text-align:left}
+.dashboard-board.situation-board .board-title h1{font-size:45px;line-height:1;letter-spacing:10px;white-space:nowrap}
+.dashboard-board.situation-board .board-title .board-tabs{left:845px;top:39px;transform:none;height:34px;gap:75px}
+.dashboard-board.situation-board .board-title .board-tabs button:nth-child(n){height:34px;padding:0;line-height:34px;font-size:24px;background:transparent;box-shadow:none}
+.dashboard-board.situation-board .board-title .board-tabs button:not(:last-child)::after{right:-45px;top:0;line-height:34px}
+.dashboard-board.situation-board .board-title .board-tabs button.active::before{top:auto;bottom:-11px;left:50%;width:0;height:0;border:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:5px solid #ff963e;background:none;box-shadow:none}
+.dashboard-board.situation-board .board-title .board-scope-legend{right:24px;top:56px;gap:8px}
+.dashboard-board.situation-board .board-title .board-scope-legend>span{display:none}
+.dashboard-board.situation-board .situation-reference{height:calc(100% - 116px)}
+
+/* 顶部保留原装饰，并叠加蓝色底色。 */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title{background-color:#07305c}
+.dashboard-board.situation-board>.board-title{background-color:#07305c}
+
+
+/* 会议标注的标题、控制率和门诊布局。 */
+.dashboard-board:is(.situation-board,.construction-board)>.board-title{position:relative;height:104px;margin:0 -14px;background:transparent;z-index:5}
+.dashboard-board.construction-board{display:block;padding:0 14px 18px;overflow:hidden}
+.dashboard-board.construction-board>.board-columns,.dashboard-board.construction-board>.construction-kpis{display:none}
+.dashboard-board.construction-board .board-title>div:not(.board-scope-legend):not(.filters){left:70px;top:42.5px;transform:translateY(-50%);max-width:none;text-align:left}
+.dashboard-board.construction-board .board-title h1{font-size:45px;line-height:1;letter-spacing:10px;white-space:nowrap}
+.dashboard-board.construction-board .board-title .board-tabs{left:845px;top:39px;transform:none;height:34px;gap:75px}
+.dashboard-board.construction-board .board-title .board-tabs button:nth-child(n){height:34px;padding:0;line-height:34px;font-size:24px;background:transparent;box-shadow:none}
+.dashboard-board.construction-board .board-title .board-tabs button:not(:last-child)::after{right:-45px;top:0;line-height:34px}
+.dashboard-board.construction-board .board-title .board-tabs button.active::before{bottom:-11px;top:auto}
+.reference-map>header h2{background:none;border-bottom:0}
+.reference-panel h2 small{font-size:13px;font-weight:400;color:#8db4d1}
+.reference-bars>div{grid-template-columns:100px minmax(0,1fr) 130px}
+.reference-bars strong{font-size:16px;line-height:1.4}
+.reference-control-cards{height:calc(100% - 42px);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;padding-top:14px;box-sizing:border-box}
+.reference-control-cards>div{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:12px 20px;border:1px solid #147bb0;background:#0a3056}
+.reference-control-cards span{font-size:19px;color:#c7e8fb}.reference-control-cards strong{font-size:36px;color:#65d9ff}.reference-control-cards small{font-size:20px}
+.clinic-meeting-layout{height:calc(100% - 116px);display:grid;grid-template-columns:39% minmax(0,1fr);gap:18px;color:#edf8ff}
+.clinic-meeting-map{position:relative;min-height:0;border:1px solid #18a8e8;border-radius:12px;background:#03172c;overflow:hidden}
+.dashboard-board.construction-board .clinic-meeting-map>.board-map{position:absolute;inset:0;width:100%;height:100%;display:block;min-height:0}
+.dashboard-board.construction-board .clinic-meeting-map .map-panel{height:100%}
+.clinic-meeting-content{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:30% 11% minmax(0,1fr);gap:14px;min-width:0;min-height:0}
+.clinic-meeting-chart{display:flex;align-items:center;justify-content:space-around;height:calc(100% - 42px);gap:18px}
+.clinic-meeting-chart .reference-ring{width:min(42%,210px)}.clinic-meeting-chart .reference-ring>div{font-size:17px}.clinic-meeting-chart .reference-ring strong{font-size:28px}.clinic-meeting-chart .reference-legend{font-size:17px}.clinic-meeting-chart .reference-legend p{margin:10px 0}
+.clinic-service-values{font-size:17px;flex:1}.clinic-service-values p{display:flex;flex-direction:column;gap:5px;color:#b9d7e9}.clinic-service-values b{color:#fff;font-size:23px}
+.clinic-meeting-metric{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border:1px solid #18a8e8;border-radius:10px;background:#062442;font-size:22px}.clinic-meeting-metric strong{font-size:36px;color:#6bddf5}
+.clinic-meeting-scatter{grid-column:1 / -1;min-height:0}.dashboard-board.construction-board .clinic-meeting-scatter .clinic-scatter{position:relative;inset:auto;width:100%;height:100%;box-sizing:border-box;margin:0;display:flex;flex-direction:column}.dashboard-board.construction-board .clinic-meeting-scatter .clinic-scatter-body{flex:1;min-height:0}
+
+/* 所有大屏共用顶部，操作始终处于大屏右侧。 */
+.dashboard-viewport{border:0}
+.dashboard-board.dashboard-board::before,.dashboard-board.dashboard-board::after{display:none!important;content:none!important}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board){display:block;padding:0 14px 18px;overflow:hidden}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title{position:relative;height:104px;margin:0 -14px;background:transparent;z-index:5}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title>div:not(.board-scope-legend):not(.filters){position:absolute;left:40px;top:45px;transform:translateY(-50%);max-width:none;text-align:left}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title h1{font-size:38px;line-height:1;letter-spacing:6px;white-space:nowrap}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{position:absolute;left:auto;right:585px;top:45px;transform:translateY(-50%);height:34px;gap:32px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:nth-child(n){height:34px;padding:0;line-height:34px;font-size:21px;background:transparent;box-shadow:none}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:not(:last-child)::after{right:-20px;top:0;line-height:34px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button.active::before{top:auto;bottom:-8px;left:50%;width:0;height:0;border:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:5px solid #ff963e;background:none;box-shadow:none}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-scope-legend{position:absolute;left:auto;right:28px;top:45px;bottom:auto;transform:translateY(-50%);gap:8px;display:flex;align-items:center;white-space:nowrap}
+.dashboard-board.situation-board .board-title .board-scope-legend>span{display:flex}
+.dashboard-board.outcome-board>.outcome-layout{display:none}
+.outcome-meeting-layout{height:calc(100% - 116px);display:grid;grid-template-columns:39% minmax(0,1fr);gap:18px;color:#edf8ff}
+.outcome-meeting-map{position:relative;min-height:0;border:1px solid #18a8e8;border-radius:12px;background:#03172c;overflow:hidden}
+.dashboard-board.outcome-board .outcome-meeting-map>.board-map{position:absolute;inset:0;width:100%;height:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto}
+.dashboard-board.outcome-board .outcome-meeting-map .map-panel{height:100%;min-height:0}
+.outcome-meeting-content{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:14px;min-height:0;min-width:0}
+.outcome-meeting-trend{display:flex;flex-direction:column}.outcome-meeting-trend h2{flex:none}.outcome-meeting-trend svg{width:100%;flex:1;min-height:0}.outcome-meeting-trend svg text{fill:#a8c6dd;font-size:14px}.meeting-trend-legend{display:flex;justify-content:flex-end;gap:20px;font-size:15px;color:#338eff}.meeting-trend-legend span+span{color:#21d9ed}
+.outcome-meeting-migration{min-height:0;overflow:hidden}.dashboard-board.outcome-board .outcome-meeting-migration .outcome-new-sankey{height:100%;box-sizing:border-box;display:flex;flex-direction:column}.dashboard-board.outcome-board .outcome-meeting-migration .outcome-new-sankey svg{flex:1;width:100%;min-height:0}.dashboard-board.outcome-board .outcome-meeting-migration .outcome-migration-summary{font-size:14px;margin:4px 0;padding:4px}
+.outcome-meeting-undetected>div{height:calc(100% - 42px);display:grid;grid-template-rows:repeat(4,1fr);gap:5px}.outcome-meeting-undetected>div>div{display:grid;grid-template-columns:155px minmax(0,1fr) 80px;gap:10px;align-items:center;font-size:18px}.outcome-meeting-undetected i{height:12px;background:#19466e;border-radius:4px;overflow:hidden}.outcome-meeting-undetected i b{display:block;height:100%;background:#21c6ef}.outcome-meeting-undetected strong{text-align:right}
+/* 旧成效布局有更高优先级的 display:grid；新布局接管后必须隐藏。 */
+.dashboard-board.outcome-board > .board-columns.outcome-layout.outcome-three-columns{display:none!important}
+
+/* 标题、正文和数字使用指定字体；数字子集优先，其余文字由中文字体承接。 */
+@font-face{font-family:DashboardPangMen;src:url('dashboard-assets/PangMenTitle.ttf') format('truetype');font-display:swap}
+@font-face{font-family:DashboardNumbers;src:url('dashboard-assets/DIN-Regular.otf') format('opentype');font-weight:400;unicode-range:U+0030-0039;font-display:swap}
+@font-face{font-family:DashboardNumbers;src:url('dashboard-assets/DIN-Bold.otf') format('opentype');font-weight:700;unicode-range:U+0030-0039;font-display:swap}
+.dashboard-board,.dashboard-board button,.dashboard-board select,.dashboard-board input,.dashboard-board svg text,dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog){font-family:DashboardNumbers,DashboardChinese,sans-serif!important}
+.dashboard-board :is(h1,h2,h3),dialog:is(.metric-detail-dialog,.home-summary-dialog,.clinic-gallery-dialog,.town-clinic-dialog) :is(h1,h2,h3){font-family:DashboardNumbers,DashboardPangMen,DashboardChinese,sans-serif!important;font-weight:normal}
+.dashboard-board :is(strong,b,em),.dashboard-board svg text,.dashboard-board .dashboard-unit{font-family:DashboardNumbers,DashboardChinese,sans-serif!important}

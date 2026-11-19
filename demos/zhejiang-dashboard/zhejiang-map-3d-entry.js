@@ -28,8 +28,8 @@ function mount(host, geojson, values, callbacks) {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = .09;
-  controls.minZoom = 1;
-  controls.maxZoom = 8;
+  controls.minZoom = 0.01;
+  controls.maxZoom = Infinity;
   controls.maxPolarAngle = Math.PI * .48;
   controls.minPolarAngle = Math.PI * .13;
   controls.target.set(0, 0, 0);
@@ -216,7 +216,7 @@ function mount(host, geojson, values, callbacks) {
         camera.position.set(0, -viewSize * .65, viewSize * 1.25);
         controls.target.set(0, 0, 0);
         camera.zoom = 1;
-      } else camera.zoom = THREE.MathUtils.clamp(camera.zoom * (action === 'in' ? 1.5 : 1 / 1.5), 1, 8);
+      } else camera.zoom = Math.max(0.01, camera.zoom * (action === 'in' ? 1.5 : 1 / 1.5));
       camera.updateProjectionMatrix();
       controls.update();
       return camera.zoom;

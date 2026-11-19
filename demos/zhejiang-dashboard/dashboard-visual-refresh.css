@@ -1,0 +1,202 @@
+/* 视觉优化：仅作用于大屏，保留现有模块、数据与交互。 */
+.dashboard-viewport,.dashboard-viewport:fullscreen{background:#030d1b}
+.dashboard-board.dashboard-board{
+  background-color:#061426;
+  background-image:radial-gradient(ellipse at 48% -20%,rgba(17,92,161,.20),transparent 52%),linear-gradient(rgba(25,104,157,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(25,104,157,.035) 1px,transparent 1px);
+  background-size:auto,48px 48px,48px 48px;
+}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title{
+  background:linear-gradient(90deg,rgba(4,22,43,.98),rgba(7,39,73,.74) 62%,rgba(4,20,39,.96));
+  border-bottom:1px solid rgba(28,156,229,.46);
+  box-shadow:inset 0 -1px rgba(87,195,255,.07),0 3px 18px rgba(0,105,192,.11);
+}
+.dashboard-board .board-title h1{color:#effbff;text-shadow:0 0 13px rgba(73,193,255,.40)}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-tabs button.active{color:#e7faff;text-shadow:0 0 9px rgba(75,201,255,.45)}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-tabs button.active::before{border-bottom-color:#eab85c}
+.dashboard-board :is(.reference-map,.reference-panel,.reference-kpi,.clinic-meeting-map,.outcome-meeting-map,.clinic-meeting-metric,.outcome-new-sankey){
+  border:1px solid rgba(39,145,205,.52);
+  border-radius:3px;
+  background:linear-gradient(135deg,rgba(8,37,68,.95),rgba(4,19,37,.98) 72%);
+  box-shadow:inset 0 0 20px rgba(11,89,150,.12),0 0 6px rgba(5,100,177,.13);
+}
+.dashboard-board :is(.reference-map>header h2,.reference-panel h2,.clinic-scatter h2,.outcome-new-sankey header){
+  box-sizing:border-box;
+  background:linear-gradient(100deg,rgba(8,75,132,.76),rgba(8,47,89,.50) 68%,rgba(7,29,53,.18));
+  border-bottom:1px solid rgba(42,151,214,.54);
+  box-shadow:inset 3px 0 #23bff0;
+}
+.dashboard-board :is(.reference-map>header h2,.reference-panel h2){padding:6px 12px 7px 16px;min-height:42px}
+.dashboard-board :is(.reference-map>header h2,.reference-panel h2)::before{content:'◆';font-family:sans-serif;font-size:10px;color:#edc06a;margin-right:10px;vertical-align:3px}
+.dashboard-board :is(.reference-map,.reference-panel){padding-top:12px}
+.dashboard-board :is(.clinic-scatter h2,.outcome-new-sankey header){padding:6px 12px 7px 16px}
+.dashboard-board :is(.clinic-scatter h2,.outcome-new-sankey header h2){color:#e7f8ff}
+.dashboard-board .reference-kpi{border-top:2px solid #168ed2;background:linear-gradient(110deg,rgba(8,41,72,.95),rgba(4,23,43,.96))}
+.dashboard-board .reference-kpi strong,.dashboard-board .clinic-meeting-metric strong,.dashboard-board .reference-control-cards strong{color:#b2efff;text-shadow:0 0 10px rgba(63,199,250,.18)}
+.dashboard-board .reference-kpi.is-risk strong,.dashboard-board .reference-kpi.is-risk i{color:#ff8a88}
+.dashboard-board .reference-kpi span,.dashboard-board .reference-control-cards span{color:#d4eaf7}
+.dashboard-board .reference-control-cards>div,.dashboard-board .reference-filing{border-color:rgba(30,129,188,.50);background:linear-gradient(110deg,rgba(12,57,96,.77),rgba(5,29,53,.90))}
+.dashboard-board .clinic-meeting-metric{border-left:3px solid #1bb5e6}
+.dashboard-board :is(.meeting-trend-legend,.reference-legend,.clinic-service-values){color:#cde4f3}
+.dashboard-board .reference-panel h2 small{color:#bdd1df}
+.dashboard-board :is(button,select):focus-visible{outline:2px solid #80dcff;outline-offset:2px}
+
+/* 大屏标题行尺寸及标题位置，以 1920px 设计画布为基准。 */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title{height:100px;box-sizing:border-box}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title>div:not(.board-scope-legend):not(.filters){left:50px;top:7px;transform:none}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title h1{font-size:45px;line-height:1}
+
+/* 慢病态势参考稿的顶部装饰和导航。 */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title{background:transparent;border:0;box-shadow:none;isolation:isolate}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title::before{content:"";position:absolute;left:0;top:0;width:1920px;height:160px;background:url('dashboard-assets/header-top.svg') no-repeat left top;pointer-events:none;z-index:-1}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{left:785px;right:auto;top:70px;gap:55px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:nth-child(n){font-size:24px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:not(:last-child)::after{content:"";right:-35px;top:5px;width:15px;height:24px;background:url('dashboard-assets/header-divider.svg') no-repeat;transform:none}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button.active{background:radial-gradient(ellipse at 50% 100%,rgba(0,120,255,.32),transparent 75%)}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-scope-legend{top:70px}
+
+/* 两张环图参考稿：数值继续取当前区域数据。 */
+.dashboard-board .reference-panel:is(.reference-comorbidity,.reference-risk){background:#06172d;border:0;border-top:2px solid #0879b2;box-shadow:none;border-radius:0;padding:14px 20px}
+.dashboard-board .reference-panel:is(.reference-comorbidity,.reference-risk) h2{min-height:40px;padding:4px 0;background:none;border:0;box-shadow:none;color:#eef7ff;font-size:23px}
+.dashboard-board .reference-panel:is(.reference-comorbidity,.reference-risk) h2::before{content:'·';display:inline-grid;place-items:center;width:22px;height:22px;margin-right:12px;border:1px solid #007dc4;border-radius:50%;color:#23a6e7;vertical-align:2px}
+.reference-comorbidity .reference-chart{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr);gap:8px}
+.reference-comorbidity .reference-ring{width:min(100%,180px);justify-self:center}
+.reference-comorbidity .reference-ring>div{width:86%;background:#06172d}
+.reference-comorbidity .reference-ring img{width:65px;max-width:75%;height:auto}
+.comorbidity-value{min-width:0;display:flex;flex-direction:column;gap:12px;color:#c6d9e9;font-size:18px;white-space:nowrap}
+.comorbidity-value i{width:75%;height:6px;background:linear-gradient(90deg,#00baf0 0 24%,#153d64 24%)}
+.comorbidity-value.single i{background:linear-gradient(90deg,#0879f9 0 24%,#153d64 24%)}
+.comorbidity-value strong{font-size:32px;line-height:1;color:#f5faff;font-weight:400}
+.comorbidity-value small,.reference-risk .reference-legend small{font-size:14px;color:#91aec4;font-weight:400}
+.reference-risk .reference-chart{gap:24px;justify-content:space-between}
+.reference-risk .reference-ring{width:min(46%,180px)}
+.reference-risk .reference-ring>div{width:50%;background:#06172d;box-shadow:0 0 0 3px #0879f9}
+.reference-risk .reference-legend{font-size:18px}
+.reference-risk .reference-legend p{margin:12px 0;gap:9px}
+.reference-risk .reference-legend i{width:10px;height:10px;border-radius:0}
+.reference-risk .reference-legend b{font-size:24px;font-weight:400;color:#f5faff}
+.reference-risk .reference-legend small{margin-left:6px}
+
+/* 慢病态势：按设计标注统一模块和地图样式。 */
+.dashboard-board.dashboard-board{background:#030d1c}
+.dashboard-board.situation-board .reference-content{margin-top:40px;grid-template-rows:146px minmax(0,1fr)}
+.dashboard-board.situation-board .reference-panels{grid-template-rows:290px 454px}
+.dashboard-board.situation-board .reference-panel{position:relative;box-sizing:border-box;padding:20px;border:0;border-radius:0;background:rgba(8,33,63,.5);box-shadow:none}
+.dashboard-board.situation-board .reference-panel::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,#00afff 0%,rgba(11,44,80,0) 100%);pointer-events:none}
+.dashboard-board.situation-board .reference-panel::after{content:'';position:absolute;left:336px;top:43px;width:124px;height:1px;background:url('dashboard-assets/module-heading-decoration.svg') no-repeat;pointer-events:none}
+.dashboard-board.situation-board .reference-panel h2{display:flex;align-items:center;gap:12px;min-height:24px;height:24px;margin:0;padding:0;border:0;background:none;box-shadow:none;color:#eef7ff;font-size:23px;line-height:24px}
+.dashboard-board.situation-board .reference-panel h2::before{content:'';box-sizing:border-box;display:block;flex:none;width:24px;height:24px;margin:0;border:1px solid transparent;border-radius:50%;background:radial-gradient(circle at center,#ffb547 0,rgba(8,33,63,0) 2px),linear-gradient(#08213f,#08213f) padding-box,linear-gradient(135deg,#087dff,rgba(11,49,90,0)) border-box}
+.dashboard-board.situation-board .reference-panel h2 small{margin-left:4px}
+.dashboard-board.situation-board .reference-chart{height:calc(100% - 24px)}
+.dashboard-board .reference-map{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.dashboard-board .reference-map>header h2{background:none;border:0;box-shadow:none;padding-left:0}
+.dashboard-board .reference-map>header h2::before{content:none}
+.dashboard-board.situation-board .reference-map-slot :is(.board-map,.map-panel,.map-stage,.map-3d){border:0;box-shadow:none;background:transparent!important}
+.comorbidity-value{font-size:18px;color:#c4d8ea}
+.comorbidity-value i,.comorbidity-value.single i{width:90px;max-width:100%;height:6px;background:linear-gradient(90deg,#00bfff 0 20px,transparent 20px 30px,#0b315a 30px 90px)}
+.comorbidity-value.single i{background:linear-gradient(90deg,#087dff 0 20px,transparent 20px 30px,#0b315a 30px 90px)}
+.reference-risk .reference-legend{color:#c4d8ea;font-size:18px}
+.reference-risk .reference-legend b{font-family:DashboardNumbers,DashboardChinese,sans-serif!important;font-size:24px;color:#fff}
+.reference-risk .reference-legend small{font-family:DashboardNumbers,DashboardChinese,sans-serif;font-size:16px;color:#91adc5}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:nth-child(n){color:#526b80}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button.active{color:#fff;text-shadow:none;background:radial-gradient(ellipse at 50% 100%,rgba(0,102,255,.42),transparent 75%)}
+
+/* 顶部切换底图和可移动光感，扩大按钮的点击范围。 */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title::before{background-image:url('dashboard-assets/menu-base.svg'),url('dashboard-assets/header-top.svg');background-position:721px 26px,0 0}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs{gap:0;height:56px;top:70px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:nth-child(n){width:150px;min-width:150px;height:56px;line-height:56px;padding:0;text-align:center;background:transparent}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:nth-child(2){width:180px;min-width:180px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button:not(:last-child)::after{right:-7px;top:16px}
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board) .board-title .board-tabs button.active::before{bottom:0}
+.board-tabs .menu-glow{position:absolute;left:0;bottom:0;width:160px;height:30px;margin-left:-80px;background:radial-gradient(ellipse at 50% 100%,rgba(0,104,255,.45),transparent 72%);pointer-events:none;z-index:0}
+.board-tabs:has(button:nth-of-type(1).active) .menu-glow{transform:translateX(75px)}
+.board-tabs:has(button:nth-of-type(2).active) .menu-glow{transform:translateX(240px)}
+.board-tabs:has(button:nth-of-type(3).active) .menu-glow{transform:translateX(405px)}
+
+/* 环形图按数据比例分段，管控状态依次轻微突出。 */
+.reference-comorbidity .reference-chart{position:relative;display:block}
+.reference-comorbidity .reference-ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(38%,180px)}
+.reference-comorbidity .comorbidity-value{position:absolute;left:0;top:50%;transform:translateY(-50%);max-width:29%}
+.reference-comorbidity .comorbidity-value.single{left:auto;right:0}
+.reference-risk .risk-ring{background:none;display:block;overflow:visible}
+.reference-risk .risk-ring svg{display:block;width:100%;height:100%;overflow:visible}
+.risk-arc{transform-origin:50px 50px;transform-box:view-box;animation:risk-select 12s ease-in-out infinite;animation-delay:calc(var(--arc-index) * -3s)}
+@keyframes risk-select{0%,20%{transform:scale(1.06)} 25%,95%,100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.risk-arc{animation:none}}
+
+/* 门诊和成效页沿用慢病态势的模块标题装饰。 */
+.dashboard-board:is(.construction-board,.outcome-board) :is(.reference-panel,.clinic-scatter,.outcome-new-sankey){position:relative;box-sizing:border-box;background:rgba(8,33,63,.5);border:0;border-radius:0;box-shadow:none}
+.dashboard-board:is(.construction-board,.outcome-board) :is(.reference-panel,.clinic-scatter,.outcome-new-sankey)::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,#00afff,rgba(11,44,80,0));pointer-events:none}
+.dashboard-board:is(.construction-board,.outcome-board) :is(.reference-panel,.clinic-scatter,.outcome-new-sankey)::after{content:'';position:absolute;right:20px;top:43px;width:124px;height:1px;background:url('dashboard-assets/module-heading-decoration.svg') no-repeat;pointer-events:none}
+.dashboard-board:is(.construction-board,.outcome-board) :is(.reference-panel h2,.clinic-scatter h2,.outcome-new-sankey header){background:none;border:0;box-shadow:none}
+.dashboard-board:is(.construction-board,.outcome-board) :is(.reference-panel h2,.clinic-scatter h2,.outcome-new-sankey header h2)::before{content:'';display:inline-block;box-sizing:border-box;width:24px;height:24px;margin-right:12px;border:1px solid transparent;border-radius:50%;vertical-align:middle;background:radial-gradient(circle at center,#ffb547 0,rgba(8,33,63,0) 2px),linear-gradient(#08213f,#08213f) padding-box,linear-gradient(135deg,#087dff,rgba(11,49,90,0)) border-box}
+.dashboard-board:is(.construction-board,.outcome-board) :is(.clinic-meeting-map,.outcome-meeting-map,.map-panel,.map-stage,.map-3d){border:0;box-shadow:none;background:transparent!important}
+.dashboard-board.construction-board .clinic-meeting-scatter .clinic-scatter-body{display:flex;flex-direction:row;align-items:stretch;gap:18px}
+.dashboard-board.construction-board .clinic-scatter-body svg{width:74%;min-width:0;height:100%;flex:1 1 0}
+.dashboard-board.construction-board .clinic-quadrant-legend{width:24%;display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);gap:8px}
+.dashboard-board.construction-board .clinic-quadrant-legend>button{min-height:0}
+.dashboard-board.construction-board .clinic-meeting-scatter .clinic-scatter h2{background:none!important;box-shadow:none!important;border:0!important}
+
+/* 干预成效：地图和四张趋势图位于上方，风险迁移与未检测占比位于底部。 */
+.dashboard-board.outcome-board .outcome-meeting-layout{display:grid;grid-template-columns:39% minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr) minmax(0,.82fr)}
+.outcome-meeting-content{display:contents}
+.outcome-meeting-map{grid-column:1;grid-row:1 / 3}
+.outcome-meeting-trend:nth-child(1){grid-column:2;grid-row:1}.outcome-meeting-trend:nth-child(2){grid-column:3;grid-row:1}
+.outcome-meeting-trend:nth-child(3){grid-column:2;grid-row:2}.outcome-meeting-trend:nth-child(4){grid-column:3;grid-row:2}
+.outcome-meeting-migration{grid-column:1 / 3;grid-row:3}
+.outcome-meeting-undetected{grid-column:3;grid-row:3}
+
+/* 菜单底部分割线及两页内容的设计坐标。 */
+.dashboard-board:is(.situation-board,.construction-board,.outcome-board)>.board-title::after{content:'';position:absolute;left:721px;top:100px;width:1199px;height:1px;background:linear-gradient(90deg,rgba(3,13,28,0) 0%,#087dff 11%,rgba(3,13,28,.1) 100%);pointer-events:none}
+.dashboard-board.construction-board .clinic-meeting-content{margin-top:40px}
+.dashboard-board.outcome-board .outcome-meeting-layout{margin-top:40px;height:calc(100% - 156px)}
+
+/* 建档纳管：参考稿中的档案摘要与分病种进度。 */
+.dashboard-board.situation-board .filing-summary{display:flex;align-items:center;margin-top:32px;gap:0}
+.filing-summary>img{width:60px;height:60px;object-fit:contain;flex:none}
+.filing-divider{width:1px;height:80px;background:#164a75;margin:0 20px;flex:none}
+.filing-stat{width:152px;height:100px;box-sizing:border-box;background:#0b2c50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:none}
+.filing-stat+.filing-stat{margin-left:16px}
+.filing-stat span{font-size:18px;color:#c4d8ea}
+.filing-stat strong{font:400 32px/1 DashboardNumbers,DashboardChinese,sans-serif;color:#fff;white-space:nowrap}
+.filing-stat small{font-size:16px;color:#91adc5}
+.dashboard-board.situation-board .reference-filing-panel .reference-bars{margin-top:30px;gap:18px}
+.reference-filing-panel .reference-bars>div{grid-template-columns:110px minmax(0,1fr) 100px;gap:10px;color:#c4d8ea;font-size:18px}
+.reference-filing-panel .reference-bars span{display:flex;align-items:center;gap:13px;white-space:nowrap}
+.reference-filing-panel .reference-bars span::before{content:'';width:19px;height:12px;flex:none;background:url('dashboard-assets/filing-row-decoration.svg') center/contain no-repeat}
+.reference-filing-panel .reference-bars i{height:10px;border-radius:0;background:transparent}
+.reference-filing-panel .reference-bars i b{border-radius:0;background:var(--bar-color)}
+.reference-filing-panel .reference-bars strong{font:400 23px/1.15 DashboardNumbers,DashboardChinese,sans-serif;color:#fff}
+.reference-filing-panel .reference-bars strong small{font-size:15px;color:#91adc5}
+.reference-filing-panel .reference-bars strong em{display:block;font:normal 13px/1.2 DashboardNumbers,DashboardChinese,sans-serif;color:#91adc5}
+
+/* 建档摘要填满模块内宽，统一模块间距及文字规格。 */
+.dashboard-board.situation-board .reference-content,.dashboard-board.situation-board .reference-kpis,.dashboard-board.situation-board .reference-panels{gap:16px}
+.dashboard-board.situation-board .filing-summary{width:100%}
+.dashboard-board.situation-board .filing-stat{flex:1 1 0;min-width:0;width:auto}
+.dashboard-board.situation-board .filing-stat span,.dashboard-board.situation-board .reference-filing-panel .reference-bars span{font-size:18px;color:#c4d8ea}
+.dashboard-board.situation-board .filing-stat strong{font-size:40px;color:#fff}
+.dashboard-board.situation-board .filing-stat small,.dashboard-board.situation-board .reference-filing-panel .reference-bars strong small{font-size:16px;color:#91adc5}
+.dashboard-board.situation-board .filing-stat:last-child small{font-family:DashboardDIN,DashboardChinese,sans-serif;font-size:18px}
+.dashboard-board.situation-board .reference-filing-panel .reference-bars{gap:18px}
+
+/* 控制率：按指标值绘制环形进度 */
+.dashboard-board .reference-control-cards{height:auto;grid-template-rows:repeat(2,1fr);column-gap:16px;row-gap:30px;padding-top:24px}
+.dashboard-board .reference-control-cards>div{min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:20px;padding:0;border:0;background:none}
+.dashboard-board .control-progress{flex:0 0 70px;width:70px;height:70px;border-radius:50%;background:conic-gradient(#087dff 0%,#00c7f4 var(--progress),#164a75 var(--progress),#164a75 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px))}
+.dashboard-board .control-value{min-width:0;display:flex;flex-direction:column;gap:12px}
+.dashboard-board .reference-control-cards .control-value span{font-size:18px;color:#c4d8ea;white-space:nowrap}
+.dashboard-board .reference-control-cards .control-value strong{font-family:DIN,"DIN Alternate",sans-serif;font-size:40px;font-weight:500;line-height:1;color:#fff;text-shadow:none;white-space:nowrap}
+.dashboard-board .reference-control-cards .control-value small{margin-left:8px;font-size:16px;color:#91adc5}
+
+/* 控制率指标在指定区域内均分 */
+.dashboard-board.situation-board .reference-control-cards{position:absolute;top:78px;bottom:20px;left:20px;right:20px;height:auto;padding:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px}
+.dashboard-board.situation-board .reference-control-cards>div{flex-direction:column;justify-content:center;align-items:center;gap:12px;text-align:center}
+.dashboard-board.situation-board .control-value{align-items:center;gap:8px}
+.dashboard-board.situation-board .reference-control-cards .control-value span{line-height:22px}
+
+/* 地图标题及操作区从画布 Y=140 开始，地图区域不显示外框。 */
+.dashboard-board.situation-board .reference-map{padding-top:40px}
+.dashboard-board.situation-board .reference-map>header h2{padding-top:0}
+.dashboard-board.construction-board .clinic-meeting-map{overflow:visible}
+.dashboard-board.construction-board .clinic-meeting-map .map-panel{padding-top:40px;overflow:visible;border:0;box-shadow:none}
+.dashboard-board.construction-board .clinic-meeting-map :is(.map-stage,.map-chart,.map-3d){border:0;box-shadow:none;overflow:visible}
