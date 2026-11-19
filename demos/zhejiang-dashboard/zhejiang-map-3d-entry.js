@@ -27,6 +27,7 @@ function mount(host, geojson, values, callbacks) {
   camera.up.set(0, 0, 1);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.enableRotate = false;
   controls.dampingFactor = .09;
   controls.minZoom = 0.01;
   controls.maxZoom = Infinity;
@@ -34,8 +35,55 @@ function mount(host, geojson, values, callbacks) {
   controls.minPolarAngle = Math.PI * .13;
   controls.target.set(0, 0, 0);
   const viewSize = Math.max(projectedWidth, projectedHeight) * 1.18;
-  const depth = callbacks.townLevel ? Math.max(projectedWidth, projectedHeight) * .055 : 10;
+  const depth = Math.max(projectedWidth, projectedHeight) * .045;
   const meshes = [];
+  // The flat administrative basemap uses the same projection as the raised map.
+  // Include nearby county boundaries when available so drilldown retains context.
+  const contextFeatures = [...(window.CHINA_CONTEXT_GEOJSON?.features || []), ...(window.ZHEJIANG_COUNTIES_DATAV_GEOJSON?.features || []), ...(callbacks.townLevel ? geojson.features : [])];
+  const marginLon = (bounds[2] - bounds[0]) * 1.5, marginLat = (bounds[3] - bounds[1]) * 1.5;
+  const segments = [];
+  for (const feature of contextFeatures) {
+    if (!feature.geometry || !['Polygon', 'MultiPolygon'].includes(feature.geometry.type)) continue;
+    const polygons = feature.geometry.type === 'MultiPolygon' ? feature.geometry.coordinates : [feature.geometry.coordinates];
+    for (const polygon of polygons) for (const ring of polygon) {
+      for (let i = 1; i < ring.length; i++) {
+        const a = ring[i - 1], b = ring[i];
+        if (Math.max(a[0], b[0]) < bounds[0] - marginLon || Math.min(a[0], b[0]) > bounds[2] + marginLon || Math.max(a[1], b[1]) < bounds[1] - marginLat || Math.min(a[1], b[1]) > bounds[3] + marginLat) continue;
+        const [x1, y1] = project(a), [x2, y2] = project(b);
+        segments.push(x1, y1, 0, x2, y2, 0);
+      }
+    }
+  }
+  const basemapGeometry = new THREE.BufferGeometry();
+  basemapGeometry.setAttribute('position', new THREE.Float32BufferAttribute(segments, 3));
+  // 二维边界距当前区域越远，颜色越暗。
+  const nearColor = new THREE.Color('#287da7'), farColor = new THREE.Color('#071a2d');
+  const boundaryColors = [];
+  for (let i=0; i<segments.length; i+=3) {
+    const nx = Math.abs(segments[i]) / Math.max(projectedWidth*.5, .001);
+    const ny = Math.abs(segments[i+1]) / Math.max(projectedHeight*.5, .001);
+    const distance = Math.max(0, Math.hypot(Math.max(0,nx-.5), Math.max(0,ny-.5)));
+    const blend = THREE.MathUtils.smoothstep(distance, .25, 2.6);
+    const color = nearColor.clone().lerp(farColor, blend);
+    boundaryColors.push(color.r,color.g,color.b);
+  }
+  basemapGeometry.setAttribute('color', new THREE.Float32BufferAttribute(boundaryColors,3));
+  const basemap = new THREE.LineSegments(basemapGeometry, new THREE.LineBasicMaterial({ vertexColors:true, transparent:true, opacity:.8 }));
+  const board = host.closest('.situation-board, .construction-board, .outcome-board');
+  const backgroundScene = board ? scene : null;
+  let backgroundRenderer = null;
+  let backgroundCamera = null;
+  let backgroundWidth = 0, backgroundHeight = 0;
+  if (board) {
+    backgroundScene.add(basemap);
+    renderer.domElement.style.opacity = '0';
+    backgroundRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    backgroundRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    backgroundRenderer.outputColorSpace = THREE.SRGBColorSpace;
+    backgroundRenderer.domElement.className = 'situation-map-background';
+    board.prepend(backgroundRenderer.domElement);
+    backgroundCamera = camera.clone();
+  } else scene.add(basemap);
   for (const [from, to] of callbacks.flowLines || []) {
     const [x1, y1] = project(from), [x2, y2] = project(to);
     const start = new THREE.Vector3(x1, y1, depth + .2);
@@ -47,6 +95,7 @@ function mount(host, geojson, values, callbacks) {
   }
   const hitMeshes = [];
   const labels = [];
+  const nodePoints = [];
   const valid = values.map(item => item.value).filter(Number.isFinite);
   const min = Math.min(...valid);
   const max = Math.max(...valid);
@@ -59,7 +108,9 @@ function mount(host, geojson, values, callbacks) {
     const center = feature.properties.centroid || feature.properties.center || (ring && ring.reduce((sum, p) => [sum[0] + p[0] / ring.length, sum[1] + p[1] / ring.length], [0, 0]));
     if (!center || !Number.isFinite(value)) return [];
     const [x, y] = project(center);
-    return [{ x, y, value }];
+    const suppliedColor = valueByName.get(feature.properties.name)?.color;
+    const rgb = /^#[0-9a-f]{6}$/i.test(suppliedColor || '') ? [1,3,5].map(i => parseInt(suppliedColor.slice(i,i+2),16)) : null;
+    return [{ x, y, value, rgb }];
   });
   const heatCanvas = document.createElement('canvas');
   heatCanvas.width = heatCanvas.height = 256;
@@ -68,15 +119,16 @@ function mount(host, geojson, values, callbacks) {
   const colorStops = [[33,134,208], [85,168,223], [242,165,74], [237,123,70], [230,92,88]];
   for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
     const px = (x / 255 - .5) * projectedWidth, py = (y / 255 - .5) * projectedHeight;
-    let weighted = 0, weightSum = 0;
+    let weighted = 0, weightSum = 0, rgbWeight = 0; const weightedRgb = [0,0,0];
     for (const sample of samples) {
       const distance = ((px - sample.x) / projectedWidth) ** 2 + ((py - sample.y) / projectedHeight) ** 2;
       const weight = 1 / Math.max(.00005, distance ** 1.5);
       weighted += sample.value * weight; weightSum += weight;
+      if (sample.rgb) { rgbWeight += weight; for (let c=0;c<3;c++) weightedRgb[c] += sample.rgb[c]*weight; }
     }
     const ratio = weightSum && max > min ? THREE.MathUtils.clamp((weighted / weightSum - min) / (max - min), 0, 1) : .5;
     const scaled = Math.min(3.999, ratio * 4), index = Math.floor(scaled), offset = (y * 256 + x) * 4;
-    for (let c = 0; c < 3; c++) heatImage.data[offset + c] = colorStops[index][c] + (colorStops[index + 1][c] - colorStops[index][c]) * (scaled - index);
+    for (let c = 0; c < 3; c++) heatImage.data[offset+c] = rgbWeight ? weightedRgb[c] / rgbWeight : colorStops[index][c] + (colorStops[index + 1][c] - colorStops[index][c]) * (scaled - index);
     heatImage.data[offset + 3] = 255;
   }
   heatContext.putImageData(heatImage, 0, 0);
@@ -101,7 +153,7 @@ function mount(host, geojson, values, callbacks) {
     const scaled = Math.min(heatColors.length - 1.001, Math.max(0, ratio * (heatColors.length - 1)));
     const index = Math.floor(scaled);
     const topColor = item?.color ? new THREE.Color(item.color) : Number.isFinite(item?.value) ? heatColors[index].clone().lerp(heatColors[index + 1], scaled - index) : new THREE.Color('#758393');
-    const sideColor = topColor.clone().multiplyScalar(.47);
+    
     const polygons = feature.geometry.type === 'MultiPolygon' ? feature.geometry.coordinates : [feature.geometry.coordinates];
     for (const polygon of polygons) {
       const ring = polygon[0];
@@ -116,8 +168,19 @@ function mount(host, geojson, values, callbacks) {
         else shape.lineTo(x, y);
       });
       shape.closePath();
+      for (const holeRing of polygon.slice(1)) {
+        if (holeRing.length < 4) continue;
+        const hole = new THREE.Path();
+        holeRing.forEach((point, index) => { const [x,y] = project(point); index ? hole.lineTo(x,y) : hole.moveTo(x,y); });
+        hole.closePath(); shape.holes.push(hole);
+      }
       const geometry = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false, curveSegments: 1 });
-      const mesh = new THREE.Mesh(geometry, [new THREE.MeshBasicMaterial({ color: topColor }), new THREE.MeshPhongMaterial({ color: sideColor, transparent: true, opacity: .82 })]);
+      const position = geometry.attributes.position;
+      const colors = [];
+      const lower = new THREE.Color('#063251'), upper = new THREE.Color('#16739b');
+      for (let i = 0; i < position.count; i++) { const c = lower.clone().lerp(upper, THREE.MathUtils.clamp(position.getZ(i) / depth, 0, 1)); colors.push(c.r,c.g,c.b); }
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      const mesh = new THREE.Mesh(geometry, [new THREE.MeshBasicMaterial(Number.isFinite(item?.value) ? { map: heatTexture } : { color: topColor }), new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: .82, depthWrite: true })]);
       mesh.userData.name = name;
       scene.add(mesh);
       meshes.push(mesh);
@@ -127,9 +190,13 @@ function mount(host, geojson, values, callbacks) {
         return new THREE.Vector3(x, y, depth + .01);
       });
       linePoints.push(linePoints[0].clone());
-      const outline = new THREE.Line(new THREE.BufferGeometry().setFromPoints(linePoints), new THREE.LineBasicMaterial({ color: '#83dcff', transparent: true, opacity: .72 }));
+      const outline = new THREE.Line(new THREE.BufferGeometry().setFromPoints(linePoints), new THREE.LineBasicMaterial({ color: '#a1e9ff', transparent: true, opacity: .95 }));
       scene.add(outline);
       meshes.push(outline);
+      const glow = new THREE.Line(outline.geometry.clone(), new THREE.LineBasicMaterial({color:'#1dbde8', transparent:true, opacity:.22, blending:THREE.AdditiveBlending, depthWrite:false}));
+      glow.position.z = depth * .015; scene.add(glow); meshes.push(glow);
+      const bottomLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(linePoints.map(p => new THREE.Vector3(p.x,p.y,.02))), new THREE.LineBasicMaterial({color:'#17779a',transparent:true,opacity:.65}));
+      scene.add(bottomLine); meshes.push(bottomLine);
     }
     const largestRing = polygons.map(polygon => polygon[0]).filter(Boolean).sort((a, b) => b.length - a.length)[0];
     const position = feature.properties.centroid || feature.properties.center || (largestRing && largestRing.reduce((sum, point) => [sum[0] + point[0] / largestRing.length, sum[1] + point[1] / largestRing.length], [0, 0]));
@@ -139,8 +206,14 @@ function mount(host, geojson, values, callbacks) {
       label.textContent = (item?.displayName || name).replace(/^.*?市(?=.+(?:区|县|市)$)/, '');
       labelLayer.appendChild(label);
       const [x, y] = project(position);
+      nodePoints.push(x, y, depth + .05);
       labels.push({ element: label, position: new THREE.Vector3(x, y, depth + .02), county: !callbacks.townLevel && (callbacks.countyLevel || geojson.features.length > 20) });
     }
+  }
+  if (nodePoints.length) {
+    const nodeGeometry = new THREE.BufferGeometry();
+    nodeGeometry.setAttribute('position', new THREE.Float32BufferAttribute(nodePoints, 3));
+    scene.add(new THREE.Points(nodeGeometry, new THREE.PointsMaterial({color:'#65d9f6', size:3.5, sizeAttenuation:false, transparent:true, opacity:.72, depthWrite:false})));
   }
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
@@ -206,6 +279,27 @@ function mount(host, geojson, values, callbacks) {
       label.element.style.display = visible ? '' : 'none';
       if (visible) { occupied.push({ x, y }); label.element.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`; }
     }
+    if (backgroundRenderer && board.isConnected && host.clientHeight) {
+      const boardRect = board.getBoundingClientRect(), hostRect = host.getBoundingClientRect();
+      const scaleX = board.clientWidth / boardRect.width, scaleY = board.clientHeight / boardRect.height;
+      const centerX = (hostRect.left + hostRect.width / 2 - boardRect.left) * scaleX;
+      const centerY = (hostRect.top + hostRect.height / 2 - boardRect.top) * scaleY;
+      const unit = viewSize / (host.clientHeight * camera.zoom);
+      backgroundCamera.position.copy(camera.position);
+      backgroundCamera.quaternion.copy(camera.quaternion);
+      backgroundCamera.zoom = 1;
+      backgroundCamera.near = camera.near; backgroundCamera.far = camera.far;
+      backgroundCamera.left = -centerX * unit;
+      backgroundCamera.right = (board.clientWidth - centerX) * unit;
+      backgroundCamera.top = centerY * unit;
+      backgroundCamera.bottom = -(board.clientHeight - centerY) * unit;
+      backgroundCamera.updateProjectionMatrix();
+      if (backgroundWidth !== board.clientWidth || backgroundHeight !== board.clientHeight) {
+        backgroundWidth = board.clientWidth; backgroundHeight = board.clientHeight;
+        backgroundRenderer.setSize(backgroundWidth, backgroundHeight);
+      }
+      backgroundRenderer.render(backgroundScene, backgroundCamera);
+    }
     renderer.render(scene, camera);
   }
   animate();
@@ -230,6 +324,10 @@ function mount(host, geojson, values, callbacks) {
         object.geometry?.dispose();
         if (object.material) (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => material.dispose());
       });
+      if (backgroundRenderer) {
+        backgroundRenderer.dispose(); backgroundRenderer.forceContextLoss();
+        backgroundRenderer.domElement.remove();
+      }
       renderer.dispose();
       heatTexture.dispose();
       renderer.forceContextLoss();
