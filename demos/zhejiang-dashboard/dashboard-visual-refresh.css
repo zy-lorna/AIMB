@@ -590,7 +590,7 @@
 .dashboard-board.situation-board .reference-control-cards>div:nth-child(1) .control-bar b{background:#56d9ff}
 .dashboard-board.situation-board .reference-control-cards>div:nth-child(2) .control-bar b{background:#00bfff}
 .dashboard-board.situation-board .reference-control-cards>div:nth-child(3) .control-bar b{background:#087dff}
-.dashboard-board.situation-board .reference-control-cards>div:nth-child(4) .control-bar b{background:#164a75}
+.dashboard-board.situation-board .reference-control-cards>div:nth-child(4) .control-bar b{background:#2BB3EC}
 .dashboard-board :is(.board-map-modes,.outcome-map-metric-tabs) button:not([data-map-zoom]){border-color:#00bfff!important}
 .dashboard-board :is(.board-map-modes,.outcome-map-metric-tabs) button:is(.active,[aria-pressed="true"]){background:#00bfff!important;border-color:#00bfff!important;color:#fff!important}
 .dashboard-board .board-map-modes .map-zoom button{border:1px solid #00bfff!important;background-image:none!important;background-color:rgba(8,33,63,.7)!important;color:#bcecff!important;font-size:20px!important;line-height:1}
@@ -625,3 +625,12 @@
 .dashboard-board.outcome-board .undetected-ring::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#168eff 0 var(--missing-rate),#19466e var(--missing-rate) 100%);-webkit-mask:radial-gradient(circle,transparent 54%,#000 55%);mask:radial-gradient(circle,transparent 54%,#000 55%)}
 .dashboard-board.outcome-board .undetected-ring strong{position:relative;display:flex;align-items:baseline;gap:8px;color:#fff;font:400 36px DashboardNumbers,sans-serif;white-space:nowrap}
 .dashboard-board.outcome-board .undetected-ring strong small{font-size:18px}
+
+.dashboard-board.situation-board .filing-stat .filing-deduplicated{font-size:12px;font-weight:400}
+
+.dashboard-board.situation-board .reference-comorbidity .reference-ring{position:relative;container-type:inline-size}
+.dashboard-board.situation-board .reference-comorbidity .comorbidity-arc-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--arc-angle)) translateY(-41.5cqw);color:#fff;font:600 clamp(10px,7cqw,16px) DashboardNumbers,sans-serif;white-space:nowrap;pointer-events:none}
+
+.dashboard-board.situation-board .reference-control-cards{gap:16px}
+.dashboard-board.situation-board .reference-control-cards>div:nth-child(5) .control-bar b{background:#258fe9}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring{left:auto;top:auto;transform:none;width:min(46%,180px)}
