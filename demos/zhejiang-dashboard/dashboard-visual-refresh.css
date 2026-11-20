@@ -615,3 +615,13 @@
 .dashboard-board .board-map-modes .map-zoom button{border-color:rgba(8,33,63,.5)!important;background-color:rgba(8,33,63,.5)!important}
 
 .dashboard-board.outcome-board .outcome-meeting-trend svg .meeting-difference{font:400 20px DashboardNumbers,DIN,sans-serif;fill:#fff;pointer-events:none}
+
+/* 共病环中心展示当前区域占比 */
+.dashboard-board.situation-board .reference-comorbidity .reference-ring{width:min(48%,210px)}
+.dashboard-board.situation-board .reference-comorbidity .comorbidity-center{display:flex;align-items:baseline;gap:8px;white-space:nowrap;color:#fff;font:400 36px DashboardNumbers, sans-serif}
+.dashboard-board.situation-board .reference-comorbidity .comorbidity-center small{font-size:18px;font-weight:400}
+
+.dashboard-board.outcome-board .undetected-ring{position:relative;display:grid;place-items:center;-webkit-mask:none;mask:none}
+.dashboard-board.outcome-board .undetected-ring::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#168eff 0 var(--missing-rate),#19466e var(--missing-rate) 100%);-webkit-mask:radial-gradient(circle,transparent 54%,#000 55%);mask:radial-gradient(circle,transparent 54%,#000 55%)}
+.dashboard-board.outcome-board .undetected-ring strong{position:relative;display:flex;align-items:baseline;gap:8px;color:#fff;font:400 36px DashboardNumbers,sans-serif;white-space:nowrap}
+.dashboard-board.outcome-board .undetected-ring strong small{font-size:18px}
