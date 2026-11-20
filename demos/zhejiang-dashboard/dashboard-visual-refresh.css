@@ -634,3 +634,305 @@
 .dashboard-board.situation-board .reference-control-cards{gap:16px}
 .dashboard-board.situation-board .reference-control-cards>div:nth-child(5) .control-bar b{background:#258fe9}
 .dashboard-board.situation-board .reference-comorbidity .reference-ring{left:auto;top:auto;transform:none;width:min(46%,180px)}
+
+/* 核心指标控制率：四图共用面板和图例 */
+.dashboard-board.outcome-board .outcome-trends-panel{grid-column:2 / 4;grid-row:1 / 3;display:flex;flex-direction:column;min-height:0;padding:20px;overflow:hidden}
+.dashboard-board.outcome-board .outcome-trends-panel>header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:none}
+.dashboard-board.outcome-board .outcome-trends-panel>header h2{margin:0;min-height:24px;padding:0}
+.dashboard-board.outcome-board .outcome-trends-panel>header .meeting-trend-legend{align-items:center;color:#164a75}
+.dashboard-board.outcome-board .outcome-trends-panel>header .meeting-trend-legend span+span{color:#087dff}
+.dashboard-board.outcome-board .outcome-trends-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:12px 20px;flex:1;min-height:0;margin-top:12px}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend{grid-column:auto;grid-row:auto;min-width:0;min-height:0;padding:8px;background:transparent!important;backdrop-filter:none;border:1px solid #1c456a;box-shadow:none}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend::before,.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend::after{display:none}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend h2{min-height:0;margin:0;padding:0;font-size:18px!important}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend h2::before,.dashboard-board.outcome-board .outcome-trends-grid .meeting-trend-legend{display:none!important}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend{background:#0b2c50!important;border:0}
+
+/* 管理优先级分层数值及行间距 */
+.dashboard-board.situation-board .reference-risk .reference-legend p{margin:0;min-height:46px}
+.dashboard-board.situation-board .reference-risk .reference-legend b{font-size:36px;line-height:1}
+
+.dashboard-board.situation-board .reference-kpi:first-child{gap:8px}
+.dashboard-board.situation-board .reference-kpi-note{font:400 12px/1.2 DashboardChinese,sans-serif;color:#91adc5}
+.dashboard-board.situation-board .reference-risk .reference-legend p{min-height:54px}
+.dashboard-board.situation-board .reference-risk .risk-ring{position:relative;isolation:isolate}
+.dashboard-board.situation-board .reference-risk .risk-ring::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--priority-mask);pointer-events:none;z-index:0}
+.dashboard-board.situation-board .reference-risk .risk-ring>div{position:relative;z-index:1}
+.dashboard-board.situation-board .reference-risk .risk-ring strong{font:400 36px/1 DashboardNumbers,DashboardChinese,sans-serif;color:#fff;white-space:nowrap}
+.dashboard-board.situation-board .reference-risk .risk-ring strong small{font:400 18px DashboardNumbers,DashboardChinese,sans-serif;margin-left:4px;color:#fff}
+.dashboard-board.situation-board .reference-risk .reference-legend p{padding:0 8px;margin-left:-8px;margin-right:-8px;border-radius:3px;transition:background-color .3s}
+.dashboard-board.situation-board .reference-risk .reference-legend p.is-selected{background:rgba(42,125,190,.28)}
+
+.dashboard-board.situation-board .reference-control-cards{gap:10px}
+.dashboard-board.situation-board .reference-control-cards>div:nth-child(6) .control-bar b{background:#4988db}
+
+.dashboard-board.situation-board .reference-risk .risk-ring::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--priority-selected);transform:scale(1.06);z-index:0;pointer-events:none;mask:radial-gradient(transparent 0 60%,#000 60%);-webkit-mask:radial-gradient(transparent 0 60%,#000 60%)}
+@media (prefers-reduced-motion:reduce){.dashboard-board.situation-board .reference-risk .risk-ring::after{transform:none}}
+.disease-funnel-dialog:modal{width:min(1100px,calc(100vw - 40px));max-width:none;height:min(900px,calc(100vh - 40px));max-height:none;display:flex;flex-direction:column}
+.disease-funnel-dialog .disease-detail-body{overflow:auto;padding:16px 24px 22px;color:#d4e8f7}
+.disease-funnel-dialog h3{font-size:20px;margin:8px 0 14px;color:#e5f5ff}
+.disease-funnel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:24px}
+.disease-funnel-dialog .disease-funnel{position:static;inset:auto;display:block;text-align:center;min-width:0}.disease-funnel-dialog .disease-funnel h4{font-size:18px;margin:0 0 10px;color:#c9e8ff}
+.disease-funnel-step{box-sizing:border-box;width:var(--step-width);min-height:69px;margin:3px auto;padding:7px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%);color:#fff}
+.disease-funnel-step.step-0{background:#65cef4;color:#062744}.disease-funnel-step.step-1{background:#32aee8}.disease-funnel-step.step-2{background:#1685d5}.disease-funnel-step.step-3{background:#0b5eae}
+.disease-funnel-step span{font-size:14px}.disease-funnel-step strong{font:400 24px/1.15 DashboardNumbers,DashboardChinese,sans-serif}.disease-funnel-step small{font-size:14px;margin-left:3px}.disease-funnel-step em{font:normal 12px DashboardChinese,sans-serif;white-space:nowrap}
+.disease-region-table{max-height:280px;overflow:auto}.disease-region-table table{width:100%;border-collapse:collapse;text-align:right}.disease-region-table th:first-child,.disease-region-table td:first-child{text-align:left}.disease-region-table th{position:sticky;top:0;background:#103353;z-index:1}.disease-region-table th button{border:0;background:transparent;color:#bcdcf2;font:inherit;cursor:pointer;padding:12px 8px}.disease-region-table td{padding:10px 8px;border-bottom:1px solid #1d4262}.disease-region-table tbody tr:nth-child(even){background:rgba(31,87,130,.15)}.disease-demo-note{font-size:12px;color:#89abc4;margin:12px 0 0}
+dialog.metric-detail-dialog.disease-funnel-dialog:modal{height:min(800px,var(--dialog-max-height,calc(100dvh - 32px)));max-height:var(--dialog-max-height,calc(100dvh - 32px))}
+.disease-funnel-dialog>header{flex:none}
+.disease-funnel-dialog .disease-detail-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.disease-summary-table{margin-bottom:24px;background:#071c39;padding:12px 16px}
+.disease-summary-table table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:center}
+.disease-summary-table th:first-child{text-align:left;width:30%}
+.disease-summary-table thead th{color:#a8c9e4;font-size:14px;font-weight:500;padding:4px 0 10px}
+.disease-summary-row th{color:#c8dff4;font-size:14px;font-weight:500;white-space:nowrap}
+.disease-summary-row td{height:60px;vertical-align:bottom;padding:0 4px 8px}
+.disease-summary-row td strong{display:block;color:#e5f2ff;font:700 18px/1.3 DashboardNumbers,DashboardChinese,sans-serif}
+.disease-summary-row td small{display:block;color:#9bbbd5;font:12px/1.5 DashboardChinese,sans-serif;margin-bottom:5px}
+.disease-summary-row.stage-2 td strong{color:#5ae4d9}.disease-summary-row.stage-3 td strong{color:#ffac7a}
+.disease-funnel-dialog .disease-summary-unit{margin:4px 0 0;color:#89abc4;font-size:12px;text-align:right}
+.disease-funnel-dialog .disease-region-table{max-height:none;overflow:visible}
+
+/* 弹窗表格覆盖全局浅色表格和悬浮样式，保证深色背景上的可读性。 */
+.disease-funnel-dialog .disease-summary-table table th,.disease-funnel-dialog .disease-summary-table table td{background:#071c39;border-color:#294967}
+.disease-funnel-dialog .disease-summary-table thead th{background:#103353;color:#cce5f7}
+.disease-funnel-dialog .disease-summary-table tbody tr:hover th,.disease-funnel-dialog .disease-summary-table tbody tr:hover td{background:#123653}
+.disease-funnel-dialog .disease-region-table tbody tr:hover td{background:#174466;color:#fff}
+.priority-composition{padding:20px;background:#071c39;margin-bottom:24px}
+.priority-stack{display:flex;height:42px;overflow:hidden}.priority-stack span{display:flex;align-items:center;justify-content:center;color:#fff;font:700 18px DashboardNumbers,sans-serif;min-width:0}
+.priority-composition-rows{display:grid;gap:18px;margin-top:24px}.priority-composition-rows>div{display:grid;grid-template-columns:140px 100px 1fr;align-items:center;gap:14px;color:#c8dff4}.priority-composition-rows strong{color:#edf7ff;font:700 22px DashboardNumbers,sans-serif;text-align:right}.priority-composition-rows strong small{font:14px DashboardChinese,sans-serif}.priority-composition-rows i{display:block;height:8px;background:#193753}.priority-composition-rows i b{display:block;height:100%}
+.priority-detail-dialog .priority-region-table{overflow-x:auto}.priority-region-table table{min-width:1000px}.priority-region-table th button{white-space:nowrap}.priority-region-table td{white-space:nowrap}
+.priority-matrices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:0 0 24px}.priority-matrix{min-width:0;background:#071c39;padding:14px}.priority-matrix h3{margin:0 0 14px}.priority-matrix-scroll{overflow-x:auto}.priority-matrix table{width:100%;min-width:390px;border-collapse:separate;border-spacing:3px;text-align:center}.priority-matrix th{background:transparent!important;color:#bcdcf2;font-size:14px;white-space:nowrap;padding:8px 3px}.priority-matrix td{background:color-mix(in srgb,var(--cell-color) 42%,#10223c)!important;color:#fff;font-weight:700;padding:20px 4px;white-space:nowrap}.priority-matrix tbody tr:hover td{filter:brightness(1.13)}.priority-region-table table{min-width:760px}.priority-cell-rate{color:#9fc6e2}
+.intervention-ranking{background:#071c39;padding:16px 20px;margin-bottom:24px}.intervention-rank-head,.intervention-rank-row{display:grid;grid-template-columns:90px minmax(120px,1fr) 85px 65px;gap:12px;align-items:center}.intervention-rank-head{font-size:12px;color:#8daec6;margin-bottom:10px;text-align:center}.intervention-rank-head span:first-child{text-align:left}.intervention-rank-row{min-height:34px;color:#dcefff}.intervention-rank-row>span:nth-child(3),.intervention-rank-row strong{text-align:right;font-variant-numeric:tabular-nums}.intervention-rank-row strong{font-size:13px}.deviation-track{height:9px;background:#193958;position:relative}.deviation-track:before{content:'';position:absolute;left:50%;top:-3px;height:15px;border-left:1px solid #8db0c7}.deviation-track i{position:absolute;top:0;height:100%}.intervention-average{text-align:center;color:#a2bdd1;font-size:12px;margin-top:10px}@media(max-width:700px){.priority-matrices{grid-template-columns:1fr}.intervention-rank-head,.intervention-rank-row{grid-template-columns:55px minmax(70px,1fr) 65px 48px;gap:5px;font-size:12px}.intervention-ranking{padding:12px}}
+
+/* 共病构成与慢病态势模块高度 */
+.dashboard-board.situation-board .reference-panels{grid-template-rows:330px minmax(0,1fr)}
+.dashboard-board.situation-board :is(.reference-comorbidity,.reference-risk) .reference-chart{height:calc(100% - 54px);margin-top:0;align-items:flex-end;padding-bottom:20px;box-sizing:border-box}
+.dashboard-board.situation-board :is(.reference-comorbidity,.reference-risk) .reference-ring{width:min(46%,230px);flex:none}
+.dashboard-board.situation-board .reference-risk .reference-legend b{font-size:24px}
+.dashboard-board.situation-board .reference-risk .reference-legend p{min-height:49px}
+.dashboard-board.situation-board .reference-comorbidity .comorbidity-arc-label{display:none}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring{isolation:isolate}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring:before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--comorbidity-mask);pointer-events:none}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring:after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--comorbidity-selected);transform:scale(1.06);mask:radial-gradient(transparent 0 60%,#000 60%);-webkit-mask:radial-gradient(transparent 0 60%,#000 60%);pointer-events:none}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring>div{position:relative;z-index:1}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring strong{font:400 36px/1 DashboardNumbers,DashboardChinese,sans-serif;color:#fff;white-space:nowrap}
+.dashboard-board.situation-board .reference-comorbidity .reference-ring strong small{font:400 18px DashboardNumbers,DashboardChinese,sans-serif;margin-left:4px;color:#fff}
+.dashboard-board.situation-board .reference-comorbidity .reference-legend p{padding:8px;margin:4px -8px;border-radius:3px}
+.dashboard-board.situation-board .reference-comorbidity .reference-legend p.is-selected{background:rgba(42,125,190,.28)}
+.dashboard-board.situation-board .reference-filing-panel .reference-bars{gap:14px}
+.dashboard-board.situation-board .reference-control-cards{gap:8px}
+.comorbidity-detail-summary{background:#292936;border-left:5px solid #ff9b57;padding:14px 18px;color:#ffca9e;font-size:20px;font-weight:700}
+.comorbidity-detail-chart{display:flex;align-items:center;gap:32px;background:#071c39;padding:22px 30px;margin-bottom:24px}
+.comorbidity-detail-ring{width:210px;aspect-ratio:1;border-radius:50%;flex:none;position:relative}
+.comorbidity-detail-ring:after{content:'';position:absolute;inset:27%;background:#071c39;border-radius:50%}
+.comorbidity-detail-legend{flex:1;display:grid;gap:18px}.comorbidity-detail-legend>div{display:flex;align-items:center;justify-content:space-between;gap:14px;color:#c9dff0}.comorbidity-detail-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:9px}.comorbidity-detail-legend strong{font:700 21px DashboardNumbers,DashboardChinese,sans-serif;color:#e6f2ff;white-space:nowrap}.comorbidity-detail-legend small{font:14px DashboardChinese,sans-serif}.comorbidity-detail-legend em{font-style:normal;color:#ffb24c;margin-left:8px}
+.comorbidity-region-table{overflow-x:auto!important}.comorbidity-region-table table{min-width:900px}.comorbidity-region-table th{padding:10px 8px;white-space:nowrap;color:#bcdcf2}.comorbidity-region-table td{white-space:nowrap}
+@media(max-width:700px){.comorbidity-detail-chart{padding:16px;gap:18px}.comorbidity-detail-ring{width:120px}.comorbidity-detail-legend strong{font-size:16px}.comorbidity-detail-legend{gap:10px}}
+
+/* 慢病态势：标题与图表的间距，以及控制率行间距。 */
+.dashboard-board.situation-board :is(.reference-comorbidity,.reference-risk) .reference-chart{height:auto;margin-top:30px;padding-bottom:0;align-items:center}
+.dashboard-board.situation-board .reference-control-cards{top:74px;bottom:20px;justify-content:space-between;gap:0}
+
+/* 一体化门诊：服务占比环与指标详情。 */
+.dashboard-board.construction-board .clinic-meeting-service .clinic-meeting-chart{top:74px!important;align-items:center!important}
+.dashboard-board.construction-board .clinic-meeting-service .clinic-service-ring strong{font:400 36px/1 DashboardNumbers,sans-serif;white-space:nowrap}
+.dashboard-board.construction-board .clinic-meeting-service .clinic-service-ring strong small{font:400 18px DashboardNumbers,sans-serif;margin-left:4px}
+.clinic-detail-trend{display:block;width:100%;height:230px;background:#071c39;margin-bottom:24px}
+.clinic-detail-trend line{stroke:#29415d;stroke-width:1}.clinic-detail-trend text{fill:#c3d8e9;font:14px DashboardChinese,sans-serif}
+.clinic-detail-bars{display:grid;gap:18px;padding:24px;background:#071c39;margin-bottom:24px}
+.clinic-detail-bars>div{display:grid;grid-template-columns:150px minmax(80px,1fr) 80px;gap:16px;align-items:center;color:#c6dcef}
+.clinic-detail-bars i{height:10px;background:#1c486a}.clinic-detail-bars i b{display:block;height:100%;background:#40bce9}.clinic-detail-bars strong{text-align:right;color:#fff;font:700 18px DashboardNumbers,sans-serif}
+.clinic-metric-table{overflow-x:auto!important}.clinic-metric-table table{min-width:760px}.clinic-metric-table th,.clinic-metric-table td{white-space:nowrap}
+@media(max-width:700px){.clinic-detail-bars>div{grid-template-columns:115px minmax(50px,1fr) 65px;gap:8px}.clinic-detail-bars{padding:14px}.clinic-detail-trend{height:auto}}
+
+/* 弹窗和图表细节 */
+dialog.metric-detail-dialog.priority-detail-dialog:modal{width:min(1450px,calc(100vw - 32px));height:min(1000px,calc(100dvh - 32px));max-height:calc(100dvh - 32px)}
+.priority-detail-dialog .priority-matrix tbody tr:hover th{background:#123653!important;color:#fff}
+.priority-detail-dialog .priority-matrix tbody tr:hover td{background:color-mix(in srgb,var(--cell-color) 55%,#10223c)!important;color:#fff;filter:none}
+.metric-detail-dialog .disease-region-table tbody tr:hover td{background:#174466!important;color:#fff}
+.metric-detail-dialog th button[data-sort] span{display:inline-flex;vertical-align:middle;flex-direction:column;justify-content:center;gap:2px;margin-left:4px;font-size:0;line-height:0}
+.metric-detail-dialog th button[data-sort] span::before,.metric-detail-dialog th button[data-sort] span::after{content:'';width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.metric-detail-dialog th button[data-sort] span::before{border-bottom:5px solid #88aac4}
+.metric-detail-dialog th button[data-sort] span::after{border-top:5px solid #88aac4}
+.metric-detail-dialog th button[data-sort] span[aria-label="升序"]::before{border-bottom-color:#fff}
+.metric-detail-dialog th button[data-sort] span[aria-label="降序"]::after{border-top-color:#fff}
+.dashboard-board.outcome-board .undetected-center{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1}
+.dashboard-board.outcome-board .undetected-center strong{font-size:36px;line-height:1}
+.dashboard-board.outcome-board .undetected-center span{font-size:16px;color:#bdd4e7;white-space:nowrap;background:none}
+.dashboard-board.construction-board .clinic-meeting-service .clinic-meeting-chart{top:74px!important;bottom:30px;align-items:center!important}
+.dashboard-board.construction-board .clinic-meeting-service .clinic-service-ring{height:min(100%,260px);width:auto;max-width:48%;aspect-ratio:1}
+.dashboard-board.construction-board .clinic-meeting-coverage .clinic-chart-total{justify-content:space-between;padding-right:20px}
+.dashboard-board.construction-board .clinic-meeting-coverage .clinic-chart-total strong{display:flex;align-items:baseline;gap:2px;font:700 40px/1 DashboardNumbers,DIN,sans-serif}
+.dashboard-board.construction-board .clinic-meeting-coverage .clinic-chart-total strong i{font-style:normal}
+.dashboard-board.construction-board .clinic-meeting-coverage .clinic-chart-total strong .metric-digit{background:linear-gradient(180deg,rgba(55,100,137,.33),rgba(12,40,67,.25));padding:3px 2px}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring{position:relative}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--coverage-mask);-webkit-mask:radial-gradient(circle,transparent calc(100% - 37px),#000 calc(100% - 36px));mask:radial-gradient(circle,transparent calc(100% - 37px),#000 calc(100% - 36px));pointer-events:none}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring>div{position:relative;z-index:1}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring strong{font:400 36px/1 DashboardNumbers,sans-serif;white-space:nowrap}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring strong small{font-size:18px;margin-left:4px}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-legend p.is-selected{background:#123d64}
+dialog .summary-sort{font-size:0!important;display:inline-flex;vertical-align:middle;flex-direction:column;gap:2px;align-items:center}
+dialog .summary-sort::before,dialog .summary-sort::after{content:'';width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+dialog .summary-sort::before{border-bottom:5px solid #88aac4}dialog .summary-sort::after{border-top:5px solid #88aac4}
+
+/* 保持圆环为正圆，图例与环间距固定。 */
+.dashboard-board.construction-board .clinic-meeting-service .clinic-meeting-chart{container-type:size}
+.dashboard-board.construction-board .clinic-meeting-service .clinic-service-ring{width:min(48cqw,100cqh,260px);height:auto;max-width:none;aspect-ratio:1;flex:0 0 auto}
+.dashboard-board.outcome-board .undetected-content{container-type:size;gap:20px!important;align-items:center}
+.dashboard-board.outcome-board .undetected-content .undetected-ring{width:min(42cqw,100cqh,210px);height:auto;max-width:none;aspect-ratio:1;flex:0 0 auto}
+.dashboard-board.construction-board .clinic-meeting-coverage .clinic-chart-total{align-items:center!important;line-height:1}
+.comorbidity-region-table table{min-width:0;width:100%;table-layout:fixed}
+.comorbidity-region-table th,.comorbidity-region-table td{white-space:normal;overflow-wrap:anywhere;padding:8px 5px}
+.comorbidity-region-table th:first-child{width:10%}.comorbidity-region-table th:nth-child(2){width:16%}
+.pressure-ranking-dialog:modal{width:min(960px,calc(100vw - 32px));max-height:calc(100dvh - 32px)}
+.pressure-nav{margin-bottom:16px;color:#9bc8e7}.pressure-nav button{background:none;border:0;color:#70c9ff;cursor:pointer}
+.pressure-rank-row{width:100%;border:0;background:transparent;text-align:left;color:inherit;cursor:pointer;font:inherit}
+.pressure-rank-row:hover:not(:disabled){background:#123c5e}.pressure-rank-row:disabled{opacity:1;cursor:default}
+
+/* 详情榜名称保留单行，长名称可通过悬浮查看。 */
+.pressure-rank-row > span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.coverage-explorer:modal{width:min(1600px,calc(100vw - 32px));max-width:none;height:min(900px,calc(100dvh - 32px));max-height:none}
+.coverage-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.coverage-summary>div,.coverage-explorer-grid>section{background:#0b2340;border:1px solid #17436b;padding:16px;min-width:0}
+.coverage-summary>div{display:flex;flex-direction:column;gap:8px}.coverage-summary strong{font-size:28px;color:#e7f5ff}.coverage-summary small,.coverage-explorer-grid p{font-size:12px;color:#92b1cf}.coverage-summary i{height:5px;background:#243b55}.coverage-summary i b{display:block;height:100%}
+.coverage-explorer-grid{display:grid;grid-template-columns:22% 26% 1fr;gap:12px;margin-top:16px}.coverage-explorer-grid h3{margin:0 0 8px}.coverage-explorer-grid button{color:#cde6ff;background:#102d4d;border:1px solid #234d73;cursor:pointer}.coverage-explorer-grid button.active{background:#174671;border-color:#29a8ef}.coverage-region-list,.coverage-clinic-list{display:flex;flex-direction:column;gap:6px;max-height:440px;overflow:auto}.coverage-region-list button,.coverage-clinic-list button{padding:12px;text-align:left}.coverage-region-list button span{float:right}.coverage-clinic-list button b,.coverage-clinic-list button span{display:block}.coverage-clinic-list button span{font-size:12px;color:#9bbbd7;margin-top:6px}.coverage-explorer-grid input{width:100%;background:#06182c;color:white;border:1px solid #28577d;padding:10px}.coverage-filters{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}.coverage-filters button,.coverage-preview-info button{padding:6px 9px}.coverage-illustration{height:300px;background:#e7f1f5;color:#267ab3;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}.coverage-cross{font-size:42px;color:#28a9b6}.coverage-illustration strong{font-size:26px}.coverage-illustration span{font-size:11px;letter-spacing:1px}.coverage-illustration-building{font-size:50px;color:#55a6b8}.coverage-preview-info{display:flex;flex-direction:column;gap:8px;padding:12px}.coverage-preview-info span{color:#96b9d6}.coverage-preview-info button{margin-right:8px}
+@media(max-width:700px){.coverage-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.coverage-explorer-grid{grid-template-columns:1fr}.coverage-region-list,.coverage-clinic-list{max-height:180px}}
+.coverage-region-list .coverage-county{padding-left:28px;font-size:12px}
+
+/* Coverage detail uses the available viewport so the directory and photos remain readable. */
+dialog.metric-detail-dialog.disease-funnel-dialog.coverage-explorer:modal{left:50%;top:50%;transform:translate(-50%,-50%);width:min(1500px,calc(100vw - 32px));max-width:calc(100vw - 32px);height:min(900px,calc(100dvh - 32px));max-height:calc(100dvh - 32px);padding:20px}
+.coverage-explorer .disease-detail-body{padding:16px 4px 8px}
+.coverage-explorer-grid{grid-template-columns:minmax(180px, .75fr) minmax(230px, 1fr) minmax(350px, 1.8fr);align-items:stretch}
+.coverage-region-list,.coverage-clinic-list{max-height:min(52vh,520px)}
+.coverage-photo{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:clamp(280px,43vh,480px);background:#06182c;border:1px solid #234d73;overflow:hidden}
+.coverage-photo img{width:100%;height:100%;object-fit:contain}
+.coverage-photo>span{position:absolute;right:12px;bottom:12px;padding:4px 9px;background:rgba(2,16,32,.8);color:#fff;border-radius:3px}
+.coverage-photo>p{padding:20px;text-align:center;color:#a9c4dc;font-size:15px}
+.coverage-preview-info strong{font-size:16px;line-height:1.5}
+@media(max-width:850px){.coverage-explorer-grid{grid-template-columns:1fr 1fr}.coverage-preview{grid-column:1/-1}.coverage-region-list,.coverage-clinic-list{max-height:240px}}
+@media(max-width:560px){.coverage-explorer-grid{grid-template-columns:1fr}.coverage-preview{grid-column:auto}.coverage-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.coverage-photo{height:280px}}
+
+/* 覆盖详情保持在大屏可见区域内，内容在弹窗内滚动。 */
+dialog.metric-detail-dialog.disease-funnel-dialog.coverage-explorer:modal{position:fixed;left:var(--dialog-x,50vw);top:var(--dialog-y,50vh);transform:translate(-50%,-50%);box-sizing:border-box;width:min(1500px,calc(var(--dialog-max-width,100vw) * var(--dialog-scale,1)));max-width:calc(var(--dialog-max-width,100vw) * var(--dialog-scale,1));height:min(900px,calc(var(--dialog-max-height,100vh) * var(--dialog-scale,1)));max-height:calc(var(--dialog-max-height,100vh) * var(--dialog-scale,1));overflow:hidden}
+.coverage-explorer .disease-detail-body{overflow:auto;min-height:0}
+.coverage-explorer .coverage-summary>div,.coverage-explorer .coverage-explorer-grid>section{border:0;background:#102f50}
+.coverage-explorer .coverage-explorer-grid h3{font-family:DashboardChinese,'Alibaba PuHuiTi',sans-serif;font-weight:700}
+.coverage-explorer .coverage-filters button{border:0;border-radius:5px;color:var(--tier-color);background:color-mix(in srgb,var(--tier-color) 18%,#102d4d);padding:7px 10px}
+.coverage-explorer .coverage-filters button.active{color:#fff;background:var(--tier-color)}
+.coverage-preview-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap;line-height:1.4}
+.coverage-preview-title em{font:normal 12px DashboardChinese,sans-serif;color:var(--tier-color);background:color-mix(in srgb,var(--tier-color) 20%,transparent);border-radius:4px;padding:4px 8px;white-space:nowrap}
+.coverage-photo button{position:absolute;top:50%;transform:translateY(-50%);border:0;border-radius:50%;width:38px;height:38px;background:rgba(2,16,32,.7);color:white;font-size:28px;line-height:1;cursor:pointer}
+.coverage-photo button:hover{background:#1678bb}.coverage-photo-prev{left:12px}.coverage-photo-next{right:12px}
+.dashboard-board.outcome-board .undetected-center strong{display:flex;align-items:baseline;gap:8px;font-size:36px!important;line-height:1}
+.dashboard-board.outcome-board .undetected-center strong small{font-size:18px!important;margin:0!important}
+
+/* 覆盖详情以大屏设计尺寸整体缩放，内容随窗口等比例缩小。 */
+dialog.metric-detail-dialog.disease-funnel-dialog.coverage-explorer:modal{width:min(1500px,var(--dialog-max-width,1500px));max-width:var(--dialog-max-width,1500px);height:min(900px,var(--dialog-max-height,900px));max-height:var(--dialog-max-height,900px);transform:translate(-50%,-50%) scale(var(--dialog-scale,1));transform-origin:center}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--coverage-selected);-webkit-mask:radial-gradient(circle,transparent calc(100% - 37px),#000 calc(100% - 36px));mask:radial-gradient(circle,transparent calc(100% - 37px),#000 calc(100% - 36px));transform:scale(1.06);z-index:2;pointer-events:none}
+.dashboard-board.construction-board .reference-scatter .scatter-tag text{fill:#071c2f!important;stroke:none!important;paint-order:normal;font-weight:700}
+.dashboard-board.outcome-board .outcome-trends-panel>header{justify-content:flex-start;gap:20px}
+.dashboard-board.outcome-board .outcome-trends-panel>header .meeting-trend-legend{margin:0}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend{display:flex;flex-direction:column;overflow:hidden}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values{display:flex;justify-content:space-between;gap:8px;color:#a9c6dd;font:14px DashboardChinese,sans-serif;white-space:nowrap}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values b{color:#e8f6ff;font:20px DashboardNumbers,sans-serif;margin-left:4px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span:last-child b{color:#44adff}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values small{font-size:12px}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend svg{flex:1;min-height:0;width:100%}
+
+/* 覆盖详情：为照片预留更多空间，列表填满可用高度。 */
+@font-face{font-family:CoveragePuHui;src:url('dashboard-assets/AlibabaPuHuiTi-3-55-Regular.ttf') format('truetype');font-weight:400}
+@font-face{font-family:CoveragePuHui;src:url('dashboard-assets/AlibabaPuHuiTi-3-85-Bold.ttf') format('truetype');font-weight:700}
+.coverage-explorer .coverage-explorer-grid{grid-template-columns:minmax(150px,.62fr) minmax(205px,.85fr) minmax(350px,2.2fr);align-items:stretch;min-height:0;flex:1}
+.coverage-explorer .disease-detail-body{display:flex;flex-direction:column}
+.coverage-explorer .coverage-explorer-grid>section{display:flex;flex-direction:column;min-height:0}
+.coverage-explorer .coverage-explorer-grid h3,.coverage-explorer .coverage-clinic-list b{font-family:CoveragePuHui,sans-serif!important}
+.coverage-explorer .coverage-region-list,.coverage-explorer .coverage-clinic-list{flex:1;min-height:0;max-height:none}
+.coverage-explorer .coverage-region-list button,.coverage-explorer .coverage-clinic-list button{flex:none}
+.coverage-explorer .coverage-photo{flex:1;min-height:280px;height:auto}
+.coverage-explorer .coverage-photo button{width:60px;height:60px}
+.coverage-explorer .coverage-progress{display:flex;align-items:center;gap:8px;min-width:0}
+.coverage-explorer .coverage-progress i{display:block;flex:1;min-width:18px}
+.coverage-explorer .coverage-progress small{white-space:nowrap}
+@media(max-width:850px){.coverage-explorer .coverage-explorer-grid{grid-template-columns:minmax(140px,.65fr) minmax(190px,.9fr) minmax(280px,2fr)}}
+/* 指标详情在大屏内整体缩放，并保留内部滚动。 */
+dialog.metric-detail-dialog.disease-funnel-dialog.clinic-metric-dialog:modal{position:fixed;box-sizing:border-box;left:var(--dialog-x,50vw);top:var(--dialog-y,50vh);width:min(1300px,var(--dialog-max-width,1300px));max-width:var(--dialog-max-width,1300px);height:min(900px,var(--dialog-max-height,900px));max-height:var(--dialog-max-height,900px);transform:translate(-50%,-50%) scale(var(--dialog-scale,1));transform-origin:center;overflow:hidden}
+.clinic-metric-dialog .disease-detail-body{overflow:auto;min-height:0}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:center}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span{display:flex;align-items:baseline;gap:8px;min-width:0}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values b{display:inline-flex;align-items:baseline;gap:8px;font-size:36px;line-height:1;margin:0}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values small{font-size:18px}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend svg{min-height:0}
+
+/* 覆盖详情及图表细节 */
+.coverage-explorer .coverage-explorer-grid{grid-template-columns:minmax(140px,.62fr) minmax(210px,1fr) minmax(350px,2.65fr)}
+.coverage-explorer .coverage-region-list button,.coverage-explorer .coverage-clinic-list button{border:0;box-shadow:none;background:#102d4d}
+.coverage-explorer .coverage-region-list button.active,.coverage-explorer .coverage-clinic-list button.active{border:0;box-shadow:none;background:#205386;color:#fff}
+.coverage-explorer .coverage-group-title{padding:10px 12px 3px;color:#a9cbe6;font:700 14px CoveragePuHui,sans-serif}
+.coverage-explorer .coverage-preview-title em{color:#fff;background:#07509a}
+.dashboard-board.construction-board .clinic-meeting-coverage .reference-ring::before{-webkit-mask:radial-gradient(circle closest-side,transparent 62%,#000 63%);mask:radial-gradient(circle closest-side,transparent 62%,#000 63%);transform:scale(1.06)}
+.dashboard-board.construction-board .reference-scatter .scatter-tag text{fill:#fff!important}
+.dashboard-board.construction-board .reference-scatter .scatter-tag-good rect{fill:#00766f}
+.dashboard-board.construction-board .reference-scatter .scatter-tag-low rect{fill:#b43d38}
+.dashboard-board :is(.board-map-modes,.outcome-map-metric-tabs,.clinic-scatter-tabs) button{border:1px solid #113b5f!important;background-color:#030d1c!important;color:#b9d1e5!important}
+.dashboard-board :is(.board-map-modes,.outcome-map-metric-tabs,.clinic-scatter-tabs) button:is(.active,[aria-pressed="true"]){border-color:#113b5f!important;background-color:#075ec0!important;color:#fff!important}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values{position:relative;grid-template-columns:1fr 1fr;gap:0;margin:16px 0;color:#164a75}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span{justify-content:center}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span:first-child b{color:#164a75}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:normal 20px DashboardPangMen,sans-serif;color:#9bbbd7}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend svg{flex:1;min-height:0}
+
+/* 覆盖详情：区域构成与机构照片状态 */
+.coverage-explorer .coverage-region-list button{border-radius:4px;padding:10px 9px;line-height:1.4}
+.coverage-explorer .coverage-region-list .coverage-county{padding-left:22px}
+.coverage-region-bar{display:flex;clear:both;width:75%;height:5px;margin:7px 0 0 10px;overflow:hidden;border-radius:4px;background:#1a3b59}
+.coverage-region-bar b{display:block;height:100%}
+.coverage-explorer .coverage-filters button{color:#cde6ff;background:#030d1c;border:1px solid #113b5f;border-radius:4px}
+.coverage-explorer .coverage-filters button.active{color:#fff;background:#075ec0;border-color:#113b5f}
+.coverage-group-title{display:flex;justify-content:space-between;padding:8px 5px 2px;color:#a9c6df}
+.coverage-explorer .coverage-clinic-list button{border-radius:5px;padding:10px;margin:0;position:relative}
+.coverage-explorer .coverage-clinic-list button.has-photo{background:#173c60}
+.coverage-explorer .coverage-clinic-list button.no-photo{background:#0c2741;color:#b2c4d3}
+.coverage-explorer .coverage-clinic-list button.no-photo small{color:#91a9bd}
+.coverage-explorer .coverage-clinic-list button.has-photo small{color:#8ed4ff}
+.coverage-explorer .coverage-clinic-list button.active{background:#205386;color:#fff}
+.coverage-clinic-list button small{margin-left:8px;font-size:11px;font-weight:normal}
+.coverage-preview-title{flex-wrap:nowrap;min-width:0}
+.coverage-preview-title>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.coverage-preview-title .coverage-clinic-nav{display:flex;gap:5px;margin-left:auto;flex:none}
+.coverage-explorer .coverage-clinic-nav button{width:28px;height:28px;padding:0;border:1px solid #24547d;border-radius:3px;background:#102d4d;color:#fff;font-size:20px;line-height:1}
+.coverage-explorer .coverage-clinic-nav button:hover{background:#075ec0}
+
+/* 核心指标：按参考图突出管理口径、差值与趋势。 */
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend{padding:16px 20px;background:#0b1b31!important;border:1px solid #20344e;border-radius:10px}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend h2{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#d3deeb;font-size:18px!important}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-difference{flex:none;padding:4px 9px;border-radius:5px;background:#103e45;color:#28d99f;font:700 16px DashboardChinese,sans-serif;white-space:nowrap}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values{display:flex;justify-content:flex-start;align-items:baseline;gap:12px;margin:12px 0 8px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span{flex:none;justify-content:flex-start}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span:first-child b{color:#8292a7;font-size:25px;text-decoration:line-through;text-decoration-thickness:1px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span:last-child b{color:#35bafa;font-size:36px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values i{position:static;transform:none;color:#8292a7;font-size:18px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values b{gap:2px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values small{font-size:.5em}
+.dashboard-board.outcome-board .outcome-trends-panel>header .meeting-trend-legend{color:#71839a}
+.dashboard-board.outcome-board .outcome-trends-panel>header .meeting-trend-legend span+span{color:#35bafa}
+
+/* 区域分类数量与趋势卡片的可读性调整。 */
+.coverage-explorer .coverage-region-list .coverage-region-counts{float:none;display:flex;clear:both;align-items:center;gap:3px;margin:6px 0 0 12px;font:12px CoveragePuHui,sans-serif;white-space:nowrap}
+.coverage-region-counts b{font-weight:700}.coverage-region-counts i{color:#7696b2;font-style:normal}
+.dashboard-board.outcome-board .outcome-trends-grid .outcome-meeting-trend{padding-bottom:20px}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span:first-child b{text-decoration:none}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values span:last-child b{font-weight:700}
+.dashboard-board.outcome-board .outcome-trends-grid .trend-difference{background:#075d48;color:#b9ffe1}
+
+/* 趋势卡片的口径数值可查看区域偏差。 */
+.dashboard-board.outcome-board .outcome-trends-grid .trend-current-values i{font-family:CoveragePuHui,DashboardChinese,sans-serif;font-style:normal}
+.dashboard-board.outcome-board .trend-ranking-trigger{cursor:pointer;border-radius:3px}
+.dashboard-board.outcome-board .trend-ranking-trigger:focus-visible{outline:2px solid #68caff;outline-offset:3px}
+
+/* 机构筛选与列表选中态使用同一蓝色。 */
+.coverage-explorer .coverage-filters button{background:transparent;border:1px solid #205386;color:#cde6ff}
+.coverage-explorer .coverage-filters button.active{background:#205386;border-color:#205386;color:#fff}
+
+/* 弹窗按大屏设计尺寸整体缩放，避免浏览器窄视口断点拆散内部布局。 */
+.coverage-explorer .coverage-summary{grid-template-columns:repeat(5,minmax(0,1fr))}
+.coverage-explorer .coverage-preview{grid-column:auto}
