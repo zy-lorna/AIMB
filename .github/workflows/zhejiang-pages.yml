@@ -1,0 +1,53 @@
+name: Deploy Zhejiang dashboard to GitHub Pages
+on:
+  push:
+    branches: [zhejiang-dashboard-demo]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare site
+        run: cp demos/zhejiang-dashboard/demo.html demos/zhejiang-dashboard/index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: demos/zhejiang-dashboard
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify published page
+        shell: bash
+        run: |
+          set -euo pipefail
+          site="https://zy-lorna.github.io/AIMB/"
+          for attempt in {1..12}; do
+            if curl -fsSL "$site" -o /tmp/dashboard-page.html && grep -q '基层慢病健康管理服务平台' /tmp/dashboard-page.html; then
+              break
+            fi
+            sleep 10
+          done
+          grep -q '基层慢病健康管理服务平台' /tmp/dashboard-page.html
+          for asset in demo-refinement.css demo-refinement.js echarts.min.js zhejiang-map-3d.js; do
+            curl -fsSL -o /dev/null "${site}${asset}"
+            echo "Loaded $asset"
+          done
+          google-chrome --headless --no-sandbox --disable-dev-shm-usage --virtual-time-budget=15000 --dump-dom "$site" > /tmp/dashboard-rendered.html
+          grep -q '基层慢病健康管理服务平台' /tmp/dashboard-rendered.html
+          echo "Chrome rendered the dashboard page."
+          google-chrome --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars --window-size=1440,900 --virtual-time-budget=15000 --screenshot=/tmp/dashboard-screenshot.png "$site"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-screenshot
+          path: /tmp/dashboard-screenshot.png
+          retention-days: 1
