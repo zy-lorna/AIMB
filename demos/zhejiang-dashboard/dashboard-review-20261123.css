@@ -1,0 +1,66 @@
+.dashboard-board.situation-board .prevention-panel { display:flex; flex-direction:column; gap:20px; }
+.prevention-main { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:8px; background:rgba(17,59,99,.48); margin:12px 0; }
+.prevention-main span,.prevention-formula span { color:#b2cee4; font-size:15px; }
+.prevention-main strong { font-size:34px; color:#fff; }
+.prevention-main small,.prevention-formula small,.control-achievement small,.filing-dialog-summary small { font-size:13px; font-weight:400; color:#91adc5; margin-left:3px; }
+.prevention-formula { display:flex; align-items:center; justify-content:space-between; gap:5px; }
+.prevention-formula div { display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; }
+.prevention-formula strong { font-size:22px; color:#fff; }
+.prevention-formula i { color:#40caff; font-style:normal; font-size:20px; }
+.review-demo-note { color:#8cabc4; font-size:11px; margin:9px 0 0; }
+.dashboard-board.situation-board .control-achievement { display:flex; flex-direction:column; justify-content:space-around; gap:8px; }
+.dashboard-board.situation-board .control-achievement > div { display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center; padding:10px; background:rgba(17,59,99,.48); }
+.control-achievement span { color:#b2cee4; } .control-achievement strong,.control-achievement b { color:#fff; font-size:18px; }
+.filing-dialog-summary { padding:4px 0 18px; }
+.filing-dialog-summary h3 { color:#c8e4fa; margin:0 0 12px; }
+.filing-dialog-cards,.filing-dialog-rows { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.filing-dialog-cards > div { padding:14px; background:#103354; display:flex; flex-direction:column; gap:6px; }
+.filing-dialog-cards span,.filing-dialog-rows span { color:#a9c5dc; }
+.filing-dialog-cards strong { color:#fff; font-size:24px; }
+.filing-dialog-rows { margin-top:12px; }
+.filing-dialog-rows > div { display:flex; justify-content:space-between; padding:8px 12px; background:rgba(16,51,84,.5); }
+.filing-dialog-rows strong { color:#fff; }
+/* 综合防控：环形总览与横向分项进度。 */
+.dashboard-board.situation-board .prevention-visual { flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; gap:8px; }
+.prevention-ring { flex:none; width:min(145px, 42%); aspect-ratio:1; border-radius:50%; display:grid; place-items:center; background:conic-gradient(#00b8ed 0 33.6%,#172f55 33.6% 100%); }
+.prevention-ring > div { width:73%; aspect-ratio:1; border-radius:50%; background:#081b33; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; }
+.prevention-ring span { color:#a9c5dc; font-size:15px; white-space:nowrap; }
+.prevention-ring strong { color:#fff; font-size:28px; line-height:1; }
+.prevention-ring small,.prevention-bars small { font-size:13px; font-weight:400; }
+.prevention-bars { width:100%; display:flex; flex-direction:column; gap:8px; }
+.prevention-bars > div { display:grid; grid-template-columns:55px minmax(0,1fr) 53px; align-items:center; gap:8px; }
+.prevention-bars span { color:#a9c5dc; font-size:14px; white-space:nowrap; }
+.prevention-bars i,.achievement-row i { height:9px; background:#173454; display:block; }
+.prevention-bars i b,.achievement-row i b { height:100%; display:block; background:var(--fill); }
+.prevention-bars strong { font-size:15px; color:#fff; white-space:nowrap; }
+.dashboard-board.situation-board .control-achievement { flex:1; display:flex; flex-direction:column; justify-content:space-evenly; gap:9px; }
+.dashboard-board.situation-board .control-achievement > .achievement-row { display:grid; grid-template-columns:68px minmax(35px,1fr) auto auto; gap:8px; align-items:center; padding:0; background:none; }
+.achievement-row span { color:#b2cee4; white-space:nowrap; font-size:14px; }
+.achievement-row strong,.achievement-row em { color:#fff; font-size:14px; font-style:normal; white-space:nowrap; }
+.achievement-row small { color:#91adc5; font-size:11px; }
+.achievement-note { margin:0; color:#8cabc4; font-size:11px; }
+/* 与原大屏条形图及一体化门诊服务环图统一尺寸。 */
+.dashboard-board.situation-board .prevention-visual { justify-content:space-between; gap:10px; }
+.dashboard-board.situation-board .prevention-ring { width:min(48%, 210px); background:conic-gradient(#168eff 0 33.6%,#244563 33.6% 100%); }
+.dashboard-board.situation-board .prevention-ring > div { width:calc(100% - 72px); height:calc(100% - 72px); aspect-ratio:auto; background:#061c36; }
+.dashboard-board.situation-board .prevention-ring span { font:400 18px/1.2 DashboardChinese,sans-serif; }
+.dashboard-board.situation-board .prevention-ring strong { font:400 36px/1 DashboardNumbers,DashboardChinese,sans-serif; }
+.dashboard-board.situation-board .prevention-ring strong small { font:400 18px DashboardNumbers,sans-serif; margin-left:4px; color:#91adc5; }
+.dashboard-board.situation-board .prevention-bars { gap:10px; }
+.dashboard-board.situation-board .prevention-bars > div { grid-template-columns:3em minmax(0,1fr) 4.4em; gap:10px; }
+.dashboard-board.situation-board .prevention-bars span,.dashboard-board.situation-board .achievement-row span { font-size:18px; color:#c4d8ea; }
+.dashboard-board.situation-board .prevention-bars i,.dashboard-board.situation-board .achievement-row i { height:20px; background:#102c49; }
+.dashboard-board.situation-board .prevention-bars strong,.dashboard-board.situation-board .achievement-row strong,.dashboard-board.situation-board .achievement-row em { font:400 24px/1 DashboardNumbers,DashboardChinese,sans-serif; color:#fff; }
+.dashboard-board.situation-board .prevention-bars strong small,.dashboard-board.situation-board .achievement-row strong small { font:400 16px DashboardChinese,sans-serif; color:#91adc5; }
+.dashboard-board.situation-board .control-achievement > .achievement-row { grid-template-columns:4em minmax(35px,1fr) auto auto; gap:8px; }
+/* 综合防控率沿用一体化分类覆盖率的数字卡片样式。 */
+.dashboard-board.situation-board .prevention-visual { align-items:stretch; justify-content:flex-start; gap:30px; }
+.dashboard-board.situation-board .prevention-bars { gap:24px; }
+.dashboard-board.situation-board .prevention-total { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:12px 20px 12px 16px; background:#0b2c50; color:#c4d8ea; font-size:18px; }
+.dashboard-board.situation-board .prevention-total strong { display:flex; align-items:baseline; gap:2px; color:#fff; font:700 40px/1 DashboardNumbers,DIN,sans-serif; white-space:nowrap; }
+.dashboard-board.situation-board .prevention-total i { font-style:normal; }
+.dashboard-board.situation-board .prevention-total .metric-digit { background:linear-gradient(180deg,rgba(55,100,137,.33),rgba(12,40,67,.25)); padding:3px 2px; }
+.dashboard-board.situation-board .prevention-total small { margin-left:4px; font:400 18px DashboardNumbers,sans-serif; color:#91adc5; }
+
+.dashboard-board.situation-board .prevention-total-label { display:flex; flex-direction:column; gap:4px; }
+.dashboard-board.situation-board .prevention-total-note { font:400 12px/1.2 DashboardChinese,sans-serif; color:#91adc5; white-space:nowrap; }
